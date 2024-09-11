@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="标签: Java, 知行合一">
+    <meta name="keywords" content="java八股, 知行合一">
     <meta name="description" content="警惕“知识诅咒”">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>标签: Java | 知行合一</title>
+    <title>java八股 | 知行合一</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -564,9 +564,13 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Java/">
+                                <span class="chip bg-color">Java</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -574,8 +578,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/" class="post-category">
-                                
+                            <a href="/categories/%E6%8A%80%E6%9C%AF/" class="post-category">
+                                技术
                             </a>
                         
                     </div>
@@ -587,7 +591,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2024-05-30
+                    2024-09-11
                 </div>
                 
 
@@ -608,7 +612,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    71 分
+                    72 分
                 </div>
                 
 
@@ -640,15 +644,20 @@
 </ul>
 <h3 id="1-1-5、ArrayList的底层实现原理？"><a href="#1-1-5、ArrayList的底层实现原理？" class="headerlink" title="1.1.5、ArrayList的底层实现原理？"></a>1.1.5、ArrayList的底层实现原理？</h3><p>主要前3点</p>
 <ul>
-<li>ArrayList底层是用动态的数组实现的</li>
-<li>ArrayList初始容量为0，当<strong>第一次添加数据的时候才会初始化</strong>容量为10</li>
-<li>ArrayList在进行扩容的时候是原来容量的1.5倍，每次扩容都需要拷贝数组</li>
-<li>ArrayList在添加数据的时候<ul>
+<li><p>ArrayList底层是用动态的数组实现的</p>
+</li>
+<li><p>ArrayList初始容量为0，当<strong>第一次添加数据的时候才会初始化</strong>容量为10</p>
+</li>
+<li><p>ArrayList在进行扩容的时候是原来容量的1.5倍，每次扩容都需要拷贝数组</p>
+</li>
+<li><p>ArrayList在添加数据的时候</p>
+<ul>
 <li>确保数组已使用长度(size）加1之后足够存下一个数据</li>
 <li>计算数组的容量，如果当前数组已使用长度+1后的大于当前的数组长度，则调用grow方法扩容（原来的1.5倍)</li>
 <li>确保新增的数据有地方存储之后，则将新元素添加到位于size的位置上。</li>
 <li>返回添加成功布尔值。</li>
 </ul>
+<p>扩容机制：计算新容量——&gt;创建新数组——&gt;将元素复制——&gt;更新引用——&gt;完成扩容</p>
 </li>
 </ul>
 <h3 id="1-1-6、-为什么ArrayList不是线程安全的，具体来说是哪里不安全？"><a href="#1-1-6、-为什么ArrayList不是线程安全的，具体来说是哪里不安全？" class="headerlink" title="1.1.6、 为什么ArrayList不是线程安全的，具体来说是哪里不安全？"></a>1.1.6、 为什么ArrayList不是线程安全的，具体来说是哪里不安全？</h3><p>在高并发添加数据下，ArrayList会暴露三个问题; </p>
@@ -969,13 +978,15 @@
 </tr>
 </tbody></table>
 <h3 id="3-2-5、乐观锁和悲观锁"><a href="#3-2-5、乐观锁和悲观锁" class="headerlink" title="3.2.5、乐观锁和悲观锁"></a>3.2.5、乐观锁和悲观锁</h3><ol>
-<li>悲观锁<ul>
+<li><p>悲观锁</p>
+<ul>
 <li>悲观锁:认为自己在使用数据的时候一定有别的线程来修改数据，在获取数据的时候会先加锁，确保数据不会被别的线程修改。</li>
 <li>锁实现:关键字synchronized、接口Lock的实现类</li>
 <li>适用场景:写操作较多，先加锁可以保证写操作时数据正确</li>
 </ul>
 </li>
-<li>乐观锁<ul>
+<li><p>乐观锁</p>
+<ul>
 <li><p>乐观锁:认为自己使用数据时不会有别的线程修改数据，所以不会添加锁，只是在更新数据的时候去判断之前有没有别的线程更新了这个数据</p>
 </li>
 <li><p>锁实现1:CAS算法，CAS即 Compare And swap，是一种更新的原子操作</p>
@@ -1070,10 +1081,8 @@
 </ol>
 </li>
 <li><p>产生死锁的情况</p>
+<p>1.互斥锁顺序问题:如果多个线程按不同的顺序获取锁，并且互相依赖对方释放的锁，就有可能导致死锁。<br>2.资源竞争问题:当多个线程同时竞争有限的资源，例如共享的数据库连接、文件等，在资源分配不当的情况下，可能导致死锁。</p>
 </li>
-</ol>
-<p>   1.互斥锁顺序问题:如果多个线程按不同的顺序获取锁，并且互相依赖对方释放的锁，就有可能导致死锁。<br>   2.资源竞争问题:当多个线程同时竞争有限的资源，例如共享的数据库连接、文件等，在资源分配不当的情况下，可能导致死锁。</p>
-<ol start="3">
 <li><p>如何检测死锁</p>
 <p>​	使用jstack命令或者使用 VisuaIVM</p>
 </li>
@@ -1410,18 +1419,12 @@
 <h3 id="6-3-2、为什么四次挥手之后要等2MSL"><a href="#6-3-2、为什么四次挥手之后要等2MSL" class="headerlink" title="6.3.2、为什么四次挥手之后要等2MSL?"></a>6.3.2、为什么四次挥手之后要等2MSL?</h3><p><img src="C:\Users\xcf\AppData\Local\Temp\1724508192795.png" alt="1724508192795"></p>
 <p>被动关闭方没有收到断开连接的最后的 ACK 报文，就会触发超时重发 FIN 报文 ，而主动关闭方进入了关闭状态，就会导致被动关闭方无法进入关闭状态</p>
 <h2 id="6-4、TCP和UDP的区别"><a href="#6-4、TCP和UDP的区别" class="headerlink" title="6.4、TCP和UDP的区别"></a>6.4、TCP和UDP的区别</h2><ul>
-<li><p>连接：TCP 是面向连接的传输层协议，传输数据前先要建立连接；UDP 是不需要连接，即刻传输数据。</p>
-</li>
-<li><p>服务对象：TCP 是一对一的两点服务，即一条连接只有两个端点。 UDP 支持一对一、一对多、多对多的交互通信 </p>
-</li>
-<li><p>可靠性：TCP 是可靠交付数据的，数据可以无差错、不丢失、不重复、按序到达。 UDP 是尽最大努力交付，不保证可靠交付数据。 但是我们可以基于 UDP 传输协议实现一个可靠的传输协议，比如 QUIC 协议 </p>
-</li>
-<li><p>拥塞控制、流量控制：TCP 有拥塞控制和流量控制机制，保证数据传输的安全性。 UDP 则没有，UDP是尽最大努力交付</p>
-</li>
-<li><p>首部开销：TCP 首部长度较长，会有一定的开销，首部最小20字节，最大60字节。UDP 首部只有 8 个字节，并且是固定不变的，开销较小。 </p>
-</li>
-<li><p>传输方式：TCP 面向字节流传输，没有边界，但保证顺序和可靠。 UDP 是一个包一个包的发送，是有边界的，但可能会丢包和乱序。</p>
-</li>
+<li>连接：TCP 是面向连接的传输层协议，传输数据前先要建立连接；UDP 是不需要连接，即刻传输数据。</li>
+<li>服务对象：TCP 是一对一的两点服务，即一条连接只有两个端点。 UDP 支持一对一、一对多、多对多的交互通信 </li>
+<li>可靠性：TCP 是可靠交付数据的，数据可以无差错、不丢失、不重复、按序到达。 UDP 是尽最大努力交付，不保证可靠交付数据。 但是我们可以基于 UDP 传输协议实现一个可靠的传输协议，比如 QUIC 协议 </li>
+<li>拥塞控制、流量控制：TCP 有拥塞控制和流量控制机制，保证数据传输的安全性。 UDP 则没有，UDP是尽最大努力交付</li>
+<li>首部开销：TCP 首部长度较长，会有一定的开销，首部最小20字节，最大60字节。UDP 首部只有 8 个字节，并且是固定不变的，开销较小。 </li>
+<li>传输方式：TCP 面向字节流传输，没有边界，但保证顺序和可靠。 UDP 是一个包一个包的发送，是有边界的，但可能会丢包和乱序。</li>
 </ul>
 <h2 id="6-5、GET和POST的区别"><a href="#6-5、GET和POST的区别" class="headerlink" title="6.5、GET和POST的区别"></a>6.5、GET和POST的区别</h2><h2 id="6-6、HTTP和HTTPS的区别"><a href="#6-6、HTTP和HTTPS的区别" class="headerlink" title="6.6、HTTP和HTTPS的区别"></a>6.6、HTTP和HTTPS的区别</h2><h2 id="6-7、常见的HTTP响应状态码"><a href="#6-7、常见的HTTP响应状态码" class="headerlink" title="6.7、常见的HTTP响应状态码"></a>6.7、常见的HTTP响应状态码</h2><h2 id="6-8、HTTPS怎么加密的"><a href="#6-8、HTTPS怎么加密的" class="headerlink" title="6.8、HTTPS怎么加密的"></a>6.8、HTTPS怎么加密的</h2><h1 id="七、框架"><a href="#七、框架" class="headerlink" title="七、框架"></a>七、框架</h1><p>7.1、</p>
 
@@ -1450,7 +1453,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/Java/index.html">http://example.com/Java/index.html</a>
+                    <a href="http://example.com/2024/09/11/java%E5%85%AB%E8%82%A1/">http://example.com/2024/09/11/java%E5%85%AB%E8%82%A1/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -1487,7 +1490,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/Java/">
+                                    <span class="chip bg-color">Java</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -1660,7 +1667,7 @@
                 <i class="far fa-dot-circle"></i>&nbsp;本篇
             </div>
             <div class="card">
-                <a href="/Java/index.html">
+                <a href="/2024/09/11/java%E5%85%AB%E8%82%A1/">
                     <div class="card-image">
                         
                         
@@ -1677,14 +1684,14 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-05-30
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-11
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/" class="post-category">
-                                    
+                            <a href="/categories/%E6%8A%80%E6%9C%AF/" class="post-category">
+                                    技术
                                 </a>
                             
                             
@@ -1693,22 +1700,30 @@
                 </div>
 
                 
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java/">
+                        <span class="chip bg-color">Java</span>
+                    </a>
+                    
+                </div>
+                
             </div>
         </div>
         
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="far fa-dot-circle"></i>
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/Java/index.html">
+                <a href="/2024/09/11/dongmantuijian/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="java八股">
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="dongmantuijian">
                         
-                        <span class="card-title">java八股</span>
+                        <span class="card-title">dongmantuijian</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1719,21 +1734,28 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-05-30
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-09-11
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/" class="post-category">
-                                    
+                            <a href="/categories/%E7%94%9F%E6%B4%BB/" class="post-category">
+                                    生活
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
-
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%8A%A8%E6%BC%AB/">
+                        <span class="chip bg-color">动漫</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
