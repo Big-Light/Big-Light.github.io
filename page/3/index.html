@@ -782,34 +782,18 @@ button {
 .cover-wrapper.focus .menu .list-h a:hover {
   background: var(--color-card);
 }
-.cover-wrapper.focus .menu {
-  transition: all 0.28s ease;
-  -webkit-transition: all 0.28s ease;
-  -khtml-transition: all 0.28s ease;
-  -moz-transition: all 0.28s ease;
-  -o-transition: all 0.28s ease;
-  -ms-transition: all 0.28s ease;
+.cover-wrapper.featured .menu .list-h {
+  margin: -2px;
 }
-.cover-wrapper.focus .menu .list-h {
+.cover-wrapper.featured .menu .list-h a {
   margin: 2px;
-}
-.cover-wrapper.focus .menu:hover {
   background: rgba(255,255,255,0.5);
 }
 @supports (backdrop-filter: blur(20px)) {
-  .cover-wrapper.focus .menu:hover {
+  .cover-wrapper.featured .menu .list-h a {
     background: rgba(255,255,255,0.5);
     backdrop-filter: saturate(200%) blur(20px);
   }
-}
-.cover-wrapper.focus .menu .list-h a {
-  margin: 2px;
-}
-.cover-wrapper.focus .menu .list-h a:hover {
-  opacity: 1;
-  -webkit-opacity: 1;
-  -moz-opacity: 1;
-  background: var(--color-card);
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -1860,7 +1844,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: false,
     cdn: {"js":{"app":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/app.js","parallax":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/parallax.js","rightMenu":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenu.js","rightMenus":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenus.js","sites":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/sites.js","friends":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/friends.js","contributors":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/contributors.js","search":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1737990196145),
+    lastupdate: new Date(1738296411612),
     sidebar: {
       for_page: ["blogger","category","tagcloud","donate"],
       for_post: ["toc"],
@@ -2548,7 +2532,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       <div class="m_search">
         <form name="searchform" class="form u-search-form">
           <i class="icon fa-solid fa-search fa-fw"></i>
-          <input type="text" class="input u-search-input" placeholder="Search..." />
+          <input type="text" class="input u-search-input" placeholder="搜索..." />
         </form>
       </div>
       
@@ -2794,7 +2778,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   
     
       <!-- see: /layout/_partial/scripts/_ctrl/coverCtrl.ejs -->
-      <div id="none" class='cover-wrapper  focus' style="display: none;">
+      <div id="none" class='cover-wrapper  featured' style="display: none;">
         
   <div class='cover-bg lazyload placeholder' data-bg="https://pic1.imgdb.cn/item/678f95a6d0e0a243d4f62c50.jpg"></div>
 
@@ -2805,21 +2789,12 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       <p class="title">Light</p>
     
     
-      <p class="subtitle">⌈时间从来不语，却回答所有问题⌋</p>
+      <p class="subtitle">⌈Be Yourself⌋</p>
     
   </div>
   <div class='bottom'>
     <div class='menu navigation'>
       <div class='list-h'>
-        
-          
-            <a href="/archives/"
-              
-              
-              active-action="action-archives">
-              <img src='https://unpkg.com/volantis-static@0.0.1654736714924/media/twemoji/assets/svg/1f4f0.svg'><p>博客</p>
-            </a>
-          
         
       </div>
     </div>
@@ -2891,6 +2866,14 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   
     <div class='meta-v3' line_style='solid'>
       <div>
+        
+          
+          <a class='avatar' href='/'><img src='https://pic1.imgdb.cn/item/678f654fd0e0a243d4f62447.png'></a>
+          <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <meta itemprop="image" content="https://pic1.imgdb.cn/item/678f654fd0e0a243d4f62447.png">
+            <meta itemprop="name" content="Light">
+            <meta itemprop="url" content="/">
+          </span>
         
         <time itemprop="dateCreated datePublished" datetime="2024-10-23T20:08:21+08:00">2024-10-23</time>
         
@@ -2964,6 +2947,14 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='meta-v3' line_style='solid'>
       <div>
         
+          
+          <a class='avatar' href='/'><img src='https://pic1.imgdb.cn/item/678f654fd0e0a243d4f62447.png'></a>
+          <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <meta itemprop="image" content="https://pic1.imgdb.cn/item/678f654fd0e0a243d4f62447.png">
+            <meta itemprop="name" content="Light">
+            <meta itemprop="url" content="/">
+          </span>
+        
         <time itemprop="dateCreated datePublished" datetime="2024-10-20T10:25:39+08:00">2024-10-20</time>
         
           <span class="dot"></span>
@@ -3028,6 +3019,14 @@ Go-Music 可以把网易云或者QQ音乐平台上面的歌单，以文本的形
   
     <div class='meta-v3' line_style='solid'>
       <div>
+        
+          
+          <a class='avatar' href='/'><img src='https://pic1.imgdb.cn/item/678f654fd0e0a243d4f62447.png'></a>
+          <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <meta itemprop="image" content="https://pic1.imgdb.cn/item/678f654fd0e0a243d4f62447.png">
+            <meta itemprop="name" content="Light">
+            <meta itemprop="url" content="/">
+          </span>
         
         <time itemprop="dateCreated datePublished" datetime="2024-10-17T22:15:39+08:00">2024-10-17</time>
         
@@ -3104,6 +3103,14 @@ b字体加粗，i斜体，...
   
     <div class='meta-v3' line_style='solid'>
       <div>
+        
+          
+          <a class='avatar' href='/'><img src='https://pic1.imgdb.cn/item/678f654fd0e0a243d4f62447.png'></a>
+          <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <meta itemprop="image" content="https://pic1.imgdb.cn/item/678f654fd0e0a243d4f62447.png">
+            <meta itemprop="name" content="Light">
+            <meta itemprop="url" content="/">
+          </span>
         
         <time itemprop="dateCreated datePublished" datetime="2024-10-17T20:29:34+08:00">2024-10-17</time>
         
@@ -3188,6 +3195,14 @@ b字体加粗，i斜体，...
     <div class='meta-v3' line_style='solid'>
       <div>
         
+          
+          <a class='avatar' href='/'><img src='https://pic1.imgdb.cn/item/678f654fd0e0a243d4f62447.png'></a>
+          <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <meta itemprop="image" content="https://pic1.imgdb.cn/item/678f654fd0e0a243d4f62447.png">
+            <meta itemprop="name" content="Light">
+            <meta itemprop="url" content="/">
+          </span>
+        
         <time itemprop="dateCreated datePublished" datetime="2024-10-10T21:36:25+08:00">2024-10-10</time>
         
           <span class="dot"></span>
@@ -3252,6 +3267,14 @@ b字体加粗，i斜体，...
   
     <div class='meta-v3' line_style='solid'>
       <div>
+        
+          
+          <a class='avatar' href='/'><img src='https://pic1.imgdb.cn/item/678f654fd0e0a243d4f62447.png'></a>
+          <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <meta itemprop="image" content="https://pic1.imgdb.cn/item/678f654fd0e0a243d4f62447.png">
+            <meta itemprop="name" content="Light">
+            <meta itemprop="url" content="/">
+          </span>
         
         <time itemprop="dateCreated datePublished" datetime="2024-10-09T22:49:21+08:00">2024-10-09</time>
         
@@ -3321,6 +3344,14 @@ HashMap链表的扩容机制，链表里面是values，values是怎么存储的�
   
     <div class='meta-v3' line_style='solid'>
       <div>
+        
+          
+          <a class='avatar' href='/'><img src='https://pic1.imgdb.cn/item/678f654fd0e0a243d4f62447.png'></a>
+          <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <meta itemprop="image" content="https://pic1.imgdb.cn/item/678f654fd0e0a243d4f62447.png">
+            <meta itemprop="name" content="Light">
+            <meta itemprop="url" content="/">
+          </span>
         
         <time itemprop="dateCreated datePublished" datetime="2024-10-09T21:23:30+08:00">2024-10-09</time>
         
@@ -3394,6 +3425,14 @@ CopyO...
     <div class='meta-v3' line_style='solid'>
       <div>
         
+          
+          <a class='avatar' href='/'><img src='https://pic1.imgdb.cn/item/678f654fd0e0a243d4f62447.png'></a>
+          <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <meta itemprop="image" content="https://pic1.imgdb.cn/item/678f654fd0e0a243d4f62447.png">
+            <meta itemprop="name" content="Light">
+            <meta itemprop="url" content="/">
+          </span>
+        
         <time itemprop="dateCreated datePublished" datetime="2024-10-09T21:15:47+08:00">2024-10-09</time>
         
           <span class="dot"></span>
@@ -3464,6 +3503,14 @@ CopyO...
   
     <div class='meta-v3' line_style='solid'>
       <div>
+        
+          
+          <a class='avatar' href='/'><img src='https://pic1.imgdb.cn/item/678f654fd0e0a243d4f62447.png'></a>
+          <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <meta itemprop="image" content="https://pic1.imgdb.cn/item/678f654fd0e0a243d4f62447.png">
+            <meta itemprop="name" content="Light">
+            <meta itemprop="url" content="/">
+          </span>
         
         <time itemprop="dateCreated datePublished" datetime="2024-10-09T16:39:20+08:00">2024-10-09</time>
         
@@ -3536,6 +3583,14 @@ CSMA&#x2F;CD协议：载波监听在发送消息之前先检测有无设备正�
   
     <div class='meta-v3' line_style='solid'>
       <div>
+        
+          
+          <a class='avatar' href='/'><img src='https://pic1.imgdb.cn/item/678f654fd0e0a243d4f62447.png'></a>
+          <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <meta itemprop="image" content="https://pic1.imgdb.cn/item/678f654fd0e0a243d4f62447.png">
+            <meta itemprop="name" content="Light">
+            <meta itemprop="url" content="/">
+          </span>
         
         <time itemprop="dateCreated datePublished" datetime="2024-10-03T20:17:15+08:00">2024-10-03</time>
         
