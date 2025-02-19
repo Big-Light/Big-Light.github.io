@@ -46,7 +46,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
 <meta property="article:published_time" content="2024-10-28T12:30:49.000Z">
-<meta property="article:modified_time" content="2025-02-19T11:02:41.490Z">
+<meta property="article:modified_time" content="2025-02-19T15:33:23.002Z">
 <meta property="article:author" content="Light">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
@@ -1846,7 +1846,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: false,
     cdn: {"js":{"app":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/app.js","parallax":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/parallax.js","rightMenu":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenu.js","rightMenus":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenus.js","sites":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/sites.js","friends":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/friends.js","contributors":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/contributors.js","search":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1739962970296),
+    lastupdate: new Date(1739979208958),
     sidebar: {
       for_page: ["blogger","category","donate","webinfo"],
       for_post: ["toc"],
@@ -2889,13 +2889,13 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <div class="new-meta-item wordcount">
     <a class='notlink'>
       <i class="fa-solid fa-keyboard fa-fw" aria-hidden="true"></i>
-      <p>字数：5.5k 字</p>
+      <p>字数：9.2k 字</p>
     </a>
   </div>
   <div class="new-meta-item readtime">
     <a class='notlink'>
       <i class="fa-solid fa-hourglass-half fa-fw" aria-hidden="true"></i>
-      <p>时长：18 分钟</p>
+      <p>时长：31 分钟</p>
     </a>
   </div>
 
@@ -3142,7 +3142,127 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <p>饥饿锁，这个饥饿指的是资源饥饿，某个线程一直等不到它所需要的资源，从而无法向前推进，就像一个人因为饥饿无法成长。 </p>
 <p>活锁：是指线程或进程虽然处于“活动”状态，但它们在不断地互相干扰，导致无法有效完成任务，系统始终处于忙碌状态，但没有任何实质性的进展。活锁通常是因为线程在执行过程中不停地尝试重新进入某个操作，但由于不断调整或重试，导致无法有效执行工作。 </p>
 <hr>
-<h1 id="2-内存管理"><a href="#2-内存管理" class="headerlink" title="2.内存管理"></a>2.内存管理</h1>
+<h1 id="2-内存管理"><a href="#2-内存管理" class="headerlink" title="2.内存管理"></a>2.内存管理</h1><p>操作系统的内存管理非常重要，主要负责下面这些事情：</p>
+<ul>
+<li><strong>内存的分配与回收</strong>：对进程所需的内存进行分配和释放，malloc 函数：申请内存，free 函数：释放内存。</li>
+<li><strong>地址转换</strong>：将程序中的虚拟地址转换成内存中的物理地址。</li>
+<li><strong>内存扩充</strong>：当系统没有足够的内存时，利用虚拟内存技术或自动覆盖技术，从逻辑上扩充内存。</li>
+<li><strong>内存映射</strong>：将一个文件直接映射到进程的进程空间中，这样可以通过内存指针用读写内存的办法直接存取文件内容，速度更快。</li>
+<li><strong>内存优化</strong>：通过调整内存分配策略和回收算法来优化内存使用效率。</li>
+<li><strong>内存安全</strong>：保证进程之间使用内存互不干扰，避免一些恶意程序通过修改内存来破坏系统的安全性。</li>
+</ul>
+<h2 id="1-什么是内存碎片"><a href="#1-什么是内存碎片" class="headerlink" title="1.什么是内存碎片?"></a>1.什么是内存碎片?</h2><p>通常分为两种</p>
+<p><img src="https://pic1.imgdb.cn/item/67b5d028d0e0a243d400ce16.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67b5d028d0e0a243d400ce16.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="两种内存碎片"></p>
+<ul>
+<li><strong>内部内存碎片：</strong>简单说就是已经分配的内存但没有用完，未用完的部分就是内存碎片</li>
+<li><strong>外部内存碎片：</strong> 简单说就是未分配的连续内存太小了，不能再用了，所以就是外部内存碎片</li>
+</ul>
+<h2 id="2-局部性原理"><a href="#2-局部性原理" class="headerlink" title="2.局部性原理"></a>2.局部性原理</h2><p>程序在执行时，倾向于频繁访问特定的数据和指令。局部性原理的核心思想是，程序通常不会随机地访问内存中的任何位置，而是有规律地集中访问某些区域。</p>
+<p><strong>时间局部性：</strong>如果程序访问了某个内存位置，那么它在不久的将来可能会再次访问该位置。换句话说，程序倾向于重复访问最近使用过的数据或指令。 </p>
+<ul>
+<li><strong>优化方法</strong>：为了利用时间局部性，缓存系统会将最近使用的数据存储在高速<u>缓存</u>（如CPU缓存）中，这样当数据再次需要时，可以快速从缓存中获取，而不需要从较慢的内存或磁盘中读取。</li>
+</ul>
+<p><strong>空间局部性：</strong>如果程序访问了内存中的某个位置，它很可能会在不久的将来访问该位置附近的内存地址。即，程序倾向于集中访问内存中的相邻位置。 </p>
+<ul>
+<li><strong>优化方法</strong>：为了利用空间局部性，操作系统和硬件会尽量将数据<u>按照地址的顺序</u>加载到缓存中，或者将<u>连续的内存块</u>存储在一起。</li>
+</ul>
+<h2 id="3-虚拟内存"><a href="#3-虚拟内存" class="headerlink" title="3.虚拟内存"></a>3.虚拟内存</h2><p>操作系统设计了虚拟内存，每个进程都有自己的独立的虚拟内存，我们所写的程序不会直接与物理内打交道。 </p>
+<p>本质上来说它只是逻辑存在的，是一个假想出来的内存空间，主要作用是作为进程访问主存（物理内存）的桥梁并简化内存管理。 </p>
+<blockquote>
+<p><strong>虚拟地址和物理地址</strong></p>
+</blockquote>
+<ul>
+<li><strong>虚拟地址</strong>：是由程序使用的地址，程序通过虚拟地址访问内存。</li>
+<li><strong>物理地址</strong>：是计算机硬件（如RAM）中的实际内存地址。</li>
+</ul>
+<p><strong>优点：</strong></p>
+<ol>
+<li><strong>扩展内存容量</strong>：虚拟内存允许程序使用的内存空间超过物理内存的大小。操作系统通过将不常用的页面存储到硬盘中，使得程序可以“认为”它有更大的内存。 </li>
+<li><strong>内存隔离和保护</strong>：每个进程都有独立的虚拟地址空间，进程间的内存是隔离的，这提供了更好的内存保护和安全性。<strong>进程之间彼此隔离</strong>，一个进程中的代码无法更改正在由另一进程或操作系统使用的物理内存。 </li>
+<li><strong>简化程序设计</strong>：程序员不需要关心物理内存的具体分配，虚拟内存使得每个程序可以拥有独立的内存空间，极大地简化了内存管理。</li>
+</ol>
+<p>虚拟地址和物理地址的映射方式主要有</p>
+<p>分页</p>
+<p>分段</p>
+<p>段页</p>
+<h2 id="4-分页机制-TODO"><a href="#4-分页机制-TODO" class="headerlink" title="4.分页机制(TODO)"></a>4.分页机制(TODO)</h2><h2 id="5-分段机制-TODO"><a href="#5-分段机制-TODO" class="headerlink" title="5.分段机制(TODO)"></a>5.分段机制(TODO)</h2><h2 id="6-段页机制-TODO"><a href="#6-段页机制-TODO" class="headerlink" title="6.段页机制(TODO)"></a>6.段页机制(TODO)</h2><h2 id="7-页面置换算法"><a href="#7-页面置换算法" class="headerlink" title="7.页面置换算法"></a>7.页面置换算法</h2><p>当物理内存不足时，操作系统会将一部分不常用的页面从内存中换出（<strong>换出</strong>），并将需要的页面加载到内存中（<strong>换入</strong>）。这一过程称为<strong>页面置换</strong>。 页面置换算法的任务就是选择合适的页面进行置换，避免频繁的页面交换（也称为“页面抖动”），从而提高系统的效率。 </p>
+<ol>
+<li><p><strong>最佳页面置换算法：</strong>选择在未来最长时间内不会被访问的页面进行置换</p>
+<p><strong>缺点：</strong>需要提前知道未来的页面访问模式，这在实际应用中是不可能实现的，因此它通常作为性能对比的基准，或者用来评估其他算法的效果。 </p>
+</li>
+<li><p><strong>先进先出算法：</strong>选择内存中最早进入的页面进行置换</p>
+<p><strong>缺点：</strong>FIFO并不考虑页面的实际使用频率和最近使用情况，因此可能会导致一些“反直觉”的效果（即置换掉一些未来会频繁使用的页面）。这也就是所谓的<strong>Belady异常</strong>（即增加物理内存时，页面错误反而增多）。 </p>
+</li>
+<li><p><strong>最近最久未使用的置换算法(LRU)：</strong>选择最久未使用的页面进行置换。 该算法假设已经很久没有使用的页面很有可能在未来较长的一段时间内仍然不会被使用。 </p>
+</li>
+<li><p><strong>最不常用算法（LFU）：</strong>选择使用频率最少的页面进行置换。 LFU需要维护每个页面的访问计数。当一个页面被访问时，它的<strong>计数器</strong>会增加；当内存需要置换时，选择访问次数最少的页面进行换出。 </p>
+</li>
+<li><p><strong>时钟页面置换算法：</strong>通过使用一个圆形链表和一个指针来模拟时钟的走动，决定哪个页面应当被置换。 </p>
+<p><strong>实现：</strong>每个页面都有一个<strong>引用位</strong>（reference bit），在每次访问页面时，引用位被设置为1。当发生页面置换时，算法从指针指向的页面开始，如果该页面的引用位为0，则置换该页面；如果引用位为1，则将引用位清零，并将指针移向下一个页面。这样，Clock算法可以在近似LRU的同时减少开销。</p>
+</li>
+</ol>
+<hr>
+<h1 id="3-文件系统"><a href="#3-文件系统" class="headerlink" title="3.文件系统"></a>3.文件系统</h1><h2 id="1-硬链接和软链接的区别（TODO"><a href="#1-硬链接和软链接的区别（TODO" class="headerlink" title="1.硬链接和软链接的区别（TODO"></a>1.硬链接和软链接的区别（TODO</h2><p>在 Linux&#x2F;类 Unix 系统上，文件链接（File Link）是一种特殊的文件类型，可以在文件系统中指向另一个文件。常见的文件链接类型有两种： </p>
+<p>太抽象了，回头再看</p>
+<h2 id="2-常见的磁盘调度算法（TODO"><a href="#2-常见的磁盘调度算法（TODO" class="headerlink" title="2.常见的磁盘调度算法（TODO"></a>2.常见的磁盘调度算法（TODO</h2><hr>
+<h1 id="4-I-O"><a href="#4-I-O" class="headerlink" title="4.I&#x2F;O"></a>4.I&#x2F;O</h1><h2 id="1-零拷贝"><a href="#1-零拷贝" class="headerlink" title="1.零拷贝"></a>1.零拷贝</h2><p><strong>零拷贝（Zero Copy）</strong> 是计算机系统中的一种技术，它用于优化数据传输的性能，特别是在网络传输和文件系统操作中。传统的内存拷贝操作会引入多次内存读写，这导致了不必要的CPU占用和内存带宽的浪费。零拷贝技术通过减少或避免中间的内存复制过程，提高了数据传输的效率。 </p>
+<p><strong>传统的数据拷贝过程</strong></p>
+<p>在没有零拷贝的情况下，当一个程序需要将数据从一个地方传输到另一个地方时，通常会经过以下几个步骤：</p>
+<ol>
+<li><strong>从磁盘读取数据到内存</strong>：操作系统从磁盘读取数据块，加载到内存中。</li>
+<li><strong>从用户空间复制到内核空间</strong>：程序需要将数据从用户空间复制到内核空间，以便通过网络发送。</li>
+<li><strong>从内核空间发送数据</strong>：内核再将数据通过网络设备发送出去。</li>
+</ol>
+<p>这些拷贝过程可能发生多次（例如，从磁盘到内存，再从内存到内核空间，再从内核空间到网络设备），导致了大量的内存拷贝和CPU计算开销。 </p>
+<p>也好抽象啊。。。</p>
+<p>零拷贝的核心目标是<strong>减少数据的拷贝次数</strong>，在可能的情况下，直接通过内存映射（Memory Mapping）或直接传输数据的方式，避免不必要的内存拷贝。这样做可以提高系统性能，减少CPU的负担，提高数据传输的效率。 </p>
+<h2 id="2-I-O模型"><a href="#2-I-O模型" class="headerlink" title="2.I&#x2F;O模型"></a>2.I&#x2F;O模型</h2><blockquote>
+<p>阻塞I&#x2F;O</p>
+</blockquote>
+<p>应用程序发起I&#x2F;O操作后会被阻塞，直到操作完成才返回结果。适用于对实时性要求不高的场景。 </p>
+<blockquote>
+<p>非阻塞I&#x2F;O</p>
+</blockquote>
+<p>应用程序发起I&#x2F;O操作后立即返回，不会被阻塞，但需要不断轮询或者使用 应用程序发起I&#x2F;O操作后立即返回，不会被阻塞，但需要不断轮询或者使用 处理多个socket连接的服务器程序。 </p>
+<blockquote>
+<p>I&#x2F;O复用模型</p>
+</blockquote>
+<h2 id="3-I-O多路复用"><a href="#3-I-O多路复用" class="headerlink" title="3.I&#x2F;O多路复用"></a>3.I&#x2F;O多路复用</h2><p>传统的 I&#x2F;O 模型中，如果服务端需要支持多个客户端，我们可能要为每个客户端分配一个进程&#x2F;线程。 引入多路复用之后，一个进程&#x2F;线程维护多个 Socket，这个多路复用就是多个连接复用一个进程&#x2F;线程。 它们允许单个线程同时监控多个 I&#x2F;O 操作，是高并发服务器（如 Nginx、Redis）的核心技术。 </p>
+<p> I&#x2F;O 多路复用三种实现机制</p>
+<blockquote>
+<p>select&#x2F;poll</p>
+</blockquote>
+<p>select 实现多路复用的方式是，将已连接的 Socket 都放到一个<strong>文件描述符集合</strong>，然后调用 select 函数将文件描述符集合<strong>拷贝</strong>到内核里，让内核来检查是否有网络事件产生，检查的方式很粗暴，就是通过<strong>遍历</strong>文件描述符集合的方式，当检查到有事件产生后，将此 Socket 标记为可读或可写， 接着再把整个文件描述符集合<strong>拷贝</strong>回用户态里，然后用户态还需要再通过<strong>遍历</strong>的方法找到可读或可写的 Socket，然后再对其处理。</p>
+<p>对于 select 这种方式，需要进行 <strong>2 次「遍历」文件描述符集合</strong>，一次是在内核态里， 一个次是在用户态里 ，而且还会发生 <strong>2 次「拷贝」文件描述符集合</strong>， 先从用户空间传入内核空间，由内核修改后，再传出到用户空间中。 </p>
+<p>select和poll类似，<strong>区别</strong>是select有文件描述符数量的限制，而poll没有限制</p>
+<p>select和poll这种依赖<strong>遍历</strong>和<strong>拷贝</strong>的方式，这种方式随着并发数上来，性能的损耗会呈指数级增长。 </p>
+<blockquote>
+<p>epoll</p>
+</blockquote>
+<p>与 <code>select()</code> 和 <code>poll()</code> 不同，<code>epoll()</code> 并不每次都遍历整个文件描述符集合。<code>epoll()</code> 使用了<strong>事件驱动机制</strong>：不需要每次调用都传递所有的文件描述符，而是通过epoll_ctl注册感兴趣的事件，之后通过epoll_wait获取就绪的事件。这种方式在处理<strong>大量文件描述符</strong>时性能更好，因为只需要处理实际就绪的事件，而不是遍历所有描述符。 </p>
+<p>epoll的用法如下：</p>
+<p>先用epoll_create 创建一个 epol l对象 epfd，再通过 epoll_ctl 将需要监视的 socket 添加到epfd中，最后调用 epoll_wait 等待数据。 </p>
+<p><img src="https://pic1.imgdb.cn/item/67b5f655d0e0a243d400d544.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67b5f655d0e0a243d400d544.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="epoll原理"></p>
+<p>epoll 通过两个方面，很好解决了 select&#x2F;poll 的问题。 </p>
+<ul>
+<li>epoll 在内核里使用<strong>红黑树来跟踪进程所有待检测的文件描述字</strong>，把需要监控的 socket 通过epoll_ctl() 函数加入内核中的红黑树里</li>
+<li> epoll 使用<strong>事件驱动</strong>的机制，内核里<strong>维护了一个链表来记录就绪事件</strong>，当某个 socket 有事件发生时，通过<strong>回调函数</strong>内核会将其加入到这个就绪事件链表中， 当用户调用 epoll_wait() 函数时， 只会返回有事件发生的文件描述符的个数， 不需要像 select&#x2F;poll 那样轮询扫描整个 socket 集合，大大提高了检测的效率。</li>
+</ul>
+<p>epoll 的⽅式即使监听的 Socket 数量越多的时候，效率不会⼤幅度降低，能够同时监听的 Socket 的数⽬也⾮常的多了，上限就为系统定义的进程打开的最⼤⽂件描述符个数。 </p>
+<p><strong>性能差异的原因</strong></p>
+<ul>
+<li><strong>select&#x2F;poll</strong>：<br>每次调用涉及全量数据拷贝和线性扫描，适合少量活跃连接。</li>
+<li><strong>epoll</strong>：<br>通过事件驱动和回调机制，仅处理活跃连接，适合海量连接中只有少数活跃的场景（如 Web 服务器）。</li>
+</ul>
+<h2 id="4-epoll的边缘触发和水平触发"><a href="#4-epoll的边缘触发和水平触发" class="headerlink" title="4.epoll的边缘触发和水平触发"></a>4.epoll的边缘触发和水平触发</h2><p>epoll 支持两种事件触发模式，分别是边缘触发(edge-triggered，ET)和水平触发(level-triggered,	LT)</p>
+<p>select和poll仅支持水平触发。<strong>ET模式可以减少epoll_wait的调用次数</strong>，提高效率，但需要应用程序正确处理所有可用数据，否则可能会丢失事件。 <strong>在边缘触发（ET）模式下，必须一次性读取或写入所有数据，否则可能丢失事件</strong></p>
+<ul>
+<li><strong>边缘触发（ET）：</strong>使用边缘触发模式时，当被监控的 Socket 描述符上有可读事件发生时，<strong>服务器端只会从 epoll_wait 中苏醒一次</strong>，即使进程没有调用read 函数从内核读取数据，也依然只苏醒一次，因此我们程序要保证次性将内核缓冲区的数据读取完;</li>
+<li><strong>水平触发（LT）：</strong>使用水平触发模式时，当被监控的 Socket 上有可读事件发生时，<strong>服务器端不断地从 epoll_wait 中苏醒</strong>，直到内核缓冲区数据被 read 函数读完才结束，目的是告诉我们有数据需要读取;</li>
+</ul>
+<p>举个例子，你的快递被放到了一个快递箱里，如果快递箱只会通过短信通知你一次，即使你一直没有去取，它也不会再发送第二条短信提醒你，这个方式就是边缘触发;如果快递箱发现你的快递没有被取出它就会不停地发短信通知你，直到你取出了快递，它才消停，这个就是水平触发的方式。</p>
+<p>一般来说，边缘触发的效率比水平触发的效率要高， 因为边缘触发可以减少 epoll_wait 的系统调用次数， 系统调用也是有一定的开销的的，毕竟也存在上下文的切换 </p>
+
   </div>
   
   
@@ -3166,7 +3286,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-02-19T19:02:41+08:00">
+          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-02-19T23:33:23+08:00">
   <a class='notlink'>
     <i class="fa-solid fa-edit fa-fw" aria-hidden="true"></i>
     <p>更新于：2025年2月19日</p>
@@ -3280,7 +3400,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 
     <div class='content'>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80"><span class="toc-text">0.操作系统基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%9F"><span class="toc-text">1.什么是操作系统？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%9C%89%E5%93%AA%E4%BA%9B%E5%8A%9F%E8%83%BD%EF%BC%9F"><span class="toc-text">2.操作系统有哪些功能？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E5%86%85%E6%A0%B8%E6%80%81"><span class="toc-text">3.用户态和内核态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="toc-text">4.系统调用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86"><span class="toc-text">1.进程管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%B9%B6%E5%8F%91%E5%92%8C%E5%B9%B6%E8%A1%8C"><span class="toc-text">1.并发和并行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E8%BF%9B%E7%A8%8B%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2"><span class="toc-text">2.进程上下文切换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%BF%9B%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81"><span class="toc-text">3.进程的状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%BB%80%E4%B9%88%E6%98%AFPCB%EF%BC%9F"><span class="toc-text">4.什么是PCB？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%83%B5%E5%B0%B8%E8%BF%9B%E7%A8%8B-%E5%AD%A4%E5%84%BF%E8%BF%9B%E7%A8%8B"><span class="toc-text">5.僵尸进程&#x2F;孤儿进程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95"><span class="toc-text">6.进程调度算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E8%BF%9B%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F"><span class="toc-text">7.进程间的通信方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">8.进程和线程的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F-TODO"><span class="toc-text">9.线程间的通信方式(TODO)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E7%BA%BF%E7%A8%8B%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2"><span class="toc-text">10.线程上下文切换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E6%AD%BB%E9%94%81"><span class="toc-text">11.死锁</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-text">2.内存管理</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80"><span class="toc-text">0.操作系统基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%9F"><span class="toc-text">1.什么是操作系统？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%9C%89%E5%93%AA%E4%BA%9B%E5%8A%9F%E8%83%BD%EF%BC%9F"><span class="toc-text">2.操作系统有哪些功能？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E5%86%85%E6%A0%B8%E6%80%81"><span class="toc-text">3.用户态和内核态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="toc-text">4.系统调用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86"><span class="toc-text">1.进程管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%B9%B6%E5%8F%91%E5%92%8C%E5%B9%B6%E8%A1%8C"><span class="toc-text">1.并发和并行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E8%BF%9B%E7%A8%8B%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2"><span class="toc-text">2.进程上下文切换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%BF%9B%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81"><span class="toc-text">3.进程的状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%BB%80%E4%B9%88%E6%98%AFPCB%EF%BC%9F"><span class="toc-text">4.什么是PCB？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%83%B5%E5%B0%B8%E8%BF%9B%E7%A8%8B-%E5%AD%A4%E5%84%BF%E8%BF%9B%E7%A8%8B"><span class="toc-text">5.僵尸进程&#x2F;孤儿进程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95"><span class="toc-text">6.进程调度算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E8%BF%9B%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F"><span class="toc-text">7.进程间的通信方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">8.进程和线程的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F-TODO"><span class="toc-text">9.线程间的通信方式(TODO)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E7%BA%BF%E7%A8%8B%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2"><span class="toc-text">10.线程上下文切换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E6%AD%BB%E9%94%81"><span class="toc-text">11.死锁</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-text">2.内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E5%86%85%E5%AD%98%E7%A2%8E%E7%89%87"><span class="toc-text">1.什么是内存碎片?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%B1%80%E9%83%A8%E6%80%A7%E5%8E%9F%E7%90%86"><span class="toc-text">2.局部性原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98"><span class="toc-text">3.虚拟内存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%88%86%E9%A1%B5%E6%9C%BA%E5%88%B6-TODO"><span class="toc-text">4.分页机制(TODO)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%88%86%E6%AE%B5%E6%9C%BA%E5%88%B6-TODO"><span class="toc-text">5.分段机制(TODO)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E6%AE%B5%E9%A1%B5%E6%9C%BA%E5%88%B6-TODO"><span class="toc-text">6.段页机制(TODO)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95"><span class="toc-text">7.页面置换算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-text">3.文件系统</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%A1%AC%E9%93%BE%E6%8E%A5%E5%92%8C%E8%BD%AF%E9%93%BE%E6%8E%A5%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%88TODO"><span class="toc-text">1.硬链接和软链接的区别（TODO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%B8%B8%E8%A7%81%E7%9A%84%E7%A3%81%E7%9B%98%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95%EF%BC%88TODO"><span class="toc-text">2.常见的磁盘调度算法（TODO</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-I-O"><span class="toc-text">4.I&#x2F;O</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%9B%B6%E6%8B%B7%E8%B4%9D"><span class="toc-text">1.零拷贝</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-I-O%E6%A8%A1%E5%9E%8B"><span class="toc-text">2.I&#x2F;O模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-I-O%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8"><span class="toc-text">3.I&#x2F;O多路复用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-epoll%E7%9A%84%E8%BE%B9%E7%BC%98%E8%A7%A6%E5%8F%91%E5%92%8C%E6%B0%B4%E5%B9%B3%E8%A7%A6%E5%8F%91"><span class="toc-text">4.epoll的边缘触发和水平触发</span></a></li></ol></li></ol>
     </div>
   </section>
 
@@ -4472,7 +4592,7 @@ window.matchMedia('(prefers-color-scheme: light)').addListener(darkModelListener
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/10/28/八股/OS/","name":"OS"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"OS","description":"本文主要是找工作时针对操作系统可能会碰到的一些问题","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/OS/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/OS/","wordCount":25,"datePublished":"2024-10-28T12:30:49.000Z","dateModified":"2025-02-19T11:02:41.490Z","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/10/28/八股/OS/","name":"OS"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"OS","description":"本文主要是找工作时针对操作系统可能会碰到的一些问题","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/OS/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/OS/","wordCount":25,"datePublished":"2024-10-28T12:30:49.000Z","dateModified":"2025-02-19T15:33:23.002Z","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 
