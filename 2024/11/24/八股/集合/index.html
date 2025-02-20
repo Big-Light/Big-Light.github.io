@@ -36,17 +36,17 @@
   <!-- 页面元数据 -->
   <title>集合 - light</title>
   <meta name="keywords" content="JavaSE,null">
-  <meta desc name="description" content="啊咧咧啊咧咧啊咧啊咧咧~ - Light - light">
+  <meta desc name="description" content="1主要是Java常用集合介绍 - Light - light">
   
 <meta property="og:type" content="article">
 <meta property="og:title" content="集合">
 <meta property="og:url" content="http://example.com/2024/11/24/%E5%85%AB%E8%82%A1/%E9%9B%86%E5%90%88/index.html">
 <meta property="og:site_name" content="light">
-<meta property="og:description" content="1.1、List1.1.1、为什么数组索引从0开始呢？从1开始不行吗？ key：寻址公式，数组会根据索引获取元素，计算公式：数组首地址+索引*存储数据类型的大小 如果从1开始，就要多执行一次减法操作，对于CPU来说要多执行一次指令，降低性能  1.1.2、ArrayList和Array的区别？1.1.3、ArrayList可以添加null值吗？1.1.4、ArrayList和LinkedList的">
+<meta property="og:description" content="1主要是Java常用集合介绍">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
 <meta property="article:published_time" content="2024-11-24T09:11:53.000Z">
-<meta property="article:modified_time" content="2024-12-06T14:32:33.696Z">
+<meta property="article:modified_time" content="2025-02-20T14:12:04.000Z">
 <meta property="article:author" content="Light">
 <meta property="article:tag" content="JavaSE">
 <meta name="twitter:card" content="summary">
@@ -1847,7 +1847,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: false,
     cdn: {"js":{"app":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/app.js","parallax":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/parallax.js","rightMenu":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenu.js","rightMenus":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenus.js","sites":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/sites.js","friends":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/friends.js","contributors":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/contributors.js","search":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1740047446843),
+    lastupdate: new Date(1740061654178),
     sidebar: {
       for_page: ["blogger","category","donate","webinfo"],
       for_post: ["toc"],
@@ -2900,7 +2900,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <div class="new-meta-item wordcount">
     <a class='notlink'>
       <i class="fa-solid fa-keyboard fa-fw" aria-hidden="true"></i>
-      <p>字数：4.4k 字</p>
+      <p>字数：4.2k 字</p>
     </a>
   </div>
   <div class="new-meta-item readtime">
@@ -2923,33 +2923,31 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
   <div id="layoutHelper-page-plugins"></div>
   <div id="post-body" itemprop="articleBody">
-    <h2 id="1-1、List"><a href="#1-1、List" class="headerlink" title="1.1、List"></a>1.1、List</h2><h3 id="1-1-1、为什么数组索引从0开始呢？从1开始不行吗？"><a href="#1-1-1、为什么数组索引从0开始呢？从1开始不行吗？" class="headerlink" title="1.1.1、为什么数组索引从0开始呢？从1开始不行吗？"></a>1.1.1、为什么数组索引从0开始呢？从1开始不行吗？</h3><ol>
-<li>key：寻址公式，数组会根据索引获取元素，计算公式：数组首地址+索引*存储数据类型的大小</li>
-<li>如果从1开始，就要多执行一次减法操作，对于CPU来说要多执行一次指令，降低性能</li>
+    <p>1主要是Java常用集合介绍</p>
+<span id="more"></span>
+
+
+
+<h1 id="0-概述"><a href="#0-概述" class="headerlink" title="0. 概述"></a>0. 概述</h1><p><img src="https://pic1.imgdb.cn/item/67b73194d0e0a243d4010fe0.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67b73194d0e0a243d4010fe0.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="集合概述"></p>
+<p>Java 集合，也叫作容器，主要是由两大接口派生而来：一个是 <code>Collection</code>接口，主要用于存放单一元素；另一个是 <code>Map</code> 接口，主要用于存放键值对。 对于<code>Collection</code> 接口，下面又有三个主要的子接口：<code>List</code>、<code>Set</code> 、 <code>Queue</code>。 </p>
+<p>在 java.util 包中的线程安全的类主要 2 个，其他都是非线程安全的。 </p>
+<ol>
+<li><strong>Vector</strong> </li>
+<li><strong>Hashtable</strong></li>
 </ol>
-<h3 id="1-1-2、ArrayList和Array的区别？"><a href="#1-1-2、ArrayList和Array的区别？" class="headerlink" title="1.1.2、ArrayList和Array的区别？"></a>1.1.2、ArrayList和Array的区别？</h3><h3 id="1-1-3、ArrayList可以添加null值吗？"><a href="#1-1-3、ArrayList可以添加null值吗？" class="headerlink" title="1.1.3、ArrayList可以添加null值吗？"></a>1.1.3、ArrayList可以添加null值吗？</h3><h3 id="1-1-4、ArrayList和LinkedList的区别？"><a href="#1-1-4、ArrayList和LinkedList的区别？" class="headerlink" title="1.1.4、ArrayList和LinkedList的区别？"></a>1.1.4、ArrayList和LinkedList的区别？</h3><ul>
-<li>底层数据结构：ArrayList 是动态数组的数据结构实现，而 LinkedList 是双向链表的数据结构实现。 </li>
-<li>多数情况下，ArrayList更利于查找，LinkedList更利于增删</li>
-<li>占用空间：LinkedList 比 ArrayList 更占内存，因为 LinkedList 的节点除了存储数据，还存储了两个引用，一个指向前一个元素，一个指向后一个元素。 </li>
-<li>是否支持随机访问</li>
+<p>此外，<code>java.util.concurrent </code>包提供的都是线程安全的集合： </p>
+<h1 id="1-List"><a href="#1-List" class="headerlink" title="1.List"></a>1.List</h1><h2 id="1-ArrayList和LinkedList的区别"><a href="#1-ArrayList和LinkedList的区别" class="headerlink" title="1.ArrayList和LinkedList的区别"></a>1.ArrayList和LinkedList的区别</h2><ul>
+<li><strong>底层数据结构</strong>：ArrayList 是动态数组的数据结构实现，而 LinkedList 是双向链表的数据结构实现。 </li>
+<li><strong>操作效率不同</strong>：多数情况下，ArrayList更利于查找，LinkedList更利于增删</li>
+<li><strong>占用空间</strong>：LinkedList 比 ArrayList 更占内存，因为 LinkedList 的节点除了存储数据，还存储了两个引用，一个指向前一个元素，一个指向后一个元素。 </li>
+<li><strong>是否支持随机访问</strong></li>
 </ul>
-<h3 id="1-1-5、ArrayList的扩容机制了解吗？"><a href="#1-1-5、ArrayList的扩容机制了解吗？" class="headerlink" title="1.1.5、ArrayList的扩容机制了解吗？"></a>1.1.5、ArrayList的扩容机制了解吗？</h3><p>所以在插入时候，会先检查是否需要扩容，如果当前容量+1超过数组长度，就会进行扩容。</p>
+<h2 id="2-ArrayList的扩容机制"><a href="#2-ArrayList的扩容机制" class="headerlink" title="2.ArrayList的扩容机制"></a>2.ArrayList的扩容机制</h2><p>ArrayList底层采用的是Object[] 动态数组实现</p>
+<p>插入时候，会先检查是否需要扩容，如果当前容量+1超过数组长度，就会进行扩容。</p>
 <p>ArrayList的扩容是创建一个1.5倍的新数组，然后把原数组的值拷贝过去。</p>
-<p>在扩容和复制的过程中，如果检测到有其他线程正在修改<code>ArrayList</code>，可能会抛出<code>ConcurrentModificationException</code>。 </p>
-<h3 id="1-1-5、ArrayList的底层实现原理？"><a href="#1-1-5、ArrayList的底层实现原理？" class="headerlink" title="1.1.5、ArrayList的底层实现原理？"></a>1.1.5、ArrayList的底层实现原理？</h3><p>主要前3点</p>
-<ul>
-<li>ArrayList底层是用动态的数组实现的</li>
-<li>ArrayList初始容量为0，当<strong>第一次添加数据的时候才会初始化</strong>容量为10</li>
-<li>ArrayList在进行扩容的时候是原来容量的1.5倍，每次扩容都需要拷贝数组</li>
-<li>ArrayList在添加数据的时候<ul>
-<li>确保数组已使用长度(size）加1之后足够存下一个数据</li>
-<li>计算数组的容量，如果当前数组已使用长度+1后的大于当前的数组长度，则调用grow方法扩容（原来的1.5倍)</li>
-<li>确保新增的数据有地方存储之后，则将新元素添加到位于size的位置上。</li>
-<li>返回添加成功布尔值。</li>
-</ul>
-</li>
-</ul>
-<h3 id="1-1-6、-为什么ArrayList不是线程安全的，具体来说是哪里不安全？"><a href="#1-1-6、-为什么ArrayList不是线程安全的，具体来说是哪里不安全？" class="headerlink" title="1.1.6、 为什么ArrayList不是线程安全的，具体来说是哪里不安全？"></a>1.1.6、 为什么ArrayList不是线程安全的，具体来说是哪里不安全？</h3><p>在高并发添加数据下，ArrayList会暴露三个问题; </p>
+<p>扩容完成后更新引用到新的数组上</p>
+<p>之所以扩容是 1.5 倍，是因为 1.5 可以充分利用移位操作，<strong>减少浮点数或者运算时间和运算次数</strong>。 </p>
+<h2 id="3-为什么ArrayList不是线程安全的"><a href="#3-为什么ArrayList不是线程安全的" class="headerlink" title="3. 为什么ArrayList不是线程安全的"></a>3. 为什么ArrayList不是线程安全的</h2><p>在高并发添加数据下，ArrayList会暴露三个问题; （主要理解前两个即可）</p>
 <ul>
 <li>部分值为null（我们并没有add null进去）</li>
 <li>索引越界异常</li>
@@ -2957,24 +2955,22 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 </ul>
 <p>如何产生的：</p>
 <ul>
-<li>部分值为nul1:当线程1走到了扩容那里发现当前size是9，而数组容量是10，所以不用扩容，这时候cpu让出执行权，线程2也进来了，发现size是9，而数组容量是10，所以不用扩容，这时候线程1继续执行，将数组下标索引为9的位置set值了，还没有来得及执行size++，这时候线程2也来执行了，又把数组下标索引为9的位置set了一遍，这时候<strong>两个先后进行size++，导致下标索引10的地方就为null</strong>了。</li>
+<li>部分值为null:当线程1走到了扩容那里发现当前size是9，而数组容量是10，所以不用扩容，这时候cpu让出执行权，线程2也进来了，发现size是9，而数组容量是10，所以不用扩容，这时候线程1继续执行，将数组下标索引为9的位置set值了，还没有来得及执行size++，这时候线程2也来执行了，又把数组下标索引为9的位置set了一遍，这时候<strong>两个先后进行size++，导致下标索引10的地方就为null</strong>了。</li>
 <li>索引越界异常:线程1走到扩容那里发现当前size是9，数组容量是10不用扩容，cpu让出执行权，线程2也发现不用扩容，这时候数组的容量就是10，而线程1set完之后size++，这时候<strong>线程2再进来size就是10，数组的大小只有10，而你要设置下标索引为10的就会越界</strong>(数组的下标索引从0开始);</li>
 <li>size与我们add的数量不符:这个基本上每次都会发生，这个理解起来也很简单，因为<strong>size++本身就不是原子操作</strong>，可以分为三步:获取size的值，将size的值加1，将新的size值覆盖掉原来的，线程1和线程2拿到一样的size值加完了同时覆盖，就会导致一次没有加上，所以肯定不会与我们add的数量保持一致的;</li>
 </ul>
-<h3 id="1-1-7、ArrayList-list-new-ArrayList-10-中的list扩容几次？"><a href="#1-1-7、ArrayList-list-new-ArrayList-10-中的list扩容几次？" class="headerlink" title="1.1.7、ArrayList list&#x3D;new ArrayList(10)中的list扩容几次？"></a>1.1.7、ArrayList list&#x3D;new ArrayList(10)中的list扩容几次？</h3><p>该语句只是声明和实例了一个ArrayList，指定了容量为10，未扩容</p>
-<h3 id="1-1-8、CopyOnWriteArrayList了解多少？"><a href="#1-1-8、CopyOnWriteArrayList了解多少？" class="headerlink" title="1.1.8、CopyOnWriteArrayList了解多少？"></a>1.1.8、CopyOnWriteArrayList了解多少？</h3><p>CopyOnWriteArrayList就是线程安全版本的ArrayList。</p>
-<p>它的名字叫<code>CopyOnWrite</code>——写时复制，已经明示了它的原理。</p>
+<h2 id="4-CopyOnWriteArrayList为什么线程安全"><a href="#4-CopyOnWriteArrayList为什么线程安全" class="headerlink" title="4.CopyOnWriteArrayList为什么线程安全"></a>4.CopyOnWriteArrayList为什么线程安全</h2><p>CopyOnWriteArrayList就是线程安全版本的ArrayList。</p>
+<p>CopyOnWriteArrayList底层也是通过一个数组保存数据， 使用volatile关键字修饰数组，保证当前线程对数组对象重新赋值后， 其他线程可以及时感知到。 </p>
+<p>在写入操作时，加了一把互斥锁ReentrantLock以保证线程安全。 </p>
 <p>CopyOnWriteArrayList采用了一种读写分离的并发策略。CopyOnWriteArrayList容器允许并发读，读操作是无锁的，性能较高。至于写操作，比如向容器中添加一个元素，则首先将当前容器复制一份，然后在新副本上执行写操作，结束之后再将原容器的引用指向新容器。 </p>
-<h3 id="1-1-8、数组和Lis之间的转换"><a href="#1-1-8、数组和Lis之间的转换" class="headerlink" title="1.1.8、数组和Lis之间的转换"></a>1.1.8、数组和Lis之间的转换</h3><ul>
-<li>数组转List ，使用JDK中java.util.Arrays工具类的asList方法List转数组，</li>
-<li>使用List的toArray方法。无参toArray方法返回Object数组，传入初始化长度的数组对象，返回该对象数组</li>
-</ul>
 <p><img src="https://pic.imgdb.cn/item/66e2ba72d9c307b7e9d20b38.png" class="lazyload" data-srcset="https://pic.imgdb.cn/item/66e2ba72d9c307b7e9d20b38.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="CopyOnWriteArrayList原理 "></p>
-<h2 id="1-2、Set"><a href="#1-2、Set" class="headerlink" title="1.2、Set"></a>1.2、Set</h2><h3 id="1-2-1、List和Set的区别？"><a href="#1-2-1、List和Set的区别？" class="headerlink" title="1.2.1、List和Set的区别？"></a>1.2.1、List和Set的区别？</h3><ul>
+<hr>
+<h1 id="2-Set"><a href="#2-Set" class="headerlink" title="2.Set"></a>2.Set</h1><h2 id="1-List和Set的区别？"><a href="#1-List和Set的区别？" class="headerlink" title="1.List和Set的区别？"></a>1.List和Set的区别？</h2><ul>
 <li>List：一个<strong>有序</strong>（元素存入集合的顺序和取出的顺序一致）容器，元素<strong>可以重复</strong>，<strong>可以插入多个null元素</strong>，元素都有索引。  List 支持for循环，也就是<strong>通过下标来遍历</strong>，<strong>也可以用迭代器</strong></li>
 <li>Set：一个<strong>无序</strong>（存入和取出顺序有可能不一致）容器，<strong>不可以存储重复元素</strong>，<strong>只允许存入一个null元素</strong>，必须保证元素唯一性 。set<strong>只能用迭代器</strong>，因为他无序，无法用下标来取得想要的值。</li>
 </ul>
-<h2 id="3、Map"><a href="#3、Map" class="headerlink" title="3、Map"></a>3、Map</h2><h3 id="3-1、HashMap怎么处理Hash冲突"><a href="#3-1、HashMap怎么处理Hash冲突" class="headerlink" title="3.1、HashMap怎么处理Hash冲突"></a>3.1、HashMap怎么处理Hash冲突</h3><ol>
+<hr>
+<h1 id="3-Map"><a href="#3-Map" class="headerlink" title="3.Map"></a>3.Map</h1><h2 id="1-HashMap怎么处理Hash冲突"><a href="#1-HashMap怎么处理Hash冲突" class="headerlink" title="1.HashMap怎么处理Hash冲突"></a>1.HashMap怎么处理Hash冲突</h2><ol>
 <li>链接法：使用<strong>链表或其他数据结构</strong>来存储冲突的键值对，将它们链接在同一个哈希桶中。</li>
 <li>开放寻址法:在哈希表中找到另一个可用的位置来存储冲突的键值对，而不是存储在链表中。常见的开放寻址方法包括线性探测、二次探测和双重散列。</li>
 <li>再哈希法(Rehashing):当发生冲突时，<strong>使用另一个哈希函数再次计算键的哈希值</strong>，直到找到一个空位来存储键值对。</li>
@@ -3124,10 +3120,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateModified" datetime="2024-12-06T22:32:33+08:00">
+          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-02-20T22:12:04+08:00">
   <a class='notlink'>
     <i class="fa-solid fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2024年12月6日</p>
+    <p>更新于：2025年2月20日</p>
   </a>
 </div>
 
@@ -3245,7 +3241,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 
     <div class='content'>
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1%E3%80%81List"><span class="toc-text">1.1、List</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-1%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E6%95%B0%E7%BB%84%E7%B4%A2%E5%BC%95%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%91%A2%EF%BC%9F%E4%BB%8E1%E5%BC%80%E5%A7%8B%E4%B8%8D%E8%A1%8C%E5%90%97%EF%BC%9F"><span class="toc-text">1.1.1、为什么数组索引从0开始呢？从1开始不行吗？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-2%E3%80%81ArrayList%E5%92%8CArray%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-text">1.1.2、ArrayList和Array的区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-3%E3%80%81ArrayList%E5%8F%AF%E4%BB%A5%E6%B7%BB%E5%8A%A0null%E5%80%BC%E5%90%97%EF%BC%9F"><span class="toc-text">1.1.3、ArrayList可以添加null值吗？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-4%E3%80%81ArrayList%E5%92%8CLinkedList%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-text">1.1.4、ArrayList和LinkedList的区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-5%E3%80%81ArrayList%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6%E4%BA%86%E8%A7%A3%E5%90%97%EF%BC%9F"><span class="toc-text">1.1.5、ArrayList的扩容机制了解吗？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-5%E3%80%81ArrayList%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%EF%BC%9F"><span class="toc-text">1.1.5、ArrayList的底层实现原理？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-6%E3%80%81-%E4%B8%BA%E4%BB%80%E4%B9%88ArrayList%E4%B8%8D%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%EF%BC%8C%E5%85%B7%E4%BD%93%E6%9D%A5%E8%AF%B4%E6%98%AF%E5%93%AA%E9%87%8C%E4%B8%8D%E5%AE%89%E5%85%A8%EF%BC%9F"><span class="toc-text">1.1.6、 为什么ArrayList不是线程安全的，具体来说是哪里不安全？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-7%E3%80%81ArrayList-list-new-ArrayList-10-%E4%B8%AD%E7%9A%84list%E6%89%A9%E5%AE%B9%E5%87%A0%E6%AC%A1%EF%BC%9F"><span class="toc-text">1.1.7、ArrayList list&#x3D;new ArrayList(10)中的list扩容几次？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-8%E3%80%81CopyOnWriteArrayList%E4%BA%86%E8%A7%A3%E5%A4%9A%E5%B0%91%EF%BC%9F"><span class="toc-text">1.1.8、CopyOnWriteArrayList了解多少？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-8%E3%80%81%E6%95%B0%E7%BB%84%E5%92%8CLis%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="toc-text">1.1.8、数组和Lis之间的转换</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2%E3%80%81Set"><span class="toc-text">1.2、Set</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-1%E3%80%81List%E5%92%8CSet%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-text">1.2.1、List和Set的区别？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81Map"><span class="toc-text">3、Map</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1%E3%80%81HashMap%E6%80%8E%E4%B9%88%E5%A4%84%E7%90%86Hash%E5%86%B2%E7%AA%81"><span class="toc-text">3.1、HashMap怎么处理Hash冲突</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-1%E3%80%81%E8%AF%B4%E4%B8%80%E4%B8%8BHashMap%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-text">1.3.1、说一下HashMap的实现原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-2%E3%80%81HashMap%E7%9A%84put%E6%96%B9%E6%B3%95%E7%9A%84%E5%85%B7%E4%BD%93%E6%B5%81%E7%A8%8B%EF%BC%9F"><span class="toc-text">1.3.2、HashMap的put方法的具体流程？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-3%E3%80%81%E8%AE%B2%E4%B8%80%E8%AE%B2HashMap%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-text">1.3.3、讲一讲HashMap的扩容机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-4%E3%80%81HashMap%E7%9A%84%E5%AF%BB%E5%9D%80%E7%AE%97%E6%B3%95"><span class="toc-text">1.3.4、HashMap的寻址算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-5%E3%80%81HashMap%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%9B%B4%E6%8E%A5%E4%BD%BF%E7%94%A8hashCode-%E5%A4%84%E7%90%86%E5%90%8E%E7%9A%84%E5%93%88%E5%B8%8C%E5%80%BC%E7%9B%B4%E6%8E%A5%E4%BD%9C%E4%B8%BAtable%E7%9A%84%E4%B8%8B%E6%A0%87%EF%BC%9F"><span class="toc-text">1.3.5、HashMap为什么不直接使用hashCode()处理后的哈希值直接作为table的下标？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-6%E3%80%81HashMap-%E7%9A%84%E9%95%BF%E5%BA%A6%EF%BC%88%E5%AE%B9%E9%87%8Fcapacity%EF%BC%89%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AF2%E7%9A%84%E5%B9%82%E6%AC%A1%E6%96%B9%EF%BC%9F"><span class="toc-text">1.3.6、HashMap 的长度（容量capacity）为什么是2的幂次方？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-7%E3%80%81HashMap%E5%9C%A81-7%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%AD%BB%E5%BE%AA%E7%8E%AF%E9%97%AE%E9%A2%98%EF%BC%88HashMap%E5%9C%A8%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8B%E5%8F%AF%E8%83%BD%E4%BC%9A%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="toc-text">1.3.7、HashMap在1.7的多线程死循环问题（HashMap在多线程下可能会出现的问题？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-8%E3%80%81ConcurrentHashMap%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-text">1.3.8、ConcurrentHashMap的底层原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-9%E3%80%81%E5%88%86%E6%AE%B5%E9%94%81%E6%80%8E%E4%B9%88%E5%8A%A0%E9%94%81%E7%9A%84"><span class="toc-text">1.3.9、分段锁怎么加锁的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-10%E3%80%81ConcurrentHashMap%E7%94%A8%E4%BA%86%E6%82%B2%E8%A7%82%E9%94%81%E8%BF%98%E6%98%AF%E4%B9%90%E8%A7%82%E9%94%81-ConcurrentHashMap-%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-text">1.3.10、ConcurrentHashMap用了悲观锁还是乐观锁?ConcurrentHashMap 的实现原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-11%E3%80%81HashMap-%E5%92%8C-ConcurrentHashMap-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">1.3.11、HashMap 和 ConcurrentHashMap 的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-12%E3%80%81HashTable%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-text">1.3.12、HashTable的底层原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-13%E3%80%81ConcurrentHashMap-%E5%92%8C-Hashtable-%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-text">1.3.13、ConcurrentHashMap 和 Hashtable 的区别？</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0-%E6%A6%82%E8%BF%B0"><span class="toc-text">0. 概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-List"><span class="toc-text">1.List</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-ArrayList%E5%92%8CLinkedList%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">1.ArrayList和LinkedList的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-ArrayList%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-text">2.ArrayList的扩容机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%B8%BA%E4%BB%80%E4%B9%88ArrayList%E4%B8%8D%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84"><span class="toc-text">3. 为什么ArrayList不是线程安全的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-CopyOnWriteArrayList%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="toc-text">4.CopyOnWriteArrayList为什么线程安全</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Set"><span class="toc-text">2.Set</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-List%E5%92%8CSet%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-text">1.List和Set的区别？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Map"><span class="toc-text">3.Map</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-HashMap%E6%80%8E%E4%B9%88%E5%A4%84%E7%90%86Hash%E5%86%B2%E7%AA%81"><span class="toc-text">1.HashMap怎么处理Hash冲突</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-1%E3%80%81%E8%AF%B4%E4%B8%80%E4%B8%8BHashMap%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-text">1.3.1、说一下HashMap的实现原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-2%E3%80%81HashMap%E7%9A%84put%E6%96%B9%E6%B3%95%E7%9A%84%E5%85%B7%E4%BD%93%E6%B5%81%E7%A8%8B%EF%BC%9F"><span class="toc-text">1.3.2、HashMap的put方法的具体流程？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-3%E3%80%81%E8%AE%B2%E4%B8%80%E8%AE%B2HashMap%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-text">1.3.3、讲一讲HashMap的扩容机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-4%E3%80%81HashMap%E7%9A%84%E5%AF%BB%E5%9D%80%E7%AE%97%E6%B3%95"><span class="toc-text">1.3.4、HashMap的寻址算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-5%E3%80%81HashMap%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%9B%B4%E6%8E%A5%E4%BD%BF%E7%94%A8hashCode-%E5%A4%84%E7%90%86%E5%90%8E%E7%9A%84%E5%93%88%E5%B8%8C%E5%80%BC%E7%9B%B4%E6%8E%A5%E4%BD%9C%E4%B8%BAtable%E7%9A%84%E4%B8%8B%E6%A0%87%EF%BC%9F"><span class="toc-text">1.3.5、HashMap为什么不直接使用hashCode()处理后的哈希值直接作为table的下标？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-6%E3%80%81HashMap-%E7%9A%84%E9%95%BF%E5%BA%A6%EF%BC%88%E5%AE%B9%E9%87%8Fcapacity%EF%BC%89%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AF2%E7%9A%84%E5%B9%82%E6%AC%A1%E6%96%B9%EF%BC%9F"><span class="toc-text">1.3.6、HashMap 的长度（容量capacity）为什么是2的幂次方？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-7%E3%80%81HashMap%E5%9C%A81-7%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%AD%BB%E5%BE%AA%E7%8E%AF%E9%97%AE%E9%A2%98%EF%BC%88HashMap%E5%9C%A8%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8B%E5%8F%AF%E8%83%BD%E4%BC%9A%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="toc-text">1.3.7、HashMap在1.7的多线程死循环问题（HashMap在多线程下可能会出现的问题？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-8%E3%80%81ConcurrentHashMap%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-text">1.3.8、ConcurrentHashMap的底层原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-9%E3%80%81%E5%88%86%E6%AE%B5%E9%94%81%E6%80%8E%E4%B9%88%E5%8A%A0%E9%94%81%E7%9A%84"><span class="toc-text">1.3.9、分段锁怎么加锁的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-10%E3%80%81ConcurrentHashMap%E7%94%A8%E4%BA%86%E6%82%B2%E8%A7%82%E9%94%81%E8%BF%98%E6%98%AF%E4%B9%90%E8%A7%82%E9%94%81-ConcurrentHashMap-%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-text">1.3.10、ConcurrentHashMap用了悲观锁还是乐观锁?ConcurrentHashMap 的实现原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-11%E3%80%81HashMap-%E5%92%8C-ConcurrentHashMap-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">1.3.11、HashMap 和 ConcurrentHashMap 的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-12%E3%80%81HashTable%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-text">1.3.12、HashTable的底层原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-13%E3%80%81ConcurrentHashMap-%E5%92%8C-Hashtable-%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-text">1.3.13、ConcurrentHashMap 和 Hashtable 的区别？</span></a></li></ol></li></ol></li></ol>
     </div>
   </section>
 
@@ -4437,7 +4433,7 @@ window.matchMedia('(prefers-color-scheme: light)').addListener(darkModelListener
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/11/24/八股/集合/","name":"集合"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"集合","description":"啊咧咧啊咧咧啊咧啊咧咧~","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/11/24/%E5%85%AB%E8%82%A1/%E9%9B%86%E5%90%88/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/11/24/%E5%85%AB%E8%82%A1/%E9%9B%86%E5%90%88/","wordCount":0,"datePublished":"2024-11-24T09:11:53.000Z","dateModified":"2024-12-06T14:32:33.696Z","articleSection":"八股","keywords":"JavaSE","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/11/24/八股/集合/","name":"集合"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"集合","description":"1主要是Java常用集合介绍","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/11/24/%E5%85%AB%E8%82%A1/%E9%9B%86%E5%90%88/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/11/24/%E5%85%AB%E8%82%A1/%E9%9B%86%E5%90%88/","wordCount":14,"datePublished":"2024-11-24T09:11:53.000Z","dateModified":"2025-02-20T14:12:04.000Z","articleSection":"八股","keywords":"JavaSE","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 
