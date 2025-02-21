@@ -46,7 +46,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
 <meta property="article:published_time" content="2024-11-24T09:11:53.000Z">
-<meta property="article:modified_time" content="2025-02-20T14:12:04.000Z">
+<meta property="article:modified_time" content="2025-02-21T10:29:08.475Z">
 <meta property="article:author" content="Light">
 <meta property="article:tag" content="JavaSE">
 <meta name="twitter:card" content="summary">
@@ -1847,7 +1847,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: false,
     cdn: {"js":{"app":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/app.js","parallax":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/parallax.js","rightMenu":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenu.js","rightMenus":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenus.js","sites":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/sites.js","friends":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/friends.js","contributors":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/contributors.js","search":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1740061654178),
+    lastupdate: new Date(1740137688190),
     sidebar: {
       for_page: ["blogger","category","donate","webinfo"],
       for_post: ["toc"],
@@ -2900,13 +2900,13 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <div class="new-meta-item wordcount">
     <a class='notlink'>
       <i class="fa-solid fa-keyboard fa-fw" aria-hidden="true"></i>
-      <p>字数：4.2k 字</p>
+      <p>字数：3.8k 字</p>
     </a>
   </div>
   <div class="new-meta-item readtime">
     <a class='notlink'>
       <i class="fa-solid fa-hourglass-half fa-fw" aria-hidden="true"></i>
-      <p>时长：15 分钟</p>
+      <p>时长：13 分钟</p>
     </a>
   </div>
 
@@ -2971,120 +2971,113 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 </ul>
 <hr>
 <h1 id="3-Map"><a href="#3-Map" class="headerlink" title="3.Map"></a>3.Map</h1><h2 id="1-HashMap怎么处理Hash冲突"><a href="#1-HashMap怎么处理Hash冲突" class="headerlink" title="1.HashMap怎么处理Hash冲突"></a>1.HashMap怎么处理Hash冲突</h2><ol>
-<li>链接法：使用<strong>链表或其他数据结构</strong>来存储冲突的键值对，将它们链接在同一个哈希桶中。</li>
-<li>开放寻址法:在哈希表中找到另一个可用的位置来存储冲突的键值对，而不是存储在链表中。常见的开放寻址方法包括线性探测、二次探测和双重散列。</li>
-<li>再哈希法(Rehashing):当发生冲突时，<strong>使用另一个哈希函数再次计算键的哈希值</strong>，直到找到一个空位来存储键值对。</li>
+<li><strong>链接法：</strong>使用<strong>链表或其他数据结构</strong>来存储冲突的键值对，将它们链接在同一个哈希桶中。</li>
+<li><strong>开放寻址法：</strong>在哈希表中找到另一个可用的位置来存储冲突的键值对，而不是存储在链表中。常见的开放寻址方法包括线性探测、二次探测和双重散列。</li>
+<li><strong>再哈希法(Rehashing)：</strong>当发生冲突时，<strong>使用另一个哈希函数再次计算键的哈希值</strong>，直到找到一个空位来存储键值对。</li>
 </ol>
-<h3 id="1-3-1、说一下HashMap的实现原理"><a href="#1-3-1、说一下HashMap的实现原理" class="headerlink" title="1.3.1、说一下HashMap的实现原理"></a>1.3.1、说一下HashMap的实现原理</h3><ul>
-<li>JDK1.8及以后底层结构为: 数组+链表+红黑树，之前只有数组加链表</li>
-<li>当我们往Hashmap中添加（put）元素时，<strong>利用key的</strong>hashCode计算出当前对象的元素在数组中的下标</li>
-<li>存储时，如果出现hash值相同的key，此时有两种情况。(1)如果key相同，则覆盖原始值；(2)如果key不同（出现冲突），则将当前的放入链表或红黑树中</li>
-<li>jdk1.8。当<strong>链表长度大于阈值</strong>(默认为8) 时并且<strong>数组长度达到64</strong>时，将链表转化为红黑树，以减少搜索时间，从 O(n)降低到 O(log n)。扩容resize()时，红黑树拆分成的树的结点数小于等于临界值6个，则退化成链表</li>
-</ul>
-<h3 id="1-3-2、HashMap的put方法的具体流程？"><a href="#1-3-2、HashMap的put方法的具体流程？" class="headerlink" title="1.3.2、HashMap的put方法的具体流程？"></a>1.3.2、HashMap的put方法的具体流程？</h3><ol>
-<li>根据key值计算哈希值（调用了hash方法），得到插入的数组索引</li>
-<li>判断tab是否为空或者长度为0，如果是则进行扩容操作。 </li>
+<h2 id="2-HasMap的底层数据结构及实现原理"><a href="#2-HasMap的底层数据结构及实现原理" class="headerlink" title="2.HasMap的底层数据结构及实现原理"></a>2.HasMap的底层数据结构及实现原理</h2><p><img src="https://pic1.imgdb.cn/item/67b83bc0d0e0a243d401567f.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67b83bc0d0e0a243d401567f.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="hashmap底层"></p>
+<p>数组（<code>Node[] table</code>）用来存储<strong>键值对</strong>。数组中的每个元素被称为<strong>“桶”</strong>（Bucket），每个桶的索引通过<strong>对键key的哈希值</strong>进行 <code>hash()</code> 处理得到。 </p>
+<p><strong>扰动函数<code>hash()</code></strong> 的目标是尽量减少哈希冲突，保证元素能够均匀地分布在数组的每个位置上。 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="title function_">hash</span><span class="params">(Object key)</span> &#123;</span><br><span class="line">    <span class="type">int</span> h;</span><br><span class="line">    <span class="keyword">return</span> (key == <span class="literal">null</span>) ? <span class="number">0</span> : (h = key.hashCode()) ^ (h &gt;&gt;&gt; <span class="number">16</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>存储时，如果出现hash值相同的key，此时有两种情况。(1)如果key相同，则覆盖原始值；(2)如果key不同（出现冲突），则将当前的放入链表或红黑树中</p>
+<p>不过，链表过长时，查询效率会比较低，于是当<strong>链表的长度超过 8 时（且数组的长度大于 64）</strong>，链表就会转换为红黑树。红黑树的查询效率是 O(logn)，比链表的 O(n) 要快。 </p>
+<p>当从 HashMap 中获取元素时，也会使用 <code>hash()</code> 计算键的位置【HashMap 通过 key 的 <code>hashcode</code> 经过扰动函数处理过后得到 hash 值，然后通过 <code>(n - 1) &amp; hash</code> 判断当前元素存放的位置（这里的 n 指的是数组的长度）】，然后根据位置在数组查找元素。 </p>
+<p>HashMap 的初始容量是 <strong>16</strong>，随着元素的不断添加，HashMap 的容量可能不足，于是就需要进行扩容，阈值是<code>capacity * loadFactor</code>，capacity 为容量，loadFactor 为负载因子，默认为 <strong>0.75</strong>。 </p>
+<h2 id="3-HashMap的put流程"><a href="#3-HashMap的put流程" class="headerlink" title="3.HashMap的put流程"></a>3.HashMap的put流程</h2><ol>
+<li>根据key的哈希码计算它要插入的索引（调用了hash方法）</li>
+<li>判断数组是否为空或者长度为0，如果是则进行扩容操作。 </li>
 <li>否则就判断该索引处是否为空，如果为空就直接插入</li>
-<li>如果不为空<ol>
-<li>判断table[i]的首个元素是否和key一样，如果相同直接覆盖value</li>
-<li>判断table[i]是否为treeNode，也就是table[i]是否是红黑树，如果是红黑树，则直接在树中插入键值对遍历table[i]]，</li>
-<li>否则就遍历链表，如果key存在就直接覆盖，否则就在链表尾部插入，再判断链表长度是否大于8，如果大于8就转为红黑树</li>
-</ol>
-</li>
-<li>插入成功后，判断实际存在的键值对数量size是否超过了最大容量threshold(数组长度*0.75【负载因子】)，如果超过，进行扩容</li>
+<li>如果不为空，判断key是否相同，如果相同直接覆盖value</li>
+<li>否则，判断是否为树节点，如果是树节点就直接插入红黑树</li>
+<li>否则，说明就是链表，遍历链表是否存在key，如果存在就覆盖，否则就插入链表，同时还要注意链表长度，超过8且数组长度超过64就将链表转为红黑树</li>
+<li>插入成功后，判断此时数组键值对数量是否超过了阈值threshold(数组长度*0.75【负载因子】)，如果超过，进行扩容</li>
 </ol>
 <p><img src="https://pic.imgdb.cn/item/66e2bc78d9c307b7e9d6e0c4.png" class="lazyload" data-srcset="https://pic.imgdb.cn/item/66e2bc78d9c307b7e9d6e0c4.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="HashMap的put流程"></p>
-<h3 id="1-3-3、讲一讲HashMap的扩容机制"><a href="#1-3-3、讲一讲HashMap的扩容机制" class="headerlink" title="1.3.3、讲一讲HashMap的扩容机制"></a>1.3.3、讲一讲HashMap的扩容机制</h3><ol>
+<h2 id="4-HashMap的扩容机制"><a href="#4-HashMap的扩容机制" class="headerlink" title="4.HashMap的扩容机制"></a>4.HashMap的扩容机制</h2><ol>
 <li><p><strong>第1步</strong>是对哈希表长度的扩展（2倍）</p>
 </li>
 <li><p><strong>第2步</strong>是将旧哈希表中的数据放到新的哈希表中。</p>
 <p>因为我们使用的是2次幂的扩展(指长度扩为原来2倍)，所以，元素的位置要么是在原位置 ，要么是在原位置再移动2次幂的位置。 </p>
-<p>我们在扩充HashMap的时候，不需要重新计算hash， 只需要看看<strong>原来的hash值新增的那个bit</strong>是1还是0就好了，是0的话索引没变， 是1的话索引变成“原索引+旧容量（oldCapacity）” 。既省去了重新计算hash值的时间，而且同时，由于新增的1bit是0还是1可以认为是随机的，可以均匀的把之前的冲突的节点分散到新的bucket了</p>
+<p>我们在扩充HashMap的时候，不需要重新计算hash， 只需要看看<strong>原来的hash值新增的那个bit</strong>是1还是0就好了，是0的话索引没变， 是1的话索引变成 “原索引+旧容量（oldCapacity）” 。既省去了重新计算hash值的时间，而且同时，由于新增的1bit是0还是1可以认为是随机的，可以均匀的把之前的冲突的节点分散到新的bucket了</p>
 </li>
 </ol>
-<h3 id="1-3-4、HashMap的寻址算法"><a href="#1-3-4、HashMap的寻址算法" class="headerlink" title="1.3.4、HashMap的寻址算法"></a>1.3.4、HashMap的寻址算法</h3><p><strong>这个问题和3.5，3.6结合着理解</strong></p>
+<blockquote>
+<p>为什么负载因子设为0.75？</p>
+</blockquote>
+<p>答：这是从时间成本和空间成本综合考虑的结果</p>
+<p>负载因子决定元素个数达到多少时候扩容</p>
+<p>如果设的太大，等要扩容的时候基本没多少空位了，发生哈希冲突的概率非常大，会增加我们查找的<strong>时间成本</strong></p>
+<p>如果设的太小，有点浪费，我们就需要更多的空间去存储元素，增加了<strong>空间成本</strong></p>
+<h2 id="5-HashMap的寻址算法"><a href="#5-HashMap的寻址算法" class="headerlink" title="5.HashMap的寻址算法"></a>5.HashMap的寻址算法</h2><p><strong>这个问题和3.5，3.6结合着理解</strong></p>
 <ol>
 <li><p>传入key的哈希码是经过两次哈希计算的（hash算法里面又有一个hashCode（））,<strong>目的是减少碰撞</strong> </p>
 </li>
 <li><p>(n - 1) &amp; hash 确定元素存放在哪个桶（数组节点）中，也就是得到索引，n是数组大小</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="title function_">hash</span><span class="params">(Object key)</span> &#123;</span><br><span class="line">    <span class="type">int</span> h;</span><br><span class="line">    <span class="comment">// 传入key的hashcode的高16位和低16位进行异或操作</span></span><br><span class="line">    <span class="keyword">return</span> (key == <span class="literal">null</span>) ? <span class="number">0</span> : (h = key.hashCode()) ^ (h &gt;&gt;&gt; <span class="number">16</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ol>
-<h3 id="1-3-5、HashMap为什么不直接使用hashCode-处理后的哈希值直接作为table的下标？"><a href="#1-3-5、HashMap为什么不直接使用hashCode-处理后的哈希值直接作为table的下标？" class="headerlink" title="1.3.5、HashMap为什么不直接使用hashCode()处理后的哈希值直接作为table的下标？"></a>1.3.5、HashMap为什么不直接使用hashCode()处理后的哈希值直接作为table的下标？</h3><ol>
-<li>哈希值与数组大小范围不匹配；<code>hashCode()</code>方法返回的是int整数类型，范围远超HashMap的容量范围</li>
-<li>解决方法：3.4中的2和3</li>
+<h2 id="6-HashMap为什么不直接使用hashCode-处理后的哈希值直接作为table的下标"><a href="#6-HashMap为什么不直接使用hashCode-处理后的哈希值直接作为table的下标" class="headerlink" title="6.HashMap为什么不直接使用hashCode()处理后的哈希值直接作为table的下标"></a>6.HashMap为什么不直接使用hashCode()处理后的哈希值直接作为table的下标</h2><ol>
+<li>哈希值与数组大小范围不匹配；<code>hashCode()</code>方法返回的是int整数类型，int 的范围是 <strong>-2147483648~2147483647</strong>，加起来大概 40 亿上下的浮动。 范围远超HashMap的容量范围</li>
+<li>解决方法：</li>
 </ol>
-<h3 id="1-3-6、HashMap-的长度（容量capacity）为什么是2的幂次方？"><a href="#1-3-6、HashMap-的长度（容量capacity）为什么是2的幂次方？" class="headerlink" title="1.3.6、HashMap 的长度（容量capacity）为什么是2的幂次方？"></a>1.3.6、HashMap 的长度（容量capacity）为什么是2的幂次方？</h3><ol>
+<blockquote>
+<p>HashMap 的长度（容量capacity）为什么是2的幂次方？（TODO 了解）</p>
+</blockquote>
+<ol>
 <li><strong>不用重新计算hash</strong>，元素的位置要么是在原位置 ，要么是在原位置再移动2次幂的位置。  只需要看看原来的hash值新增的那个bit是1还是0就好了，是0的话索引没变， 是1的话索引变成“原索引+旧容量（oldCapacity）”，<strong>省去了重新计算hash值的时间</strong></li>
 <li>由于新增的1bit是0还是1可以认为是随机的，可以<strong>均匀的把之前的冲突的节点分散</strong>到新的bucket了</li>
 </ol>
-<h3 id="1-3-7、HashMap在1-7的多线程死循环问题（HashMap在多线程下可能会出现的问题？"><a href="#1-3-7、HashMap在1-7的多线程死循环问题（HashMap在多线程下可能会出现的问题？" class="headerlink" title="1.3.7、HashMap在1.7的多线程死循环问题（HashMap在多线程下可能会出现的问题？"></a>1.3.7、HashMap在1.7的多线程死循环问题（HashMap在多线程下可能会出现的问题？</h3><ul>
-<li>问题：在多线程环境下扩容操作可能存在死循环问题，这是由于当一个桶位中有多个元素需要进行扩容时，多个线程同时对链表进行操作，<strong>头插法</strong>可能会导致链表中的节点指向错误的位置，从而<strong>形成一个环形链表</strong>，进而使得查询元素的操作陷入死循环无法结束。</li>
-<li>解决：为了解决这个问题，JDK1.8 版本的 HashMap 采用了<strong>尾插法</strong>而不是头插法来避免链表倒置，使得插入的节点永远都是放在链表的末尾，<strong>避免了链表中的环形结构</strong>。但是还是不建议在多线程下使用 HashMap，因为多线程下使用 HashMap <strong>还是会存在数据覆盖</strong>的问题。<strong>并发环境下，推荐使用concurrentHashMap</strong></li>
-<li>多线程同时执行 put 操作，如果计算出来的索引位置是相同的 ，那会造成前一个 key 被后一个 key 覆盖， 从而导致元素的丢失。此问题在JDK 1.7和 JDK <strong>1.8</strong> 中都存在。</li>
-</ul>
-<h3 id="1-3-8、ConcurrentHashMap的底层原理"><a href="#1-3-8、ConcurrentHashMap的底层原理" class="headerlink" title="1.3.8、ConcurrentHashMap的底层原理"></a>1.3.8、ConcurrentHashMap的底层原理</h3><ul>
-<li><p><strong>jdk1.7</strong></p>
-<p>首先将数据分为一段一段的存储，然后给每一段数据配一把锁，当一个线程占用锁访问其中一个段数据时，其他段的数据也能被其他线程访问。 </p>
-<p>ConcurrentHashMap采用<strong>Segment + HashEntry</strong>的方式进行实现 ，一个 ConcurrentHashMap 里包含一个 Segment 数组。Segment 的结构和HashMap类似，是一种数组和链表结构，Segment 包含HashEntry 数组，每个 HashEntry 是一个<strong>链表结构</strong>的元素， </p>
-<ol>
-<li><p>该类包含两个静态内部类 <strong>HashEntry</strong> 和 <strong>Segmen</strong>t ；前者用来<strong>封装映射表的键值对</strong>，后者用来<strong>充当锁的角色</strong>；</p>
+<h2 id="7-HashMap在多线程下可能会出现的问题"><a href="#7-HashMap在多线程下可能会出现的问题" class="headerlink" title="7.HashMap在多线程下可能会出现的问题"></a>7.HashMap在多线程下可能会出现的问题</h2><ul>
+<li><p>问题：在多线程环境下扩容操作可能存在死循环问题，这是由于当一个桶位中有多个元素需要进行扩容时，多个线程同时对链表进行操作，<strong>头插法</strong>可能会导致链表中的节点指向错误的位置，从而<strong>形成一个环形链表</strong>，进而使得查询元素的操作陷入死循环无法结束。</p>
 </li>
-<li><p><strong>Segment（分段锁） 是一种可重入的锁</strong> ReentrantLock，每个 Segment 守护一个HashEntry 数组里得元素，当对 HashEntry 数组的数据进行修改时，必须首先获得对应的 Segment 锁。</p>
-<p><img src="https://pic.imgdb.cn/item/66e2ca7cd9c307b7e9ee44c3.png" class="lazyload" data-srcset="https://pic.imgdb.cn/item/66e2ca7cd9c307b7e9ee44c3.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="1.7的concurrentHashMap"></p>
+<li><p>解决：为了解决这个问题，JDK1.8 版本的 HashMap 采用了<strong>尾插法</strong>而不是头插法来避免链表倒置，使得插入的节点永远都是放在链表的末尾，<strong>避免了链表中的环形结构</strong>。但是还是不建议在多线程下使用 HashMap，因为多线程下使用 HashMap <strong>还是会存在数据覆盖</strong>的问题，多线程同时执行 put 操作，如果计算出来的索引位置是相同的， 那会造成前一个 key 被后一个 key 覆盖，从而导致元素的丢失。<strong>并发环境下，推荐使用concurrentHashMap</strong></p>
+</li>
+</ul>
+<h2 id="8-ConcurrentHashMap的底层原理"><a href="#8-ConcurrentHashMap的底层原理" class="headerlink" title="8.ConcurrentHashMap的底层原理"></a>8.ConcurrentHashMap的底层原理</h2><blockquote>
+<p><strong>jdk1.7</strong></p>
+</blockquote>
+<p>底层数据结构：数组＋链表。一个ConcurrentHashMap有一个Segment的数组，每个Segment又有一个HashEntry数组，然后每个HashEntry又是一个链表结构的，HashEntry 则用于存储键值对数据。<strong>Segment（分段锁） 是一种可重入的锁</strong> ReentrantLock</p>
+<p><strong>将数据分段，对每个Segment分配一把锁</strong>。当一个线程占用锁访问其中一个段数据的时候，其他段的数据也能被其他线程访问。 </p>
+<p>同一Segment可以并发读，不能并发写，可以有一个写其它的读；不同Segment可以并发读写，前提是获得锁</p>
+<p><img src="https://pic1.imgdb.cn/item/67b84a26d0e0a243d4015fe3.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67b84a26d0e0a243d4015fe3.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="1.7的concurrentHashMap"></p>
+<p>get：</p>
+<ol>
+<li><p>通过 <code>hash(key)</code> 定位到 segment</p>
+</li>
+<li><p>再遍历链表定位到具体的元素上。</p>
+<p>需要注意的是 value 是 volatile 的，所以 get 是不需要加锁的。</p>
 </li>
 </ol>
-</li>
-<li><p><strong>jdk1.8</strong></p>
-<p>jdk1.7因为底层采用的是数组加链表的结构，在在数据比较多的情况下访问是很慢的，因为要遍历整个链表。而 JDK 1.8 则使用了数组 + 链表&#x2F;红黑树的方式优化。JDK 1.8 ConcurrentHashMap 主要通过 <strong>volatile + CAS 或者 synchronized</strong> 来实现的线程安全的。 添加元素时首先会判断容器是否为空： </p>
-<ul>
-<li>如果为空则使用 volatile 加 CAS 来初始化</li>
-<li>如果容器不为空，则根据存储的元素计算该位置是否为空。<ul>
-<li>如果根据存储的元素计算结果为空，则利用 CAS 设置该节点；</li>
-<li>如果根据存储的元素计算结果不为空，则使用 synchronized ，然后，遍历桶中的数据，并替换或新增节点到桶中， 最后再判断是否需要转为红黑树</li>
-</ul>
-</li>
-</ul>
-<p>ConcurrentHashMap通过对头结点加锁来保证线程安全的 ，发生冲突和加锁的频率降低了，并发操作的性能就提高了。 而且红黑树的结构在数据量比较大的时候，查询性能也会比之前有很大的提升</p>
-</li>
-</ul>
-<h3 id="1-3-9、分段锁怎么加锁的"><a href="#1-3-9、分段锁怎么加锁的" class="headerlink" title="1.3.9、分段锁怎么加锁的"></a>1.3.9、分段锁怎么加锁的</h3><p>在 ConcurrentHashMap 中，对于插入、更新、删除等操作，需要先定位到具体的 Segment，然后再在该Segment 上加锁，而不是像传统的 HashMap 一样对整个数据结构加锁。这样可以使得不同 Segment 之间的操作并行进行，提高了并发性能。</p>
-<h3 id="1-3-10、ConcurrentHashMap用了悲观锁还是乐观锁-ConcurrentHashMap-的实现原理"><a href="#1-3-10、ConcurrentHashMap用了悲观锁还是乐观锁-ConcurrentHashMap-的实现原理" class="headerlink" title="1.3.10、ConcurrentHashMap用了悲观锁还是乐观锁?ConcurrentHashMap 的实现原理"></a>1.3.10、ConcurrentHashMap用了悲观锁还是乐观锁?ConcurrentHashMap 的实现原理</h3><p>悲观锁和乐观锁都有用到。<br>添加元素时首先会判断容器是否为空</p>
-<ul>
-<li>如果为空则使用 volatile 加 <strong>CAS （乐观锁）</strong> 来初始化。</li>
-<li>如果容器不为空，则根据存储的元素计算该位置是否为空。</li>
-<li>如果根据存储的元素计算结果为空，则利用 <strong>CAS（乐观锁）</strong> 设置该节点；</li>
-<li>如果根据存储的元素计算结果不为空，则使用 <strong>synchronized（悲观锁）</strong>   ，然后，遍历桶中的数据， 并替换或新增节点到桶中， 最后再判断是否需要转为红黑树</li>
-</ul>
-<p><strong>JDK 7 中的 ConcurrentHashMap 的实现原理？</strong></p>
-<p><strong>①、put 流程</strong></p>
-<p>ConcurrentHashMap 的 put 流程和 HashMap 非常类似，只不过是先定位到具体的 Segment，然后通过 ReentrantLock 去操作而已。</p>
+<p>put：</p>
 <ol>
 <li>计算 hash，定位到 segment，segment 如果是空就先初始化；</li>
 <li>使用 ReentrantLock 加锁，如果获取锁失败则尝试自旋，自旋超过次数就阻塞获取，保证一定能获取到锁；</li>
 <li>遍历 HashEntry，key 相同就直接替换，不存在就插入。</li>
 <li>释放锁。</li>
 </ol>
-<p><img src="https://pic.imgdb.cn/item/670f3538d29ded1a8cd23658.png" class="lazyload" data-srcset="https://pic.imgdb.cn/item/670f3538d29ded1a8cd23658.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="1.7put流程"></p>
-<p><strong>②、get 流程</strong></p>
-<p>get 也很简单，通过 <code>hash(key)</code> 定位到 segment，再遍历链表定位到具体的元素上，需要注意的是 value 是 volatile 的，所以 get 是不需要加锁的。</p>
-<p><strong>JDK 8 中的 ConcurrentHashMap 的实现原理？</strong></p>
-<p>JDK 8 中的 ConcurrentHashMap 取消了 Segment 分段锁，采用 CAS + synchronized 来保证并发安全性，整个容器只分为一个 Segment，即 table 数组。</p>
-<p>Node 和 JDK 7 一样，使用 volatile 关键字，保证多线程操作时，变量的可见性。</p>
-<p>ConcurrentHashMap 实现线程安全的关键点在于 put 流程。</p>
-<p><strong>①、put 流程</strong></p>
-<p>第一步，计算 hash，遍历 node 数组，如果 node 是空的话，就通过 CAS+自旋的方式初始化。</p>
-<p>第二步，如果当前数组位置是空，直接通过 CAS 自旋写入数据。</p>
-<p>第三步，如果 <code>hash==MOVED</code>，说明需要扩容。</p>
-<p>第四步，如果都不满足，就使用 synchronized 写入数据，和 HashMap 一样，key 的 hash 一样就覆盖，反之使用拉链法解决哈希冲突，当链表长度超过 8 就转换成红黑树。</p>
-<p><img src="https://pic.imgdb.cn/item/670f368cd29ded1a8cd3215c.png" class="lazyload" data-srcset="https://pic.imgdb.cn/item/670f368cd29ded1a8cd3215c.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="1.8put流程"></p>
-<h3 id="1-3-11、HashMap-和-ConcurrentHashMap-的区别"><a href="#1-3-11、HashMap-和-ConcurrentHashMap-的区别" class="headerlink" title="1.3.11、HashMap 和 ConcurrentHashMap 的区别"></a>1.3.11、HashMap 和 ConcurrentHashMap 的区别</h3><ul>
-<li><strong>线程安全</strong>：ConcurrentHashMap对整个桶数组进行了分割分段(Segment)，然后在每一个分段上都用lock锁进行保护 ，而HashMap没有锁机制，不是线程安全的 </li>
-<li>HashMap的键值对允许有null，但是ConCurrentHashMap都不允许。</li>
-</ul>
-<h3 id="1-3-12、HashTable的底层原理"><a href="#1-3-12、HashTable的底层原理" class="headerlink" title="1.3.12、HashTable的底层原理"></a>1.3.12、HashTable的底层原理</h3><p>Hashtable的底层数据结构是<strong>数组加上链表</strong></p>
+<blockquote>
+<p><strong>jdk1.8</strong></p>
+</blockquote>
+<p>和1.7的变化：</p>
+<ol>
+<li>数据结构改为Node节点<strong>数组+链表+红黑树</strong>，Node存储键值对</li>
+<li>和Hash Map一样，链表长度达到8的时候会转化成红黑树</li>
+<li>放弃了Segment分段锁来保证安全，改为使用volatile + CAS 或者 synchronized 只对（链表或红黑树的）头节点来加锁，从而实现的线程安全的。</li>
+</ol>
+<p><img src="https://pic1.imgdb.cn/item/67b84f60d0e0a243d40161c7.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67b84f60d0e0a243d40161c7.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="ccmap1.8"></p>
+<p>get：</p>
+<p>通过计算哈希值快速定位桶，在桶中查找目标节点，多个 key 值时链表遍历和红黑树查找。读操作是无锁的，依赖 volatile 保证线程可见性。 </p>
+<p>put流程：</p>
+<ol>
+<li>根据存储的元素计算该位置是否为空。</li>
+<li>如果根据存储的元素计算结果为空，则利用 CAS 设置该节点，写入数据；</li>
+<li>如果根据存储的元素计算结果不为空，则使用 synchronized ，然后，遍历桶中的数据，并替换或新增节点到桶中， 最后再判断是否需要转为红黑树</li>
+</ol>
+<p><strong>总的来说</strong>，相比前代，舍弃了Segment分段锁臃肿的设计，改为只用锁头节点的方式，<strong>锁粒度更细</strong>，发生冲突和加锁的频率降低，<strong>提高并发性能</strong>。 另一方面，链表转为红黑树的操作也会使<strong>增加查找效率</strong></p>
+<h2 id="9-HashTable的底层原理"><a href="#9-HashTable的底层原理" class="headerlink" title="9.HashTable的底层原理"></a>9.HashTable的底层原理</h2><p>Hashtable的底层数据结构是<strong>数组+链表</strong></p>
 <p>HashTable是线程安全的，它采用的是全表锁。它使用 synchronized 来保证线程安全，效率非常低下。 </p>
 <p><img src="https://pic.imgdb.cn/item/66e2cbafd9c307b7e9f2e405.png" class="lazyload" data-srcset="https://pic.imgdb.cn/item/66e2cbafd9c307b7e9f2e405.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="hashTable的底层原理"> </p>
-<h3 id="1-3-13、ConcurrentHashMap-和-Hashtable-的区别？"><a href="#1-3-13、ConcurrentHashMap-和-Hashtable-的区别？" class="headerlink" title="1.3.13、ConcurrentHashMap 和 Hashtable 的区别？"></a>1.3.13、ConcurrentHashMap 和 Hashtable 的区别？</h3><ul>
+<h2 id="10-ConcurrentHashMap-和-Hashtable-的区别"><a href="#10-ConcurrentHashMap-和-Hashtable-的区别" class="headerlink" title="10.ConcurrentHashMap 和 Hashtable 的区别"></a>10.ConcurrentHashMap 和 Hashtable 的区别</h2><ul>
 <li><strong>底层数据结构</strong><ul>
 <li>jdk7之前的ConcurrentHashMap底层采用的是分段的数组+链表实现，jdk8之后采用的是数组+链表&#x2F;红黑树;</li>
 <li>HashTable采用的是<strong>数组+链表，</strong>数组是主体，链表是解决hash冲突存在的。</li>
@@ -3120,10 +3113,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-02-20T22:12:04+08:00">
+          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-02-21T18:29:08+08:00">
   <a class='notlink'>
     <i class="fa-solid fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2025年2月20日</p>
+    <p>更新于：2025年2月21日</p>
   </a>
 </div>
 
@@ -3241,7 +3234,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 
     <div class='content'>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0-%E6%A6%82%E8%BF%B0"><span class="toc-text">0. 概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-List"><span class="toc-text">1.List</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-ArrayList%E5%92%8CLinkedList%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">1.ArrayList和LinkedList的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-ArrayList%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-text">2.ArrayList的扩容机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%B8%BA%E4%BB%80%E4%B9%88ArrayList%E4%B8%8D%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84"><span class="toc-text">3. 为什么ArrayList不是线程安全的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-CopyOnWriteArrayList%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="toc-text">4.CopyOnWriteArrayList为什么线程安全</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Set"><span class="toc-text">2.Set</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-List%E5%92%8CSet%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-text">1.List和Set的区别？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Map"><span class="toc-text">3.Map</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-HashMap%E6%80%8E%E4%B9%88%E5%A4%84%E7%90%86Hash%E5%86%B2%E7%AA%81"><span class="toc-text">1.HashMap怎么处理Hash冲突</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-1%E3%80%81%E8%AF%B4%E4%B8%80%E4%B8%8BHashMap%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-text">1.3.1、说一下HashMap的实现原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-2%E3%80%81HashMap%E7%9A%84put%E6%96%B9%E6%B3%95%E7%9A%84%E5%85%B7%E4%BD%93%E6%B5%81%E7%A8%8B%EF%BC%9F"><span class="toc-text">1.3.2、HashMap的put方法的具体流程？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-3%E3%80%81%E8%AE%B2%E4%B8%80%E8%AE%B2HashMap%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-text">1.3.3、讲一讲HashMap的扩容机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-4%E3%80%81HashMap%E7%9A%84%E5%AF%BB%E5%9D%80%E7%AE%97%E6%B3%95"><span class="toc-text">1.3.4、HashMap的寻址算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-5%E3%80%81HashMap%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%9B%B4%E6%8E%A5%E4%BD%BF%E7%94%A8hashCode-%E5%A4%84%E7%90%86%E5%90%8E%E7%9A%84%E5%93%88%E5%B8%8C%E5%80%BC%E7%9B%B4%E6%8E%A5%E4%BD%9C%E4%B8%BAtable%E7%9A%84%E4%B8%8B%E6%A0%87%EF%BC%9F"><span class="toc-text">1.3.5、HashMap为什么不直接使用hashCode()处理后的哈希值直接作为table的下标？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-6%E3%80%81HashMap-%E7%9A%84%E9%95%BF%E5%BA%A6%EF%BC%88%E5%AE%B9%E9%87%8Fcapacity%EF%BC%89%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AF2%E7%9A%84%E5%B9%82%E6%AC%A1%E6%96%B9%EF%BC%9F"><span class="toc-text">1.3.6、HashMap 的长度（容量capacity）为什么是2的幂次方？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-7%E3%80%81HashMap%E5%9C%A81-7%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%AD%BB%E5%BE%AA%E7%8E%AF%E9%97%AE%E9%A2%98%EF%BC%88HashMap%E5%9C%A8%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8B%E5%8F%AF%E8%83%BD%E4%BC%9A%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="toc-text">1.3.7、HashMap在1.7的多线程死循环问题（HashMap在多线程下可能会出现的问题？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-8%E3%80%81ConcurrentHashMap%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-text">1.3.8、ConcurrentHashMap的底层原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-9%E3%80%81%E5%88%86%E6%AE%B5%E9%94%81%E6%80%8E%E4%B9%88%E5%8A%A0%E9%94%81%E7%9A%84"><span class="toc-text">1.3.9、分段锁怎么加锁的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-10%E3%80%81ConcurrentHashMap%E7%94%A8%E4%BA%86%E6%82%B2%E8%A7%82%E9%94%81%E8%BF%98%E6%98%AF%E4%B9%90%E8%A7%82%E9%94%81-ConcurrentHashMap-%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-text">1.3.10、ConcurrentHashMap用了悲观锁还是乐观锁?ConcurrentHashMap 的实现原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-11%E3%80%81HashMap-%E5%92%8C-ConcurrentHashMap-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">1.3.11、HashMap 和 ConcurrentHashMap 的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-12%E3%80%81HashTable%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-text">1.3.12、HashTable的底层原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-13%E3%80%81ConcurrentHashMap-%E5%92%8C-Hashtable-%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-text">1.3.13、ConcurrentHashMap 和 Hashtable 的区别？</span></a></li></ol></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0-%E6%A6%82%E8%BF%B0"><span class="toc-text">0. 概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-List"><span class="toc-text">1.List</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-ArrayList%E5%92%8CLinkedList%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">1.ArrayList和LinkedList的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-ArrayList%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-text">2.ArrayList的扩容机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%B8%BA%E4%BB%80%E4%B9%88ArrayList%E4%B8%8D%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84"><span class="toc-text">3. 为什么ArrayList不是线程安全的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-CopyOnWriteArrayList%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="toc-text">4.CopyOnWriteArrayList为什么线程安全</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Set"><span class="toc-text">2.Set</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-List%E5%92%8CSet%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-text">1.List和Set的区别？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Map"><span class="toc-text">3.Map</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-HashMap%E6%80%8E%E4%B9%88%E5%A4%84%E7%90%86Hash%E5%86%B2%E7%AA%81"><span class="toc-text">1.HashMap怎么处理Hash冲突</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-HasMap%E7%9A%84%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-text">2.HasMap的底层数据结构及实现原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-HashMap%E7%9A%84put%E6%B5%81%E7%A8%8B"><span class="toc-text">3.HashMap的put流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-HashMap%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-text">4.HashMap的扩容机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-HashMap%E7%9A%84%E5%AF%BB%E5%9D%80%E7%AE%97%E6%B3%95"><span class="toc-text">5.HashMap的寻址算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-HashMap%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%9B%B4%E6%8E%A5%E4%BD%BF%E7%94%A8hashCode-%E5%A4%84%E7%90%86%E5%90%8E%E7%9A%84%E5%93%88%E5%B8%8C%E5%80%BC%E7%9B%B4%E6%8E%A5%E4%BD%9C%E4%B8%BAtable%E7%9A%84%E4%B8%8B%E6%A0%87"><span class="toc-text">6.HashMap为什么不直接使用hashCode()处理后的哈希值直接作为table的下标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-HashMap%E5%9C%A8%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8B%E5%8F%AF%E8%83%BD%E4%BC%9A%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">7.HashMap在多线程下可能会出现的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-ConcurrentHashMap%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-text">8.ConcurrentHashMap的底层原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-HashTable%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-text">9.HashTable的底层原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-ConcurrentHashMap-%E5%92%8C-Hashtable-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">10.ConcurrentHashMap 和 Hashtable 的区别</span></a></li></ol></li></ol>
     </div>
   </section>
 
@@ -4433,7 +4426,7 @@ window.matchMedia('(prefers-color-scheme: light)').addListener(darkModelListener
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/11/24/八股/集合/","name":"集合"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"集合","description":"1主要是Java常用集合介绍","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/11/24/%E5%85%AB%E8%82%A1/%E9%9B%86%E5%90%88/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/11/24/%E5%85%AB%E8%82%A1/%E9%9B%86%E5%90%88/","wordCount":14,"datePublished":"2024-11-24T09:11:53.000Z","dateModified":"2025-02-20T14:12:04.000Z","articleSection":"八股","keywords":"JavaSE","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/11/24/八股/集合/","name":"集合"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"集合","description":"1主要是Java常用集合介绍","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/11/24/%E5%85%AB%E8%82%A1/%E9%9B%86%E5%90%88/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/11/24/%E5%85%AB%E8%82%A1/%E9%9B%86%E5%90%88/","wordCount":14,"datePublished":"2024-11-24T09:11:53.000Z","dateModified":"2025-02-21T10:29:08.475Z","articleSection":"八股","keywords":"JavaSE","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 
