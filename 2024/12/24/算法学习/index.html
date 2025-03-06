@@ -46,7 +46,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
 <meta property="article:published_time" content="2024-12-24T07:24:36.000Z">
-<meta property="article:modified_time" content="2025-03-06T06:02:15.597Z">
+<meta property="article:modified_time" content="2025-03-06T06:33:37.570Z">
 <meta property="article:author" content="Light">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
@@ -1847,7 +1847,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: false,
     cdn: {"js":{"app":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/app.js","parallax":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/parallax.js","rightMenu":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenu.js","rightMenus":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenus.js","sites":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/sites.js","friends":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/friends.js","contributors":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/contributors.js","search":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1741240976733),
+    lastupdate: new Date(1741242858540),
     sidebar: {
       for_page: ["blogger","category","donate","webinfo"],
       for_post: ["toc"],
@@ -2900,13 +2900,13 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <div class="new-meta-item wordcount">
     <a class='notlink'>
       <i class="fa-solid fa-keyboard fa-fw" aria-hidden="true"></i>
-      <p>字数：775 字</p>
+      <p>字数：1.8k 字</p>
     </a>
   </div>
   <div class="new-meta-item readtime">
     <a class='notlink'>
       <i class="fa-solid fa-hourglass-half fa-fw" aria-hidden="true"></i>
-      <p>时长：3 分钟</p>
+      <p>时长：7 分钟</p>
     </a>
   </div>
 
@@ -2967,6 +2967,101 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 </ul>
 </li>
 </ul>
+<p><strong>状态转移方程</strong></p>
+<p>对于第 i 个物品（编号从 1 开始），我们有两种选择：</p>
+<ol>
+<li><strong>不拿第 i 个物品</strong>： <ul>
+<li><code>dp[i][j] = dp[i-1][j]</code>，即不放入当前物品，价值等于前 i-1 个物品在容量 j 下的最大价值。</li>
+</ul>
+</li>
+<li><strong>拿第 i 个物品</strong>（前提是背包容量足够，即 <code>j &gt;= w[i]</code>）： <ul>
+<li><code>dp[i][j] = dp[i-1][j - w[i]] + v[i]</code>，即放入当前物品，用掉 <code>w[i]</code>的容量，价值增加<code> v[i]</code>。</li>
+</ul>
+</li>
+<li><strong>综合选择</strong>： <ul>
+<li><code>dp[i][j] = max(dp[i-1][j], dp[i-1][j - w[i]] + v[i])</code>（如果 <code>j &gt;= w[i]</code>）。 </li>
+<li>如果 <code>j &lt; w[i]</code>，则只能不拿，<code>dp[i][j] = dp[i-1][j]</code>。</li>
+</ul>
+</li>
+</ol>
+<p><strong>初始化</strong> </p>
+<p>当没有物品时（i &#x3D; 0），价值为 0，即 <code>dp[0][j] = 0 </code>对于所有 j。 </p>
+<p><strong>目标</strong></p>
+<ul>
+<li>最终答案是 dp[n][W]，表示前 n 个物品在容量 W 下的最大价值。</li>
+</ul>
+<p><strong>空间复杂度</strong></p>
+<ul>
+<li>二维DP需要一个 n × W 的数组，空间复杂度是 O(nW)。</li>
+</ul>
+<h2 id="3-优化到一维DP"><a href="#3-优化到一维DP" class="headerlink" title="3.优化到一维DP"></a>3.<strong>优化到一维DP</strong></h2><p>观察二维DP的状态转移方程，我们发现<code>dp[i][j]</code>只依赖于上一行（i-1）的数据，即<code>dp[i-1][j]</code>和<code> dp[i-1][j - w[i]]</code>。这意味着我们不需要存储整个二维数组，只需要用一个一维数组保存“上一行”的结果，并在计算当前物品时更新它。</p>
+<p><strong>定义一维DP数组</strong></p>
+<ul>
+<li>定义 <code>dp[j] </code>表示：<strong>背包容量为 j 时，能获得的最大价值</strong>。</li>
+<li>这个数组会随着物品的遍历不断更新，最终反映所有物品考虑后的结果。</li>
+</ul>
+<p><strong>状态转移方程</strong></p>
+<ul>
+<li>对于每个物品 i，更新<code> dp[j]</code>：<ul>
+<li>如果<code> j &gt;= w[i]</code>，则<code> dp[j] = max(dp[j], dp[j - w[i]] + v[i])</code>。</li>
+<li>如果<code> j &lt; w[i]</code>，则 <code>dp[j] </code>不变（因为装不下当前物品）。</li>
+</ul>
+</li>
+</ul>
+<p><strong>关键问题：遍历顺序</strong></p>
+<ul>
+<li>在一维DP中，<code>dp[j] </code>会被反复更新。如果我们正向遍历（从 j &#x3D; 0 到 W），会导致问题；而倒着遍历（从 j &#x3D; W 到 0）则能正确解决问题。接下来我会详细解释为什么。</li>
+</ul>
+<blockquote>
+<p><strong>为什么需要倒着遍历？</strong></p>
+</blockquote>
+<p>在一维DP中，<code>dp[j]</code> 的更新依赖于 <code>dp[j - w[i]]</code>。如果遍历顺序不当，会导致当前物品被重复使用，而0-1背包要求每个物品只能用一次。我们通过一个例子来说明。</p>
+<p><strong>例子</strong></p>
+<p>假设：</p>
+<ul>
+<li>背包容量 W &#x3D; 5。</li>
+<li>只有一个物品，重量 w[1] &#x3D; 2，价值 v[1] &#x3D; 3。</li>
+<li>初始<code>dp[j] = 0</code>对于所有 j。</li>
+</ul>
+<p><strong>正向遍历（从 0 到 W）</strong></p>
+<ul>
+<li>j &#x3D; 2：<code>dp[2] = max(dp[2], dp[2-2] + 3) = max(0, dp[0] + 3) = max(0, 0 + 3) = 3</code>。</li>
+<li>j &#x3D; 3：<code>dp[3] = max(dp[3], dp[3-2] + 3) = max(0, dp[1] + 3) = max(0, 0 + 3) = 3</code>。</li>
+<li>j &#x3D; 4：<code>dp[4] = max(dp[4], dp[4-2] + 3) = max(0, dp[2] + 3) = max(0, 3 + 3) = 6</code>。</li>
+<li><strong>问题</strong>：dp[4] &#x3D; 6 表示价值达到 6，相当于拿了两次物品（2 × 3 &#x3D; 6），但0-1背包不允许重复拿取！</li>
+</ul>
+<p>原因：正向遍历时，dp[2] 被更新为 3 后，dp[4] 用到了更新后的 dp[2]，相当于当前物品被多次使用。</p>
+<p><strong>倒着遍历（从 W 到 0）</strong></p>
+<ul>
+<li>j &#x3D; 5：<code>dp[5] = max(dp[5], dp[5-2] + 3) = max(0, dp[3] + 3) = max(0, 0 + 3) = 3</code>。</li>
+<li>j &#x3D; 4：<code>dp[4] = max(dp[4], dp[4-2] + 3) = max(0, dp[2] + 3) = max(0, 0 + 3) = 3</code>。</li>
+<li>j &#x3D; 3：<code>dp[3] = max(dp[3], dp[3-2] + 3) = max(0, dp[1] + 3) = max(0, 0 + 3) = 3</code>。</li>
+<li>j &#x3D; 2：<code>dp[2] = max(dp[2], dp[2-2] + 3) = max(0, dp[0] + 3) = max(0, 0 + 3) = 3</code>。</li>
+<li><strong>结果</strong>：dp[5] &#x3D; 3，表示最多放入一个物品，符合0-1背包的规则。</li>
+</ul>
+<p>原因：倒着遍历时，<code>dp[j] </code>更新时用到的<code>dp[j - w[i]]</code>是还未被当前物品更新的值，相当于二维DP中的 <code>dp[i-1][j - w[i]]</code>。</p>
+<p><strong>一维DP的详细流程</strong></p>
+<ol>
+<li><strong>初始化</strong>：<ul>
+<li><code>dp[j] = 0</code> 对于所有 j 从 0 到 W。</li>
+</ul>
+</li>
+<li>遍历物品<ul>
+<li>对于每个物品 i（从 1 到 n）：<ul>
+<li><strong>倒着遍历容量 j</strong>（从 W 到 w[i]）： <ul>
+<li>如果 j &gt;&#x3D; w[i]，则 dp[j] &#x3D; max(dp[j], dp[j - w[i]] + v[i])。</li>
+<li>如果 j &lt; w[i]，跳过（实际上不需要显式处理，因为循环从 w[i] 开始）。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>结果<ul>
+<li>dp[W] 即为最终答案。</li>
+</ul>
+</li>
+</ol>
 
   </div>
   
@@ -2991,7 +3086,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-03-06T14:02:15+08:00">
+          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-03-06T14:33:37+08:00">
   <a class='notlink'>
     <i class="fa-solid fa-edit fa-fw" aria-hidden="true"></i>
     <p>更新于：2025年3月6日</p>
@@ -3106,7 +3201,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 
     <div class='content'>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F"><span class="toc-text">1.快速排序</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3"><span class="toc-text">1.基本思想</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%88%86%E5%8C%BA%EF%BC%88Partition%EF%BC%89%E8%BF%87%E7%A8%8B%E8%AF%A6%E8%A7%A3"><span class="toc-text">2.分区（Partition）过程详解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Java-%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-text">3.Java 代码实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90"><span class="toc-text">4.时间复杂度分析</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E4%B9%8B0-1%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%8E%8B%E7%BC%A9%E6%95%B0%E7%BB%84%EF%BC%9F"><span class="toc-text">2.动态规划之0-1背包问题为什么要压缩数组？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-0-1%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98%E7%AE%80%E4%BB%8B"><span class="toc-text">1.0-1背包问题简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%BA%8C%E7%BB%B4DP%E7%9A%84%E6%80%9D%E8%B7%AF"><span class="toc-text">2.二维DP的思路</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F"><span class="toc-text">1.快速排序</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9F%BA%E6%9C%AC%E6%80%9D%E6%83%B3"><span class="toc-text">1.基本思想</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%88%86%E5%8C%BA%EF%BC%88Partition%EF%BC%89%E8%BF%87%E7%A8%8B%E8%AF%A6%E8%A7%A3"><span class="toc-text">2.分区（Partition）过程详解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Java-%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-text">3.Java 代码实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90"><span class="toc-text">4.时间复杂度分析</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E4%B9%8B0-1%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%8E%8B%E7%BC%A9%E6%95%B0%E7%BB%84%EF%BC%9F"><span class="toc-text">2.动态规划之0-1背包问题为什么要压缩数组？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-0-1%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98%E7%AE%80%E4%BB%8B"><span class="toc-text">1.0-1背包问题简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%BA%8C%E7%BB%B4DP%E7%9A%84%E6%80%9D%E8%B7%AF"><span class="toc-text">2.二维DP的思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%BC%98%E5%8C%96%E5%88%B0%E4%B8%80%E7%BB%B4DP"><span class="toc-text">3.优化到一维DP</span></a></li></ol></li></ol>
     </div>
   </section>
 
@@ -4298,7 +4393,7 @@ window.matchMedia('(prefers-color-scheme: light)').addListener(darkModelListener
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/学习/","name":"学习"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/12/24/算法学习/","name":"算法学习"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"算法学习","description":"学习一下一些经典数据结构和排序算法","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/12/24/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/12/24/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/","wordCount":17,"datePublished":"2024-12-24T07:24:36.000Z","dateModified":"2025-03-06T06:02:15.597Z","articleSection":"学习","keywords":"算法","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/学习/","name":"学习"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/12/24/算法学习/","name":"算法学习"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"算法学习","description":"学习一下一些经典数据结构和排序算法","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/12/24/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/12/24/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/","wordCount":17,"datePublished":"2024-12-24T07:24:36.000Z","dateModified":"2025-03-06T06:33:37.570Z","articleSection":"学习","keywords":"算法","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 
