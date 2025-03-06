@@ -46,7 +46,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
 <meta property="article:published_time" content="2024-10-28T12:14:32.000Z">
-<meta property="article:modified_time" content="2025-02-22T13:52:02.000Z">
+<meta property="article:modified_time" content="2025-03-06T14:14:24.390Z">
 <meta property="article:author" content="Light">
 <meta property="article:tag" content="JUC">
 <meta name="twitter:card" content="summary">
@@ -1847,7 +1847,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: false,
     cdn: {"js":{"app":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/app.js","parallax":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/parallax.js","rightMenu":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenu.js","rightMenus":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenus.js","sites":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/sites.js","friends":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/friends.js","contributors":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/contributors.js","search":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1741242858540),
+    lastupdate: new Date(1741273989157),
     sidebar: {
       for_page: ["blogger","category","donate","webinfo"],
       for_post: ["toc"],
@@ -3243,7 +3243,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <blockquote>
 <p>底层原理</p>
 </blockquote>
-<p>ThreadLocal底层使用的是<strong>当前线程的 ThreadLocalMap</strong> 来存储数据，它是一个哈希表，每个线程都有一个相关联的ThreadLocalMap。ThreadLocalMap的key是ThreadLocal实例，对应的value是需要存储的值 </p>
+<p>ThreadLocal底层使用的是<strong>当前线程的 ThreadLocalMap</strong> 来存储数据，它是一个哈希表，每个线程都有一个相关联的ThreadLocalMap。ThreadLocalMap的key是ThreadLocal实例<strong>的弱引用</strong>，对应的value是需要存储的值 </p>
 <ul>
 <li>key：ThreadLocal </li>
 <li>value：需要存储的值</li>
@@ -3396,10 +3396,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-02-22T21:52:02+08:00">
+          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-03-06T22:14:24+08:00">
   <a class='notlink'>
     <i class="fa-solid fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2025年2月22日</p>
+    <p>更新于：2025年3月6日</p>
   </a>
 </div>
 
@@ -4708,7 +4708,7 @@ window.matchMedia('(prefers-color-scheme: light)').addListener(darkModelListener
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/10/28/八股/JUC/","name":"JUC"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"JUC","description":"这里是JAVA并发相关的一些八股","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/JUC/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/JUC/","wordCount":16,"datePublished":"2024-10-28T12:14:32.000Z","dateModified":"2025-02-22T13:52:02.000Z","articleSection":"八股","keywords":"JUC","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/10/28/八股/JUC/","name":"JUC"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"JUC","description":"这里是JAVA并发相关的一些八股","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/JUC/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/JUC/","wordCount":16,"datePublished":"2024-10-28T12:14:32.000Z","dateModified":"2025-03-06T14:14:24.390Z","articleSection":"八股","keywords":"JUC","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 
