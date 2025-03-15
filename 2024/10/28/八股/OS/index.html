@@ -46,7 +46,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
 <meta property="article:published_time" content="2024-10-28T12:30:49.000Z">
-<meta property="article:modified_time" content="2025-03-09T13:48:05.985Z">
+<meta property="article:modified_time" content="2025-03-14T08:08:22.227Z">
 <meta property="article:author" content="Light">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
@@ -1846,7 +1846,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: false,
     cdn: {"js":{"app":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/app.js","parallax":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/parallax.js","rightMenu":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenu.js","rightMenus":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenus.js","sites":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/sites.js","friends":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/friends.js","contributors":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/contributors.js","search":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1741771356107),
+    lastupdate: new Date(1742008875896),
     sidebar: {
       for_page: ["blogger","category","donate","webinfo"],
       for_post: ["toc"],
@@ -2889,13 +2889,13 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <div class="new-meta-item wordcount">
     <a class='notlink'>
       <i class="fa-solid fa-keyboard fa-fw" aria-hidden="true"></i>
-      <p>字数：10.2k 字</p>
+      <p>字数：11.1k 字</p>
     </a>
   </div>
   <div class="new-meta-item readtime">
     <a class='notlink'>
       <i class="fa-solid fa-hourglass-half fa-fw" aria-hidden="true"></i>
-      <p>时长：34 分钟</p>
+      <p>时长：37 分钟</p>
     </a>
   </div>
 
@@ -3223,57 +3223,92 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <li><strong>目录管理</strong>：目录的创建、删除、移动、重命名等等。</li>
 <li><strong>文件访问控制</strong>：管理不同用户或进程对文件的访问权限，以确保用户只能访问其被授权访问的文件，以保证文件的安全性和保密性。</li>
 </ol>
-<h2 id="1-硬链接和软链接的区别"><a href="#1-硬链接和软链接的区别" class="headerlink" title="1.硬链接和软链接的区别"></a>1.硬链接和软链接的区别</h2><p>硬链接是<strong>多个目录项中的「索引节点」指向一个文件</strong>，也就是指向同一个 inode，但是 inode 是不可能跨越文件系统的，每个文件系统都有各自的 inode 数据结构和列表， 所以<strong>硬链接是不可用于跨文件系统的</strong>。由于多个目录项都是指向一个 inode， 那么<strong>只有删除文件的所有硬链接以及源文件时，系统才会彻底删除该文件。</strong> </p>
+<h2 id="1-硬链接和软链接的区别"><a href="#1-硬链接和软链接的区别" class="headerlink" title="1.硬链接和软链接的区别"></a>1.硬链接和软链接的区别</h2><p>在 Linux&#x2F;类 Unix 系统上，文件链接（File Link）是一种特殊的文件类型，可以在文件系统中指向另一个文件。常见的文件链接类型有两种： </p>
+<p>硬链接是<strong>多个目录项中的「索引节点」指向一个文件</strong>，也就是指向同一个 inode，但是 inode 是不可能跨越文件系统的，每个文件系统都有各自的 inode 数据结构和列表， 所以<strong>硬链接是不可用于跨文件系统的</strong>。由于多个目录项都是指向一个 inode， 那么<strong>只有删除文件的所有硬链接以及源文件时，系统才会彻底删除该文件。</strong> </p>
+<p><img src="https://pic1.imgdb.cn/item/67cac77d066befcec6e05e49.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67cac77d066befcec6e05e49.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="硬链接"></p>
 <p>软链接相当于重新创建一个文件，这个文件有<strong>独立的 inode</strong>， 但是这个<strong>文件的内容是另外一个文件的路径</strong>，所以访问软链接的时候， 实际上相当于访问到了另外一个文件，所以<strong>软链接是可以跨文件系统的</strong>， 甚至<strong>目标文件被删除了，链接文件还是在的，只不过指向的文件找不到了而已。</strong> </p>
+<p><img src="https://pic1.imgdb.cn/item/67cac7c7066befcec6e05e54.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67cac7c7066befcec6e05e54.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="软链接"></p>
 <h2 id="2-常见的磁盘调度算法"><a href="#2-常见的磁盘调度算法" class="headerlink" title="2.常见的磁盘调度算法"></a>2.常见的磁盘调度算法</h2><p>磁盘调度算法的目的很简单，就是为了提高磁盘的访问性能， 一般是通过优化磁盘的访问请求顺序来做到的。 </p>
 <ol>
 <li>先来先服务：按照请求到达磁盘调度器的顺序进行处理，先到达的请求的先被服务。</li>
 </ol>
 <hr>
-<h1 id="4-I-O"><a href="#4-I-O" class="headerlink" title="4.I&#x2F;O"></a>4.I&#x2F;O</h1><h2 id="1-零拷贝"><a href="#1-零拷贝" class="headerlink" title="1.零拷贝"></a>1.零拷贝</h2><p><strong>零拷贝（Zero Copy）</strong> 是计算机系统中的一种技术，它用于优化数据传输的性能，特别是在网络传输和文件系统操作中。传统的内存拷贝操作会引入多次内存读写，这导致了不必要的CPU占用和内存带宽的浪费。零拷贝技术通过减少或避免中间的内存复制过程，提高了数据传输的效率。 </p>
-<p><strong>传统的数据拷贝过程</strong></p>
-<p>在没有零拷贝的情况下，当一个程序需要将数据从一个地方传输到另一个地方时，通常会经过以下几个步骤：</p>
+<h1 id="4-I-O"><a href="#4-I-O" class="headerlink" title="4.I&#x2F;O"></a>4.I&#x2F;O</h1><h2 id="1-零拷贝"><a href="#1-零拷贝" class="headerlink" title="1.零拷贝"></a>1.零拷贝</h2><p>零拷贝（Zero-copy）是一种优化数据传输的技术，旨在减<strong>少或消除数据在用户态和内核态之间的拷贝操作</strong>，从而提高I&#x2F;O性能。在传统的I&#x2F;O操作中，数据通常需要从内核缓冲区拷贝到用户缓冲区，或者从用户缓冲区拷贝回内核缓冲区，这会带来额外的CPU和内存开销。零拷贝技术通过避免这些不必要的拷贝，显著提升数据传输的效率，尤其在高并发、大数据量的场景下效果尤为明显。 </p>
 <ol>
-<li><strong>从磁盘读取数据到内存</strong>：操作系统从磁盘读取数据块，加载到内存中。</li>
-<li><strong>从用户空间复制到内核空间</strong>：程序需要将数据从用户空间复制到内核空间，以便通过网络发送。</li>
-<li><strong>从内核空间发送数据</strong>：内核再将数据通过网络设备发送出去。</li>
+<li><p><strong>零拷贝的原理</strong></p>
+<p>在操作系统（如Linux）中，传统的I&#x2F;O操作通常涉及以下步骤：</p>
+<ol>
+<li>数据从外部设备（如磁盘、网络）读取到内核缓冲区。</li>
+<li>内核将数据拷贝到用户进程的缓冲区。</li>
+<li>用户进程处理数据后，再将数据从用户缓冲区拷贝回内核缓冲区。</li>
+<li>内核将数据发送到目标设备。</li>
 </ol>
-<p>这些拷贝过程可能发生多次（例如，从磁盘到内存，再从内存到内核空间，再从内核空间到网络设备），导致了大量的内存拷贝和CPU计算开销。 </p>
-<p>也好抽象啊。。。</p>
-<p>零拷贝的核心目标是<strong>减少数据的拷贝次数</strong>，在可能的情况下，直接通过内存映射（Memory Mapping）或直接传输数据的方式，避免不必要的内存拷贝。这样做可以提高系统性能，减少CPU的负担，提高数据传输的效率。 </p>
+<p>在这个过程中，数据在用户态和内核态之间进行了多次拷贝，导致性能开销。零拷贝技术的核心在于优化这些步骤，减少或完全消除用户态和内核态之间的数据拷贝。</p>
+</li>
+</ol>
+<p>以下是几种常见的零拷贝技术及其原理：</p>
+<ol>
+<li>mmap（内存映射）<ul>
+<li><strong>原理</strong>：通过mmap系统调用，文件或设备的数据被直接映射到进程的地址空间。进程可以像访问内存一样访问这些数据，而无需将数据从内核缓冲区拷贝到用户缓冲区。</li>
+<li><strong>优点</strong>：减少了一次数据拷贝，适合频繁读写文件的场景。</li>
+<li><strong>应用场景</strong>：数据库系统、内存映射文件等。</li>
+</ul>
+</li>
+</ol>
+<p><strong>总结</strong></p>
+<p>零拷贝是一种通过优化数据传输路径，减少或消除用户态和内核态之间数据拷贝的技术。它在I&#x2F;O密集型应用中（如文件传输、网络通信、数据库等）具有重要意义。常见的实现方式包括mmap、sendfile、splice、DMA和页缓存共享等，这些技术显著提升了系统性能，尤其在高并发和大流量场景下。</p>
 <h2 id="2-I-O模型"><a href="#2-I-O模型" class="headerlink" title="2.I&#x2F;O模型"></a>2.I&#x2F;O模型</h2><blockquote>
-<p>阻塞I&#x2F;O</p>
+<p>阻塞I&#x2F;O——BIO</p>
 </blockquote>
 <p>应用程序发起I&#x2F;O操作后会被阻塞，直到操作完成才返回结果。适用于对实时性要求不高的场景。 </p>
 <blockquote>
-<p>非阻塞I&#x2F;O</p>
+<p>非阻塞I&#x2F;O——NIO</p>
 </blockquote>
-<p>应用程序发起I&#x2F;O操作后立即返回，不会被阻塞，但需要不断轮询或者使用 应用程序发起I&#x2F;O操作后立即返回，不会被阻塞，但需要不断轮询或者使用 处理多个socket连接的服务器程序。 </p>
+<p>应用程序发起I&#x2F;O操作后立即返回，不会被阻塞，但需要<strong>不断轮询</strong>或者使用。</p>
+<p>特点：<strong>用户进程需要不断的主动询问kernel数据好了没有</strong> </p>
+<p>当用户进程发出 <code>read</code> 操作时，如果 <code>kernel</code> 中的数据还没有准备好，那么它并不会 <code>block</code> 用户进程，而是立刻返回一个 <code>error</code> 。从用户进程角度讲 ，它发起一个 <code>read</code> 操作后，并不需要等待，而是马上就得到了一个结果。用户进程判断结果是一个 <code>error</code> 时，它就知道数据还没有准备好，于是它可以再次发送 <code>read</code> 操作。一旦 <code>kernel</code> 中的数据准备好了，并且又再次收到了用户进程的 <code>system call</code> ，那么它马上就将数据拷贝到了用户内存，然后返回。 </p>
 <blockquote>
-<p>I&#x2F;O复用模型</p>
+<p>I&#x2F;O多路复用</p>
 </blockquote>
+<p>特点：<strong>一个进程能同时等待多个文件描述符，而这些文件描述符（套接字描述符）其中的任意一个进入读就绪状态，select()函数就可以返回。</strong> </p>
+<p>它的基本原理就是select，poll，epoll这个function会不断的轮询所负责的所有socket，当某个socket有数据到达了，就通知用户进程。 </p>
+<blockquote>
+<p>异步I&#x2F;O——AIO</p>
+</blockquote>
+<p>用户进程发起 <code>read</code> 操作之后，立刻就可以开始去做其它的事。而另一方面，从 <code>kernel</code> 的角度，当它受到一个 <code>asynchronous read</code> 之后，首先它会立刻返回，所以不会对用户进程产生任何 <code>block</code> 。然后，<code>kernel</code> 会等待数据准备完成，然后将数据拷贝到用户内存，当这一切都完成之后，<code>kernel</code> 会给用户进程发送一个 <code>signal</code> ，告诉它 <code>read</code> 操作完成了。 </p>
+<p>最后，再举几个不是很恰当的例子来说明这四个IO Model:<br>有A，B，C，D四个人在钓鱼：<br>A用的是最老式的鱼竿，所以呢，得一直守着，等到鱼上钩了再拉杆；<br>B的鱼竿有个功能，能够显示是否有鱼上钩，所以呢，B就和旁边的MM聊天，隔会再看看有没有鱼上钩，有的话就迅速拉杆；<br>C用的鱼竿和B差不多，但他想了一个好办法，就是同时放好几根鱼竿，然后守在旁边，一旦有显示说鱼上钩了，它就将对应的鱼竿拉起来；<br>D是个有钱人，干脆雇了一个人帮他钓鱼，一旦那个人把鱼钓上来了，就给D发个短信。</p>
 <h2 id="3-I-O多路复用"><a href="#3-I-O多路复用" class="headerlink" title="3.I&#x2F;O多路复用"></a>3.I&#x2F;O多路复用</h2><p>传统的 I&#x2F;O 模型中，如果服务端需要支持多个客户端，我们可能要为每个客户端分配一个进程&#x2F;线程。 引入多路复用之后，一个进程&#x2F;线程维护多个 Socket，这个多路复用就是多个连接复用一个进程&#x2F;线程。 它们允许单个线程同时监控多个 I&#x2F;O 操作，是高并发服务器（如 Nginx、Redis）的核心技术。 </p>
 <p> I&#x2F;O 多路复用三种实现机制</p>
 <blockquote>
 <p>select&#x2F;poll</p>
 </blockquote>
-<p>select 实现多路复用的方式是，将已连接的 Socket 都放到一个<strong>文件描述符集合</strong>，然后调用 select 函数将文件描述符集合<strong>拷贝</strong>到内核里，让内核来检查是否有网络事件产生，检查的方式很粗暴，就是通过<strong>遍历</strong>文件描述符集合的方式，当检查到有事件产生后，将此 Socket 标记为可读或可写， 接着再把整个文件描述符集合<strong>拷贝</strong>回用户态里，然后用户态还需要再通过<strong>遍历</strong>的方法找到可读或可写的 Socket，然后再对其处理。</p>
-<p>对于 select 这种方式，需要进行 <strong>2 次「遍历」文件描述符集合</strong>，一次是在内核态里， 一个次是在用户态里 ，而且还会发生 <strong>2 次「拷贝」文件描述符集合</strong>， 先从用户空间传入内核空间，由内核修改后，再传出到用户空间中。 </p>
-<p>select和poll类似，<strong>区别</strong>是select有文件描述符数量的限制，而poll没有限制</p>
+<p>用户将需要监视的文件描述符集合（分为读、写、异常三类）传递给 select 函数。select 函数会阻塞进程，直到有文件描述符就绪（即可读、可写或发生异常）或达到指定的超时时间。当有文件描述符就绪时，select 返回就绪的文件描述符数量，用户需要遍历整个集合，检查哪些fd处于就绪状态。</p>
+<p>缺点：</p>
+<ol>
+<li><strong>性能开销大</strong>：每次调用 select 时，文件描述符集合需要从用户态复制到内核态，开销随着fd数量增加而显著增大。 </li>
+<li><strong>fd数量限制</strong>：select 使用位图表示fd集合，默认最大支持1024个文件描述符（某些系统可调整，但仍有限制）。 </li>
+<li><strong>效率低下</strong>：返回后，用户必须<strong>遍历</strong>整个fd集合才能确定哪些fd就绪，时间复杂度为O(n)。</li>
+</ol>
+<p>poll和select类似，最大的改进是<strong>无fd数量硬性限制</strong> ，不过仍然需要<strong>遍历</strong>才能知道就绪的fd，还有就是用户态和内核态的<strong>开销</strong></p>
 <p>select和poll这种依赖<strong>遍历</strong>和<strong>拷贝</strong>的方式，这种方式随着并发数上来，性能的损耗会呈指数级增长。 </p>
 <blockquote>
 <p>epoll</p>
 </blockquote>
 <p>与 <code>select()</code> 和 <code>poll()</code> 不同，<code>epoll()</code> 并不每次都遍历整个文件描述符集合。<code>epoll()</code> 使用了<strong>事件驱动机制</strong>：不需要每次调用都传递所有的文件描述符，而是通过epoll_ctl注册感兴趣的事件，之后通过epoll_wait获取就绪的事件。这种方式在处理<strong>大量文件描述符</strong>时性能更好，因为只需要处理实际就绪的事件，而不是遍历所有描述符。 </p>
 <p>epoll的用法如下：</p>
-<p>先用epoll_create 创建一个 epol l对象 epfd，再通过 epoll_ctl 将需要监视的 socket 添加到epfd中，最后调用 epoll_wait 等待数据。 </p>
+<ol>
+<li>调用 epoll_create 创建一个epoll实例，返回一个epoll文件描述符。</li>
+<li>使用 epoll_ctl 向epoll实例中添加、修改或删除需要监视的文件描述符及其事件。</li>
+<li>调用 epoll_wait 阻塞进程，等待事件发生。返回时，直接提供就绪的文件描述符列表，用户无需遍历。</li>
+</ol>
 <p><img src="https://pic1.imgdb.cn/item/67b5f655d0e0a243d400d544.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67b5f655d0e0a243d400d544.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="epoll原理"></p>
+<p>优点：<strong>高性能</strong>：事件驱动机制仅返回就绪的fd，时间复杂度为O(1)，无需轮询整个集合。</p>
+<p><strong>支持大量fd</strong>：理论上只受系统资源限制，适合大规模并发。</p>
 <p>epoll 通过两个方面，很好解决了 select&#x2F;poll 的问题。 </p>
 <ul>
 <li>epoll 在内核里使用<strong>红黑树来跟踪进程所有待检测的文件描述字</strong>，把需要监控的 socket 通过epoll_ctl() 函数加入内核中的红黑树里</li>
 <li> epoll 使用<strong>事件驱动</strong>的机制，内核里<strong>维护了一个链表来记录就绪事件</strong>，当某个 socket 有事件发生时，通过<strong>回调函数</strong>内核会将其加入到这个就绪事件链表中， 当用户调用 epoll_wait() 函数时， 只会返回有事件发生的文件描述符的个数， 不需要像 select&#x2F;poll 那样轮询扫描整个 socket 集合，大大提高了检测的效率。</li>
 </ul>
-<p>epoll 的⽅式即使监听的 Socket 数量越多的时候，效率不会⼤幅度降低，能够同时监听的 Socket 的数⽬也⾮常的多了，上限就为系统定义的进程打开的最⼤⽂件描述符个数。 </p>
 <p><strong>性能差异的原因</strong></p>
 <ul>
 <li><strong>select&#x2F;poll</strong>：<br>每次调用涉及全量数据拷贝和线性扫描，适合少量活跃连接。</li>
@@ -3285,6 +3320,8 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <li><strong>边缘触发（ET）：</strong>使用边缘触发模式时，当被监控的 Socket 描述符上有可读事件发生时，<strong>服务器端只会从 epoll_wait 中苏醒一次</strong>，即使进程没有调用read 函数从内核读取数据，也依然只苏醒一次，因此我们程序要保证次性将内核缓冲区的数据读取完;</li>
 <li><strong>水平触发（LT）：</strong>使用水平触发模式时，当被监控的 Socket 上有可读事件发生时，<strong>服务器端不断地从 epoll_wait 中苏醒</strong>，直到内核缓冲区数据被 read 函数读完才结束，目的是告诉我们有数据需要读取;</li>
 </ul>
+<p><strong>水平触发（LT）</strong>：默认模式，只要fd上有数据未处理完，就会持续通知。</p>
+<p><strong>边缘触发（ET）</strong>：仅在fd状态变化时通知一次，可减少系统调用次数，进一步提升效率。</p>
 <p>举个例子，你的快递被放到了一个快递箱里，如果快递箱只会通过短信通知你一次，即使你一直没有去取，它也不会再发送第二条短信提醒你，这个方式就是边缘触发;如果快递箱发现你的快递没有被取出它就会不停地发短信通知你，直到你取出了快递，它才消停，这个就是水平触发的方式。</p>
 <p>一般来说，边缘触发的效率比水平触发的效率要高， 因为边缘触发可以减少 epoll_wait 的系统调用次数， 系统调用也是有一定的开销的的，毕竟也存在上下文的切换 </p>
 
@@ -3311,10 +3348,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-03-09T21:48:05+08:00">
+          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-03-14T16:08:22+08:00">
   <a class='notlink'>
     <i class="fa-solid fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2025年3月9日</p>
+    <p>更新于：2025年3月14日</p>
   </a>
 </div>
 
@@ -4627,7 +4664,7 @@ window.matchMedia('(prefers-color-scheme: light)').addListener(darkModelListener
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/10/28/八股/OS/","name":"OS"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"OS","description":"本文主要是找工作时针对操作系统可能会碰到的一些问题","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/OS/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/OS/","wordCount":25,"datePublished":"2024-10-28T12:30:49.000Z","dateModified":"2025-03-09T13:48:05.985Z","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/10/28/八股/OS/","name":"OS"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"OS","description":"本文主要是找工作时针对操作系统可能会碰到的一些问题","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/OS/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/OS/","wordCount":25,"datePublished":"2024-10-28T12:30:49.000Z","dateModified":"2025-03-14T08:08:22.227Z","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 
