@@ -46,7 +46,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
 <meta property="article:published_time" content="2024-10-28T12:14:56.000Z">
-<meta property="article:modified_time" content="2025-03-02T14:21:38.210Z">
+<meta property="article:modified_time" content="2025-03-20T02:44:24.465Z">
 <meta property="article:author" content="Light">
 <meta property="article:tag" content="Redis">
 <meta name="twitter:card" content="summary">
@@ -1847,7 +1847,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: false,
     cdn: {"js":{"app":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/app.js","parallax":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/parallax.js","rightMenu":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenu.js","rightMenus":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenus.js","sites":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/sites.js","friends":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/friends.js","contributors":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/contributors.js","search":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1742008875896),
+    lastupdate: new Date(1742520519381),
     sidebar: {
       for_page: ["blogger","category","donate","webinfo"],
       for_post: ["toc"],
@@ -2900,13 +2900,13 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <div class="new-meta-item wordcount">
     <a class='notlink'>
       <i class="fa-solid fa-keyboard fa-fw" aria-hidden="true"></i>
-      <p>字数：7.1k 字</p>
+      <p>字数：11.5k 字</p>
     </a>
   </div>
   <div class="new-meta-item readtime">
     <a class='notlink'>
       <i class="fa-solid fa-hourglass-half fa-fw" aria-hidden="true"></i>
-      <p>时长：24 分钟</p>
+      <p>时长：39 分钟</p>
     </a>
   </div>
 
@@ -2929,117 +2929,13 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 
 <h1 id="1-基础"><a href="#1-基础" class="headerlink" title="1.基础"></a>1.基础</h1><h2 id="1-Redis为什么快？"><a href="#1-Redis为什么快？" class="headerlink" title="1.Redis为什么快？"></a>1.Redis为什么快？</h2><ul>
-<li><strong>内存操作：</strong>完全基于内存，绝大部分请求是纯粹的内存操作，非常快速</li>
-<li><strong>I&#x2F;O多路复用模型：</strong>基于 Linux 的 select&#x2F;epoll 机制。该机制允许内核中同时存在多个监听套接字和已连接套接字，内核会一直监听这些套接字上的连接请求或者数据请求，一旦有请求到达，就会交给 Redis 处理，就实现了所谓的 Redis 单个线程处理多个 IO 读写的请求。 </li>
-<li><strong>高效的数据结构：</strong>Redis 提供了多种高效的数据结构，如字符串（String）、列表（List）、集合（Set）、有序集合（Sorted Set）等，这些数据结构经过了高度优化，能够支持快速的数据操作。</li>
-</ul>
-<h2 id="1-三种常用的缓存读写策略"><a href="#1-三种常用的缓存读写策略" class="headerlink" title="1.三种常用的缓存读写策略"></a>1.三种常用的缓存读写策略</h2><blockquote>
-<p>1、<strong>Cache Aside Pattern</strong> （旁路缓存模式，双写模式）</p>
-</blockquote>
-<p>这是最常见的缓存使用模式，缓存和数据库分开管理，应用程序负责协调两者。 </p>
-<p>写：</p>
-<ul>
-<li>先更新数据库</li>
-<li>然后直接删除缓存</li>
-</ul>
-<p><strong>写数据的过程中，可以先删除 cache ，后更新 db 么？</strong> </p>
-<p>不行的！因为这样可能会造成 <strong>数据库（db）和缓存（Cache）数据不一致</strong>的问题。 </p>
-<p>比如：</p>
-<ul>
-<li>线程A删除了缓存，但还没来得及更新db</li>
-<li>线程B未读到缓存，然后从db种读取了旧数据，并写入缓存</li>
-<li>线程A更新db，但缓存仍是旧数据</li>
-</ul>
-<p>结果就是缓存和db出现了数据不一致的问题</p>
-<p>读：</p>
-<ul>
-<li>从 cache 中读取数据，读取到就直接返回</li>
-<li>cache 中读取不到的话，就从 db 中读取数据返回</li>
-<li>再把数据放到 cache 中。</li>
-</ul>
-<p>缺点：</p>
-<ol>
-<li><p><strong>首次请求数据一定不在 cache 的问题</strong> </p>
-<p>解决方法：可以将热点数据可以提前放入 cache 中。 </p>
+<li><p><strong>内存操作：</strong>完全基于内存，绝大部分请求是纯粹的内存操作，非常快速</p>
 </li>
-<li><p><strong>写操作比较频繁的话导致 cache 中的数据会被频繁被删除，这样会影响缓存命中率 。</strong> </p>
-<p>解决方法：</p>
-<ul>
-<li>数据库和缓存数据强一致场景：更新 db 的时候同样更新 cache，不过我们需要加一个锁&#x2F;分布式锁来保证更新 cache 的时候不存在线程安全问题。</li>
-<li>可以短暂地允许数据库和缓存数据不一致的场景：更新 db 的时候同样更新 cache，但是给缓存加一个比较短的过期时间，这样的话就可以保证即使数据不一致的话影响也比较小。</li>
-</ul>
+<li><p><strong>单线程模型：避免了多线程之间的竞争</strong>，省去了多线程切换带来的时间和性能上的开销，而且也不会导致死锁问题。 </p>
 </li>
-</ol>
-<blockquote>
-<p>2、Read&#x2F;Write Through Pattern（读写穿透，直写缓存模式 ）</p>
-</blockquote>
-<p><strong>在此模式下，所有写操作都会先更新缓存，然后再同步更新数据库。</strong> </p>
-<p>写：</p>
-<ul>
-<li>先查缓存，缓存中不存在，直接更新缓存</li>
-<li>缓存中存在，先更新缓存，然后由缓存服务再更新db</li>
-</ul>
-<p>读：</p>
-<ul>
-<li>从 cache 中读取数据，读取到就直接返回 。</li>
-<li>读取不到的话，先从 db 加载，写入到 cache 后返回响应。</li>
-</ul>
-<blockquote>
-<p>3、Write behind Pattern（异步缓存写入）</p>
-</blockquote>
-<p><strong>写操作只更新缓存，不立即同步到数据库，而是延迟批量更新数据库。</strong> </p>
-<p>Write Behind Pattern 和 Read&#x2F;Write Through Pattern 很相似，两者都是由 cache 服务来负责 cache 和 db 的读写。 </p>
-<p>但是，两个又有很大的不同：<strong>Read&#x2F;Write Through 是同步更新 cache 和 db，而 Write Behind 则是只更新缓存，不直接更新 db，而是改为异步批量的方式来更新 db。</strong> </p>
-<p>很明显，这种方式对数据一致性带来了更大的挑战，比如 cache 数据可能还没异步更新 db 的话，cache 服务可能就就挂掉了。</p>
-<p>这种策略在我们平时开发过程中也非常非常少见，但是不代表它的应用场景少，比如消息队列中消息的异步写入磁盘、MySQL 的 Innodb Buffer Pool 机制都用到了这种策略。</p>
-<p>Write Behind Pattern 下 db 的写性能非常高，非常适合一些数据经常变化又对数据一致性要求没那么高的场景，比如浏览量、点赞量。</p>
-<p>比较</p>
-<table>
-<thead>
-<tr>
-<th>特性</th>
-<th>Cache Aside</th>
-<th>Write Through</th>
-<th>Write Back</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>读性能</strong></td>
-<td>高</td>
-<td>高</td>
-<td>高</td>
-</tr>
-<tr>
-<td><strong>写性能</strong></td>
-<td>中</td>
-<td>低</td>
-<td>高</td>
-</tr>
-<tr>
-<td><strong>一致性</strong></td>
-<td>中</td>
-<td>高</td>
-<td>低</td>
-</tr>
-<tr>
-<td><strong>实现复杂度</strong></td>
-<td>中</td>
-<td>中</td>
-<td>高</td>
-</tr>
-</tbody></table>
-<p>适用场景：</p>
-<p><strong>Cache Aside</strong></p>
-<ul>
-<li>适合读操作频繁、写操作较少且数据一致性要求高的场景，例如用户信息、商品详情查询等。</li>
-</ul>
-<p><strong>Write Through</strong></p>
-<ul>
-<li>适合读写操作都频繁且数据一致性要求较高的场景，例如金融交易系统。</li>
-</ul>
-<p><strong>Write Back</strong></p>
-<ul>
-<li>适合写操作频繁、对一致性要求不高且容忍一定延迟的场景，例如日志系统、计数统计等。</li>
+<li><p><strong>I&#x2F;O多路复用模型：</strong>采用了 <strong>I&#x2F;O 多路复用机制</strong>处理大量的客户端 Socket 请求，IO 多路复用机制是指一个线程处理多个 IO 流。简单来说，在 Redis 只运行单线程的情况下，该机制允许内核中， 同时存在多个监听 Socket 和已连接 Socket。内核会一直监听这些 Socket 上的连接请求或数据请求。一旦有请求到达，就会交给 Redis 线程处理，这就实现了一个 Redis 线程处理多个 IO 流的效果。</p>
+</li>
+<li></li>
 </ul>
 <h2 id="2-Redis有哪些数据类型？常用的使用场景"><a href="#2-Redis有哪些数据类型？常用的使用场景" class="headerlink" title="2.Redis有哪些数据类型？常用的使用场景"></a>2.Redis有哪些数据类型？常用的使用场景</h2><ol>
 <li><strong>String</strong>：存储单个值，适用于<strong>缓存和键值存储</strong>，常用命令:SET用于设置值，GET用于获取值。<ul>
@@ -3102,7 +2998,14 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <li>优点：首先，AOF提供了更好的数据安全性，因为它默认每接收到一个写命令就会追加到文件末尾。 即使Redis服务器宕机，也只会丢失最后一次写入前的数据。 </li>
 <li>缺点：因为记录了每一个写操作，所以AOF文件通常比RDB文件更大，<strong>消耗更多的磁盘空间</strong>。</li>
 </ul>
-<p>总结：RDB是Redis的快照持久化方式，通过周期性的快照将数据保存到硬盘，占用更少的磁盘空间和 CPU资源，适用于数据备份和恢复，但可能存在数据丢失的风险。AOF 是追加日志持久化方式，将每个写操作以追加的方式记录到日志文件中，确保了更高的数据完整性和持久性，但相对于RDB 消耗更多的磁盘空间和写入性能，适用于数据持久化和灾难恢复，且可以通过配置实现不同的同步频率。</p>
+<p>总结：RDB是Redis的快照持久化方式，通过<strong>周期性</strong>的快照将数据保存到硬盘，占用更少的磁盘空间和 CPU资源，适用于数据备份和恢复，但可能存在数据丢失的风险。AOF 是追加日志持久化方式，将每个写操作以追加的方式记录到日志文件中，确保了更高的数据完整性和持久性，但相对于RDB 消耗更多的磁盘空间和写入性能，适用于数据持久化和灾难恢复，且可以通过配置实现不同的同步频率。</p>
+<h2 id="3-如何选择"><a href="#3-如何选择" class="headerlink" title="3.如何选择"></a>3.如何选择</h2><p>1.RDB</p>
+<p>缺点：周期性保存快照，但如果下次快照前宕机，会<strong>丢失数据很多</strong></p>
+<p>优点：保存的是原始数据，<strong>恢复起来比AOF更快</strong>（因为AOF保存的是命令还要执行）；<strong>文件小</strong>，适合做数据的备份，灾难恢复。 </p>
+<p>2.AOF</p>
+<p>缺点：恢复慢</p>
+<p>优点：<strong>数据更加完整</strong>（即使Redis服务器宕机，也只会丢失最后一次写入前的数据）</p>
+<p><strong>建议开启混合模式</strong></p>
 <hr>
 <h1 id="3-Redis内存管理"><a href="#3-Redis内存管理" class="headerlink" title="3.Redis内存管理"></a>3.Redis内存管理</h1><h2 id="1-过期键的删除策略有哪些"><a href="#1-过期键的删除策略有哪些" class="headerlink" title="1.过期键的删除策略有哪些"></a>1.过期键的删除策略有哪些</h2><ul>
 <li><strong>定时过期（CPU不友好，内存友好）</strong>：每个设置过期时间的key都需要创建一个定时器，到过期时间就会立即清除。该策略可以立即清除过期的数据，对内存很友好；但是会占用大量的CPU资源去处理过期的数据，从而影响缓存的响应时间和吞吐量。</li>
@@ -3130,14 +3033,57 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <li>volatile-ttl：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，挑选将要过期的数据淘汰。</li>
 </ul>
 <hr>
-<h1 id="4-Redis生产问题"><a href="#4-Redis生产问题" class="headerlink" title="4.Redis生产问题"></a>4.Redis生产问题</h1><h2 id="1-缓存穿透"><a href="#1-缓存穿透" class="headerlink" title="1.缓存穿透"></a>1.缓存穿透</h2><p><strong>缓存和数据库中都没有用户要访问的数据</strong>，当有大量这样的请求到来时，数据库的压力骤增 ，造成数据库短时间内承受大量请求而崩掉。 </p>
+<h1 id="4-缓存篇"><a href="#4-缓存篇" class="headerlink" title="4.缓存篇"></a>4.缓存篇</h1><h2 id="1-缓存一致性方案"><a href="#1-缓存一致性方案" class="headerlink" title="1.缓存一致性方案"></a>1.缓存一致性方案</h2><blockquote>
+<p>1、<strong>Cache Aside Pattern</strong> （旁路缓存模式，双写模式）</p>
+</blockquote>
+<p>对于<strong>读</strong>：从缓存中读取，如果读不到，就从数据库中读取，并把这个数据写入缓存</p>
+<p><img src="https://oss.javaguide.cn/github/javaguide/database/redis/cache-aside-read.png" class="lazyload" data-srcset="https://oss.javaguide.cn/github/javaguide/database/redis/cache-aside-read.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="双写读"></p>
+<p>对于<strong>写</strong>：先更新数据库，然后直接删除缓存</p>
+<p><img src="https://oss.javaguide.cn/github/javaguide/database/redis/cache-aside-write.png" class="lazyload" data-srcset="https://oss.javaguide.cn/github/javaguide/database/redis/cache-aside-write.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="双写写"></p>
+<ol>
+<li><p>为什么不是采用更新缓存模式，而是采用删除缓存？</p>
+<p>答：可能会造成<strong>无效写操作</strong>。如果更新的缓存很多，但这期间并没有查询操作，就造成了无效的写操作</p>
+</li>
+<li><p>为什么先更新数据库，而不是先删除缓存，再更新数据库？</p>
+<p>答：因为<strong>数据不一致</strong>。写线程A删除了缓存，但还没来得及更新数据库，此时，读线程B未命中缓存，去数据库读取旧数据，并写入缓存返回了，然后线程A更新了数据库中的数据，此时就数据不一致了。在这个过程中，<strong>写线程更新数据库的时间都比读线程读数据库+写回Redis的时间长</strong>了，所以非常有可能发生数据不一致</p>
+<p><img src="https://pic1.imgdb.cn/item/67d93ab688c538a9b5c038e1.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67d93ab688c538a9b5c038e1.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="为什么先删缓存不行"></p>
+</li>
+<li><p>采用先更新数据库，再删除缓存就没有问题了吗？</p>
+<p>答：也有可能会有问题，但概率会小的多！只有这种恰巧的情况：读线程读的时候<strong>缓存失效</strong>了，而且就在它访问完数据库之后，准备写回缓存之前，这是<strong>写线程一口气执行完了更新数据库和删缓存</strong>这两个操作，然后读线程把旧的数据写回了缓存。但这种可能性很低，因为一般来说更新数据库是非常耗时的。</p>
+</li>
+<li><p>问题3如何解决？</p>
+<p>答：<strong>延迟双删</strong>。在读线程把旧数据写回缓存后，然后写线程隔一小段时间再把这个缓存给删了，就是写线程要删除两次缓存。或者<strong>消息队列</strong>（TODO）</p>
+</li>
+</ol>
+<blockquote>
+<p>2、Read&#x2F;Write Through Pattern（读写穿透，直写缓存模式 ，写穿）</p>
+</blockquote>
+<p><strong>在此模式下，所有写操作都会先更新缓存，然后再同步更新数据库。</strong> </p>
+<p>对于读：从缓存中读取，如果读不到，从数据库中读取，然后写回cache后再返回（<strong>和双写模式一样</strong>）</p>
+<p>对于写：先查缓存，缓存中没有就直接更新数据库，缓存中有，先更新缓存，再接着更新数据库。</p>
+<blockquote>
+<p>3、Write behind Pattern（异步缓存写入，异步写）</p>
+</blockquote>
+<p><strong>写操作只更新缓存，不立即同步到数据库，而是延迟批量更新数据库。</strong> </p>
+<p>对于读：<strong>和双写模式一样</strong></p>
+<p>对于写：只更新缓存，然后异步的更新数据库，可以将更新数据库的任务交给消息队列或者线程池</p>
+<p><strong>Read&#x2F;Write Through 是同步更新 cache 和 db，而 Write Behind 则是只更新缓存，不直接更新 db，而是改为异步批量的方式来更新 db。</strong> </p>
+<p>很明显，这种方式对数据一致性带来了更大的挑战，比如 cache 数据可能还没异步更新 db 的话，cache 服务可能就就挂掉了。</p>
+<p>这种策略在我们平时开发过程中也非常非常少见，但是不代表它的应用场景少，比如消息队列中消息的异步写入磁盘、MySQL 的 Innodb Buffer Pool 机制都用到了这种策略。</p>
+<p>Write Behind Pattern 下 db 的写性能非常高，非常适合一些数据经常变化又对数据一致性要求没那么高的场景，比如浏览量、点赞量。</p>
+<p><strong>三种模式比较</strong></p>
+<p>三者读性能一样的，主要区别就是写性能</p>
+<p>旁路缓存模式：高并发场景可能存在短暂数据不一致。适合读操作频繁、写操作较少且数据一致性要求高的场景，例如用户信息、<strong>商品详情查询</strong>等。</p>
+<p>写穿模式：写入最慢，一致性最好。适合数据一致性要求较高的场景，例如金融交易系统。</p>
+<p>异步写模式：写入最快，一致性最差。适合写操作频繁、对一致性要求不高且容忍一定延迟的场景，例如日志系统、计数统计等。</p>
+<h2 id="2-缓存穿透"><a href="#2-缓存穿透" class="headerlink" title="2.缓存穿透"></a>2.缓存穿透</h2><p><strong>缓存和数据库中都没有用户要访问的数据</strong>，当有大量这样的请求到来时，数据库的压力骤增 ，造成数据库短时间内承受大量请求而崩掉。 </p>
 <p>解决方案：</p>
 <ul>
 <li><strong>非法请求的限制：</strong>当有大量恶意请求访问不存在的数据的时候，也会发生缓存穿透，因此在 API 入口处我们要判断求请求参数是否合理，请求参数是否含有非法值、请求字段是否存在， 如果判断出是恶意请求就直接返回错误，避免进一步访问缓存和数据库。 </li>
 <li><strong>缓存空值或者默认值：</strong>当我们线上业务发现缓存穿透的现象时，可以针对查询的数据， 在缓存中设置一个空值或者默认值，这样后续请求就可以从缓存中读取到空值或者默认值， 返回给应用，而不会继续查询数据库。 这种方式可以解决请求的 key 变化不频繁的情况，如果黑客恶意攻击，每次构建不同的请求 key，会导致 Redis 中缓存大量无效的 key 。很明显，这种方案并不能从根本上解决此问题。 </li>
 <li><strong>布隆过滤器：</strong>我们可以在写入数据库数据时，使用布隆过滤器做个标记， 然后在用户请求到来时，业务线程确认缓存失效后，可以通过查询布隆过滤器快速判断数据是否存在， 如果不存在，就不用通过查询数据库来判断数据是否存在。即使发生了缓存穿透，大量请求只会查询 Redis 和布隆过滤器，而不会查询数据库，保证了数据库能正常运行</li>
 </ul>
-<h2 id="2-布隆过滤器"><a href="#2-布隆过滤器" class="headerlink" title="2.布隆过滤器"></a>2.布隆过滤器</h2><p>布隆过滤器主要是为了解决海量数据的存在性问题。对于海量数据中判定某个数据是否存在且容忍轻微误差这一场景（比如缓存穿透、海量数据去重）来说，非常适合。 </p>
+<h2 id="3-布隆过滤器"><a href="#3-布隆过滤器" class="headerlink" title="3.布隆过滤器"></a>3.布隆过滤器</h2><p>布隆过滤器主要是为了解决海量数据的存在性问题。对于海量数据中判定某个数据是否存在且容忍轻微误差这一场景（比如缓存穿透、海量数据去重）来说，非常适合。 </p>
 <p>布隆过滤器由一个二进制数组和多个哈希函数组成</p>
 <ul>
 <li>开始时，布隆过滤器的每个位都被设置为 0。</li>
@@ -3149,14 +3095,14 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 </blockquote>
 <p>当布隆过滤器保存的元素越多，被置为 1 的 bit 位就会越多。假设元素 x 没有存储过，但其他元素的哈希函数映射到位数组的三个位刚好都为 1 且恰好覆盖了元素 x 映射的位置，那么对于布隆过滤器来讲，元素 x 这个值就是存在的，也就是说布隆过滤器存在一定的误判率。 </p>
 <p><strong>布隆过滤器说某个元素存在，小概率会误判。布隆过滤器说某个元素不在，那么这个元素一定不在。</strong> </p>
-<h2 id="3-缓存击穿"><a href="#3-缓存击穿" class="headerlink" title="3.缓存击穿"></a>3.缓存击穿</h2><p>缓存击穿中，请求的 key 对应的是 <strong>热点数据</strong> ，该数据 <strong>存在于数据库中，但不存在于缓存中（通常是因为缓存中的那份数据已经过期）</strong>。这就可能会导致瞬时大量的请求直接打到了数据库上，对数据库造成了巨大的压力，可能直接就被这么多请求弄宕机了。 </p>
+<h2 id="4-缓存击穿"><a href="#4-缓存击穿" class="headerlink" title="4.缓存击穿"></a>4.缓存击穿</h2><p>缓存击穿中，请求的 key 对应的是 <strong>热点数据</strong> ，该数据 <strong>存在于数据库中，但不存在于缓存中（通常是因为缓存中的那份数据已经过期）</strong>。这就可能会导致瞬时大量的请求直接打到了数据库上，对数据库造成了巨大的压力，可能直接就被这么多请求弄宕机了。 </p>
 <p>解决方案：</p>
 <ul>
 <li><strong>互斥锁方案（</strong>看情况）：保证同一时间只有一个业务线程更新缓存，未能获取互斥锁的请求， 要么等待锁释放后重新读取缓存，要么就返回空值或者默认值。 </li>
 <li><strong>永不过期</strong>（不推荐）：设置热点数据永不过期或者过期时间比较长。</li>
 <li><strong>提前预热</strong>（推荐）：针对热点数据提前预热，将其存入缓存中并设置合理的过期时间比如秒杀场景下的数据在秒杀结束之前不过期。</li>
 </ul>
-<h2 id="4-缓存雪崩"><a href="#4-缓存雪崩" class="headerlink" title="4.缓存雪崩"></a>4.缓存雪崩</h2><p>当<strong>大量缓存数据在同一时间过期（失效）或者 Redis 故障宕机</strong>时，如果此时有大量的用户请求， 都无法在 Redis 中处理，于是全部请求都直接访问数据库，从而导致数据库的压力骤增， 严重的会造成数据库宕机，从而形成一系列连锁反应，造成整个系统崩溃， </p>
+<h2 id="5-缓存雪崩"><a href="#5-缓存雪崩" class="headerlink" title="5.缓存雪崩"></a>5.缓存雪崩</h2><p>当<strong>大量缓存数据在同一时间过期（失效）或者 Redis 故障宕机</strong>时，如果此时有大量的用户请求， 都无法在 Redis 中处理，于是全部请求都直接访问数据库，从而导致数据库的压力骤增， 严重的会造成数据库宕机，从而形成一系列连锁反应，造成整个系统崩溃， </p>
 <p>解决方案：</p>
 <p><strong>针对 Redis 服务不可用的情况：</strong> </p>
 <ol>
@@ -3169,10 +3115,11 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <li><strong>提前预热</strong>（推荐）：针对热点数据提前预热，将其存入缓存中并设置合理的过期时间比如秒杀场景下的数据在秒杀结束之前不过期。</li>
 <li>设置缓存锁:在缓存失效时，设置一个短暂的锁定时间，只允许一个请求查询数据库并刷新缓存，其他请求等待锁释放后再读取缓存。</li>
 </ul>
-<h2 id="5-大Key问题"><a href="#5-大Key问题" class="headerlink" title="5.大Key问题"></a>5.大Key问题</h2><blockquote>
+<h2 id="6-大Key问题"><a href="#6-大Key问题" class="headerlink" title="6.大Key问题"></a>6.大Key问题</h2><blockquote>
 <p>什么是大key？</p>
 </blockquote>
 <p>Redis大key问题指的是某个key对应的value值所占的内存空间比较大， bigkey 除了会消耗更多的内存空间和带宽，还会对性能造成比较大的影响。 </p>
+<p>bigkey 除了会消耗更多的内存空间和带宽，还会对性能造成比较大的影响。 </p>
 <blockquote>
 <p>如何找到大key？</p>
 </blockquote>
@@ -3184,10 +3131,11 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <li><strong>分割 bigkey</strong>：将一个 bigkey 分割为多个小 key。 例如，将一个含有上万字段数量的 Hash 按照一定策略（比如二次哈希）拆分为多个 Hash。 </li>
 <li><strong>删除大 key</strong>：Redis 4.0以上可以使用 <code>UNLINK</code> 命令来异步删除一个或多个指定的 key。Redis 4.0 以下可以考虑使用 <code>SCAN</code> 命令结合 <code>DEL</code> 命令来分删除。</li>
 </ol>
-<h2 id="6-热Key"><a href="#6-热Key" class="headerlink" title="6.热Key"></a>6.热Key</h2><blockquote>
+<h2 id="7-热Key"><a href="#7-热Key" class="headerlink" title="7.热Key"></a>7.热Key</h2><blockquote>
 <p>什么是热key？</p>
 </blockquote>
 <p>如果一个 key 的访问次数比较多且明显多于其他 key 的话，那这个 key 就可以看作是 <strong>hotkey（热 Key）</strong>。例如在 Redis 实例的每秒处理请求达到 5000 次，而其中某个 key 的每秒访问量就高达 2000 次，那这个 key 就可以看作是 hotkey。</p>
+<p>处理 hotkey 会占用大量的 CPU 和带宽，可能会影响 Redis 实例对其他请求的正常处理。 此外，<strong>如果突然访问 hotkey 的请求超出了 Redis 的处理能力，Redis 就会直接宕机</strong>。 这种情况下，大量请求将落到后面的数据库上，可能会导致数据库崩溃。 </p>
 <p>hotkey 出现的原因主要是某个热点数据访问量暴增，如重大的热搜事件、参与秒杀的商品。</p>
 <blockquote>
 <p>如何找到热key？</p>
@@ -3200,17 +3148,127 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <li><strong>读写分离</strong>：主节点处理写请求，从节点处理读请求。</li>
 <li><strong>使用 Redis Cluster</strong>：将热点数据分散存储在多个 Redis 节点上。</li>
 </ul>
-<h2 id="6-缓存预热"><a href="#6-缓存预热" class="headerlink" title="6.缓存预热"></a>6.缓存预热</h2><p><strong>缓存预热</strong>就是系统上线后，将相关的缓存数据直接加载到缓存系统。这样就可以避免在用户请求的时候，先查询数据库，然后再将数据缓存的问题！用户直接查询事先被预热的缓存数据！ </p>
+<h2 id="8-缓存预热"><a href="#8-缓存预热" class="headerlink" title="8.缓存预热"></a>8.缓存预热</h2><p><strong>缓存预热</strong>就是系统上线后，将相关的缓存数据直接加载到缓存系统。这样就可以避免在用户请求的时候，先查询数据库，然后再将数据缓存的问题！用户直接查询事先被预热的缓存数据！ </p>
 <p>常见的缓存预热方式有两种：</p>
 <ol>
 <li>使用定时任务，比如 xxl-job，来定时触发缓存预热的逻辑，将数据库中的热点数据查询出来并存入缓存中。</li>
 <li>使用消息队列，比如 Kafka，来异步地进行缓存预热，将数据库中的热点数据的主键或者 ID 发送到消息队列中，然后由缓存服务消费消息队列中的数据，根据主键或者 ID 查询数据库并更新缓存。</li>
 </ol>
 <hr>
-<h1 id="6、高可用"><a href="#6、高可用" class="headerlink" title="6、高可用"></a>6、高可用</h1><h3 id="6-1、主从复制"><a href="#6-1、主从复制" class="headerlink" title="6.1、主从复制"></a>6.1、主从复制</h3><p>为了应对并发能力问题，可以搭建主从集群，实现读写分离，Redis大多都是读多写少的场景</p>
+<h1 id="5-底层结构"><a href="#5-底层结构" class="headerlink" title="5.底层结构"></a>5.底层结构</h1><p>String——动态字符串SDS</p>
+<p>List——双向链表</p>
+<p>Set——哈希表</p>
+<p>主要是ZSet的底层数据结构实现——跳表</p>
+<p><img src="https://cdn.xiaolincoding.com//mysql/other/9fa26a74965efbf0f56b707a03bb9b7f-20230309232518487.png" class="lazyload" data-srcset="https://cdn.xiaolincoding.com//mysql/other/9fa26a74965efbf0f56b707a03bb9b7f-20230309232518487.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="底层结构"></p>
+<h2 id="1-SDS"><a href="#1-SDS" class="headerlink" title="1.SDS"></a>1.SDS</h2><p>Redis 是用 C 语言实现的，但其String类型是采用了一个叫做简单动态字符串（simple dynamic string，SDS） 的数据结构来表示字符串。</p>
+<blockquote>
+<p>为什么不用C语言中的字符串呢？</p>
+</blockquote>
+<ol>
+<li><p>获取字符串长度的<strong>时间复杂度</strong>为 O（N）；</p>
+</li>
+<li><p>字符串的结尾是以 “\0” 字符标识，这就要求字符串里面不能包含有 “\0” 字符， 因此<strong>不能保存二进制数据</strong>； </p>
+</li>
+<li><p>字符串操作函数不高效且不安全， 比如有<strong>缓冲区溢出</strong>的风险，有可能会造成程序运行终止； </p>
+<p>例：strcat 函数是可以将两个字符串拼接在一起。 <strong>C 语言的字符串是不会记录自身的缓冲区大小的</strong>， 所以 strcat 函数假定程序员在执行这个函数时，已经为拼接的字符串分配了足够多的内存，而如果没有，就会发生溢出</p>
+</li>
+</ol>
+<blockquote>
+<p>SDS结构</p>
+</blockquote>
+<p><img src="https://cdn.xiaolincoding.com//mysql/other/516738c4058cdf9109e40a7812ef4239.png" class="lazyload" data-srcset="https://cdn.xiaolincoding.com//mysql/other/516738c4058cdf9109e40a7812ef4239.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="SDS结构"></p>
+<p>引入了len，alloc，flags解决了C语言字符串的问题</p>
+<ol>
+<li><strong>len，记录了字符串长度</strong>。 获取字符串长度 时间复杂度<strong>只需要 O（1）</strong>。 </li>
+<li><strong>alloc，分配给字符数组的空间长度</strong>。 这样在修改字符串的时候，可以通过 <code>alloc - len</code> 计算出剩余的空间大小，可以用来判断空间是否满足修改需求，如果不满足的话，就会自动将 SDS 的空间扩展至执行修改所需的大小，然后才执行实际的修改操作， 所以使用 SDS 既不需要手动修改 SDS 的空间大小，也<strong>不会出现前面所说的缓冲区溢出的问题</strong>。 </li>
+<li><strong>flags，用来表示不同类型的 SDS</strong>。 <strong>能灵活保存不同大小的字符串，从而有效节省内存空间</strong>。 </li>
+<li><strong>buf[]，字节数组，用来保存实际数据</strong>。不仅可以保存字符串，也<strong>可以保存二进制数据</strong>。</li>
+</ol>
+<h2 id="2-双向链表"><a href="#2-双向链表" class="headerlink" title="2.双向链表"></a>2.双向链表</h2><p><img src="https://cdn.xiaolincoding.com//mysql/other/cadf797496816eb343a19c2451437f1e.png" class="lazyload" data-srcset="https://cdn.xiaolincoding.com//mysql/other/cadf797496816eb343a19c2451437f1e.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="双向链表"></p>
+<p>优点：</p>
+<ol>
+<li>listNode 链表节点的结构里带有 prev 和 next 指针， <strong>获取某个节点的前置节点或后置节点的时间复杂度只需O(1)，</strong></li>
+<li>list 结构因为提供了表头指针 head 和表尾节点 tail， 所以**获取链表的表头节点和表尾节点的时间复杂度只需O(1)**； </li>
+<li>list 结构因为提供了链表节点数量 len，所以**获取链表中的节点数量的时间复杂度只需O(1)**；</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>链表每个节点之间的内存都是不连续的，意味着<strong>无法很好利用 CPU 缓存</strong>。 能很好利用 CPU 缓存的数据结构就是数组， 因为数组的内存是连续的，这样就可以充分利用 CPU 缓存来加速访问。</li>
+</ol>
+<h2 id="3-压缩列表ZipList"><a href="#3-压缩列表ZipList" class="headerlink" title="3.压缩列表ZipList"></a>3.压缩列表ZipList</h2><p>压缩列表是 Redis 为了<strong>节约内存</strong>而开发的，它是<strong>由连续内存块组成的顺序型数据结构</strong>， 有点类似于数组。 </p>
+<p><img src="https://cdn.xiaolincoding.com//mysql/other/ab0b44f557f8b5bc7acb3a53d43ebfcb.png" class="lazyload" data-srcset="https://cdn.xiaolincoding.com//mysql/other/ab0b44f557f8b5bc7acb3a53d43ebfcb.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="压缩列表"></p>
+<p>压缩列表在表头有三个字段： </p>
+<ul>
+<li><strong>zlbytes</strong>，记录整个压缩列表占用的内存字节数；</li>
+<li><strong>zltail</strong>，记录压缩列表「尾部」节点距离起始地址有多少字节， 也就是列表尾的偏移量； </li>
+<li><strong>zllen</strong>，记录压缩列表包含的节点数量；</li>
+<li><strong>zlend</strong>，标记压缩列表的结束点，固定值 0xFF（十进制255）。</li>
+</ul>
+<p>压缩列表解决了双向列表内存碎片的问题，因为双向链表每个节点存放在内存中不连续的位置。另外，ziplist 为了在细节上节省内存，对于值的存储采用了 <strong>变长编码方式</strong>， 大概意思是说，对于大的整数，就多用一些字节来存储，而对于小的整数，就少用一些字节来存储。 </p>
+<p>压缩列表的缺点是会发生连锁更新的问题，因此<strong>连锁更新一旦发生，</strong> <strong>就会导致压缩列表占用的内存空间要多次重新分配，这就会直接影响到压缩列表的访问性能</strong>。 </p>
+<p>因此，<strong>压缩列表只会用于保存的节点数量不多的场景</strong>， 只要节点数量足够小，即使发生连锁更新，也是能接受的。 </p>
+<h2 id="4-哈希表"><a href="#4-哈希表" class="headerlink" title="4.哈希表"></a>4.哈希表</h2><p><strong><code>dictionary</code>   字典    <code>dict</code></strong></p>
+<p>哈希表结构，哈希冲突，链式哈希这些都不说了，比较熟悉了，下面是不太熟悉的</p>
+<blockquote>
+<p>1.rehash</p>
+</blockquote>
+<p>也就是哈希表的扩容（不过注意处理哈希冲突有个再哈希法，那个意思是再用另一个哈希函数计算要插入的位置），一图说明</p>
+<p><img src="https://cdn.xiaolincoding.com//mysql/other/cabce0ce7e320bc9d9b5bde947b6811b.png" class="lazyload" data-srcset="https://cdn.xiaolincoding.com//mysql/other/cabce0ce7e320bc9d9b5bde947b6811b.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="rehash"></p>
+<ol>
+<li>原哈希表的数据迁移到新的哈希表（长度是原来的2倍）</li>
+<li>迁移完成后，释放原哈希表的空间，并让新哈希表指向原哈希表的地址</li>
+</ol>
+<p>这样有个问题，就是如果哈希表数据过多，在迁移的时候，<strong>因为会涉及大量的数据拷贝，此时可能会对 Redis 造成阻塞，无法服务其他请求</strong>。 所以引出了<strong>渐进式hash</strong></p>
+<blockquote>
+<p>2.渐进式hash</p>
+</blockquote>
+<p>渐进式hash把一次性大量数据迁移工作的开销，分摊到了多次处理请求的过程中， 避免了一次性 rehash 的耗时操作。 </p>
+<p>为了支持渐进式重哈希，Redis 的 <strong>dict</strong> 结构包含两个哈希表：</p>
+<ul>
+<li>**ht[0]**：当前正在使用的哈希表。</li>
+<li>**ht[1]**：用于重哈希的目标哈希表（初始为空）。</li>
+</ul>
+<p>渐进式 rehash 步骤如下： </p>
+<p>哈希表元素的删除、查找、更新等操作都会在这两个哈希表进行。比如，查找一个 key 的值的话，先会在「哈希表 1」 里面进行查找， 如果没找到，就会继续到哈希表 2 里面进行找到。 在渐进式 rehash 进行期间，新增一个 key-value 时， 会被保存到「哈希表 2 」里面，而「哈希表 1」 则不再进行任何添加操作， 这样保证了「哈希表 1 」的 key-value 数量只会减少，随着 rehash 操作的完成， 最终「哈希表 1 」就会变成空表。  </p>
+<blockquote>
+<p>3.rehash触发条件</p>
+</blockquote>
+<p>和负载因子有关。负载因子 &#x3D; 哈希表已经保存的节点数&#x2F;哈希表大小</p>
+<ul>
+<li>*<em>当负载因子大于等于 1 ，并且 Redis 没有在执行 bgsave 命令或者 bgrewiteaof 命令，也就是没有执行 RDB 快照或没有进行 AOF <em>写的时候，就会进行 rehash 操作。</em></em> </li>
+<li><strong>当负载因子大于等于 5 时，此时说明哈希冲突非常严重了，</strong> <strong>不管有没有有在执行 RDB 快照或 AOF 重写，</strong> <strong>都会强制进行 rehash 操作。</strong></li>
+</ul>
+<h2 id="5-整数集合"><a href="#5-整数集合" class="headerlink" title="5.整数集合"></a>5.整数集合</h2><p>intset 是一个由整数组成的 <strong>有序集合</strong>，从而便于在上面进行二分查找，用于快速地判断一个元素是否属于这个集合。 它在内存分配上与 ziplist 有些类似，是连续的一整块内存空间，而且对于大整数和小整数（按绝对值）采取了不同的编码，尽量对内存的使用进行了优化。 </p>
+<p>对于<strong>小集合使用 intset</strong> 来存储，主要的原因是节省内存。特别是当存储的元素个数较少的时候， <strong>dict 所带来的内存开销要大得多（包含两个哈希表、链表指针以及大量的其它元数据）</strong>。所以，当存储大量的小集合而且集合元素都是数字的时候，用 intset 能节省下一笔可观的内存空间。 </p>
+<p>实际上，从时间复杂度上比较， intset 的平均情况是没有 dict 性能高的。以查找为例，intset 是 OO(lgn) 的，而 dict 可以认为是 O(1) 的。但是，由于使用 intset 的时候集合元素个数比较少，所以这个影响不大。 </p>
+<h2 id="6-跳表"><a href="#6-跳表" class="headerlink" title="6.跳表"></a>6.跳表</h2><p>链表在查找元素的时候，因为需要逐一查找，所以查询效率非常低，时间复杂度是O(N) ，于是就出现了跳表。<strong>跳表是在链表基础上改进过来的，实现了一种「多层」的有序链表</strong>， 这样的好处是能快读定位数据。 </p>
+<p><img src="https://cdn.xiaolincoding.com//mysql/other/2ae0ed790c7e7403f215acb2bd82e884.png" class="lazyload" data-srcset="https://cdn.xiaolincoding.com//mysql/other/2ae0ed790c7e7403f215acb2bd82e884.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="跳表结构"></p>
+<h1 id="6-Redis线程模型"><a href="#6-Redis线程模型" class="headerlink" title="6.Redis线程模型"></a>6.Redis线程模型</h1><h2 id="1-单线程模型"><a href="#1-单线程模型" class="headerlink" title="1.单线程模型"></a>1.单线程模型</h2><ul>
+<li><p>如果仅仅聊Redis的核心业务部分(命令处理)，答案是单线程</p>
+</li>
+<li><p>如果是聊整个Redis，那么答案就是多线程</p>
+</li>
+</ul>
+<p> Redis 在处理网络请求是使用单线程模型，并通过 IO 多路复用来提高并发。 但是在其他模块，比如：持久化，会使用多个线程。 </p>
+<p>Redis 内部使用文件事件处理器 <code>file event handler</code>，<strong>这个文件事件处理器是单线程的，所以 Redis 才叫做单线程的模型</strong>。它采用 IO 多路复用机制同时监听多个 <code>socket</code> ，将产生事件的 <code>socket</code> 压入内存队列中，事件分派器根据 <code>socket</code> 上的事件类型来选择对应的事件处理器进行处理。 </p>
+<p>文件事件处理器如下：</p>
+<p><img src="https://oss.javaguide.cn/github/javaguide/database/redis/redis-event-handler.png" class="lazyload" data-srcset="https://oss.javaguide.cn/github/javaguide/database/redis/redis-event-handler.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="文件事件处理器"></p>
+<p>文件事件处理器的结构包含 4 个部分：</p>
+<ul>
+<li>多个 socket</li>
+<li>IO 多路复用程序</li>
+<li>文件事件分派器</li>
+<li>事件处理器（连接应答处理器、命令请求处理器、命令回复处理器）</li>
+</ul>
+<h2 id="2-为什么Redis单线程模型也能效率这么高？"><a href="#2-为什么Redis单线程模型也能效率这么高？" class="headerlink" title="2.为什么Redis单线程模型也能效率这么高？"></a>2.为什么Redis单线程模型也能效率这么高？</h2><p>抛开持久化不谈，Redis是纯内存操作，执行速度非常快，<strong>它的性能瓶颈是网络延迟</strong>而不是执行速度，因此多线程并不会带来巨大的性能提升。</p>
+<ol>
+<li>纯内存操作</li>
+<li>避免多线程频繁的上下文切换开销，以及并发加锁开销</li>
+<li>IO多路复用模型，允许同时监听多个socket</li>
+</ol>
+<h1 id="7-高可用"><a href="#7-高可用" class="headerlink" title="7.高可用"></a>7.高可用</h1><h2 id="1-主从复制"><a href="#1-主从复制" class="headerlink" title="1.主从复制"></a>1.主从复制</h2><p>为了应对并发能力问题，可以搭建主从集群，实现读写分离，Redis大多都是读多写少的场景</p>
 <p>多台服务器要保存同一份数据，这些服务器之间的数据如何保持一致性呢？数据的读写操作是否每台服务器都可以处理？ </p>
 <p>Redis 提供了<strong>主从复制模式</strong>，来避免上述的问题。 </p>
-<p>当是写操作，在主服务器上进行，然后将这个操作同步给从服务器，当是读操作，就分发给从服务器。</p>
 <blockquote>
 <p>第一次同步——全量同步</p>
 </blockquote>
@@ -3218,21 +3276,20 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 服务器 B 执行这条命令</span><br><span class="line">replicaof &lt;服务器 A 的 IP 地址&gt; &lt;服务器 A 的 Redis 端口号&gt;</span><br></pre></td></tr></table></figure>
 
 <p>在介绍第一次同步的过程之前，需要先介绍两个参数</p>
-<p>从服务器就会给主服务器发送 <code>psync</code> 命令，表示要进行数据同步。 psync 命令包含两个参数 ，可以<strong>判断从服务器是否第一次来同步数据</strong></p>
+<p>从服务器就会给主服务器发送 <code>sync</code> 命令，表示要进行数据同步。 sync 命令包含两个参数 ，可以<strong>判断从服务器是否第一次来同步数据</strong></p>
 <ol>
-<li><p>Replicationld：简称<code>replid</code>，每个 Redis 服务器在启动时都会自动生产一个随机的 ID 来唯一标识自己。 从服务器会继承主服务器的<code>replid</code></p>
+<li><p>Replicationld：简称<code>replid</code>，每个 <strong>Redis 服务器</strong>在启动时都会自动生产一个随机的 <strong>ID 来唯一标识自己</strong>。 从服务器会继承主服务器的<code>replid</code></p>
 </li>
-<li><p>offset：偏移量，表示复制的进度，随着记录在repl_baklog中的数据增多而逐渐增大。slave完成同步时也会记录当前同步的offset。</p>
+<li><p>offset：偏移量，表示复制的进度，随着记录在repl_baklog中的数据增多而逐渐增大。主节点用offset记录自己<strong>写</strong>的位置，从节点用offset记录自己<strong>读</strong>的位置。slave完成同步时也会记录当前同步的offset。</p>
 <p>如果slave的offset小于master的offset，说明slave数据落后于master，需要更新。</p>
 </li>
 </ol>
 <p>全量同步的流程如下：</p>
 <ol>
-<li>slave节点请求增量同步</li>
-<li>master节点判断replid，发现不一致，拒绝增量同步，执行全量同步</li>
+<li>slave节点发送sync请求，表示要进行数据同步</li>
 <li>master将执行 bgsave 命令（异步，不会阻塞主线程）生成RDB，发送RDB到slave。</li>
 <li>slave清空本地数据，加载master的RDB</li>
-<li>master将生成RDB期间、发送RBD期间的命令记录在repl_baklog，并持续将log中的命令发送给slave</li>
+<li>master将生成RDB期间、发送RBD期间的命令记录在<code>replication_backlog_buffer</code>，并持续将log中的命令发送给slave</li>
 <li>slave执行接收到的命令，保持与master之间的同步</li>
 </ol>
 <p>至此，主从服务器的第一次同步的工作就完成了。 </p>
@@ -3240,20 +3297,31 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <p>断开后的同步——增量同步</p>
 </blockquote>
 <p>从节点断开后重启，采用增量同步</p>
+<p><strong>repl_backlog_buffer</strong>，是一个「<strong>环形</strong>」缓冲区， 用于主从服务器断连后，从中找到差异的数据； </p>
 <p>slave提交自己的offset到master，master获取repl_baklog中从offset之后的命令给slave</p>
 <p>repl_baklog大小有上限，是一个环形区域，写满后会覆盖最早的数据。如果slave断开时间过久，导致尚未备份的数据被覆盖，则无法基于log做增量同步，只能再次全量同步。</p>
 <p>因此，<strong>为了避免在网络恢复时，主服务器频繁地使用全量同步的方式，我们应该设置repl_backlog_buffer 缓冲区尽可能的大一些</strong>， 减少出现从服务器要读取的数据被覆盖的概率，从而使得主服务器采用增量同步的方式。 </p>
-<h3 id="6-2、哨兵（Sentinel）机制"><a href="#6-2、哨兵（Sentinel）机制" class="headerlink" title="6.2、哨兵（Sentinel）机制"></a>6.2、哨兵（Sentinel）机制</h3><blockquote>
+<blockquote>
+<p>主从复制的作用</p>
+</blockquote>
+<p>①、<strong>数据冗余：</strong> 主从复制实现了数据的热备份，是持久化之外的一种数据冗余方式。</p>
+<p>②、<strong>故障恢复：</strong> 如果主节点挂掉了，可以将一个从节点提升为主节点，从而实现故障的快速恢复。</p>
+<p>通常会使用 Sentinel 哨兵来实现自动故障转移，当主节点挂掉时，Sentinel 会自动将一个从节点升级为主节点，保证系统的可用性。 假如是从节点挂掉了，主节点不受影响，但应该尽快修复并重启挂掉的从节点，使其重新加入集群并从主节点同步数据。 </p>
+<p>③、<strong>负载均衡：</strong> 在主从复制的基础上，配合读写分离，可以由主节点提供写服务，由从节点提供读服务 <strong>，分担服务器负载。尤其是在读多写少</strong>的场景下，通过多个从节点分担读负载，可以大大提高 Redis 服务器的并发量。</p>
+<p>④、<strong>高可用基石：</strong> 除了上述作用以外，主从复制还是哨兵和集群能够实施的 <strong>基础</strong>。</p>
+<h2 id="2-哨兵（Sentinel）机制"><a href="#2-哨兵（Sentinel）机制" class="headerlink" title="2.哨兵（Sentinel）机制"></a>2.哨兵（Sentinel）机制</h2><p>用于监控主节点和从节点的状态，实现自动故障转移。如果主节点发生故障，哨兵可以自动将一个从节点升级为新的主节点。 </p>
+<p><strong>故障转移整体流程：监控——主观下线——客观下线——（哨兵集群）选举Leader——故障转移</strong></p>
+<blockquote>
 <p>为什么要有哨兵机制？</p>
 </blockquote>
-<p>主节点如果要是挂了，就没办法接收写操作了</p>
+<p>主节点如果要是挂了，就没办法接收写操作了。而哨兵本身是一个独立运行的进程，它能监控多个节点，发现主节点宕机后能进行自动切换。 </p>
 <blockquote>
-<p>哨兵的三个作用？</p>
+<p>哨兵的三个作用（功能）</p>
 </blockquote>
 <ol>
-<li>监控：Sentinel会不断检查您的master和slave是否按预期工作</li>
-<li>自动故障恢复：如果master故障，Sentinel会将一个slave提升为master。当故障实例恢复后也以新的master为主</li>
-<li>通知：Sentinel充当Redis客户端（比如RedisTemplate）的服务发现来源，当集群发生故障转移时，会将最新信息推送给Redis的客户端</li>
+<li><strong>集群监控：</strong>负责监控 Redis Master 和 Slave 进程是否正常工作</li>
+<li><strong>故障转移：</strong>如果master故障，Sentinel会将一个slave提升为master。当故障实例恢复后也以新的master为主</li>
+<li><strong>通知：</strong> Sentinel充当Redis客户端（比如RedisTemplate）的服务发现来源，当集群发生故障转移时，通知 client 客户端新的 Master 地址。</li>
 </ol>
 <blockquote>
 <p>如何判断节点是否故障？</p>
@@ -3261,16 +3329,20 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <p>Sentinel基于心跳机制监测服务状态，每隔1秒向集群的每个实例发送ping命令</p>
 <ul>
 <li>主观下线：如果某sentinel节点发现某实例未在规定时间响应，则认为该实例主观下线。</li>
-<li>客观下线：若超过指定数量(quorum)的sentinel都认为该实例主观下线，则该实例客观下线。quorum值最好超过Sentinel实例数量的一半。</li>
+<li>客观下线：若超过指定数量(quorum)的sentinel都认为该实例主观下线，则该实例客观下线。quorum值最好超过Sentinel实例数量的一半。当一个哨兵判断主节点为「主观下线」后，就会向其他哨兵发起命令， 其他哨兵收到这个命令后，就会根据自身和主节点的网络状况， 做出赞成投票或者拒绝投票的响应。</li>
 </ul>
+<blockquote>
+<p>由哪个哨兵进行主从故障转移？哨兵选举Leader</p>
+</blockquote>
+<p>每个哨兵都有可能成为leader，它会先向其他哨兵拉票，当一个哨兵收到一个投票时，如果还没有投票，就可以投出去一票，否则就拒绝投票。当哪个哨兵的票数超过了哨兵总数目&#x2F;2 + 1，就是新的leader</p>
 <blockquote>
 <p>选出新的主节点的规则？</p>
 </blockquote>
-<p>首先要把网络状态不好的从节点给过滤掉，首先把已经下线的从节点过滤掉 。然后对所有从节点进行三轮考察：<strong>优先级、复制进度、ID 号</strong>。 </p>
+<p>首先要把网络状态不好的从节点给过滤掉。然后对所有从节点进行三轮考察：<strong>优先级、复制进度、ID 号</strong>。 </p>
 <ol>
 <li>优先级最高的从节点胜出</li>
 <li>节点的offset值（反映了复制进度）越大说明数据越新，优先级越高</li>
-<li>slave节点的运行id大小，越小优先级越高。</li>
+<li>从节点的ID大小，越小优先级越高。</li>
 </ol>
 <blockquote>
 <p>故障转移的过程？</p>
@@ -3278,63 +3350,74 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <ol>
 <li>选出一个新的主节点</li>
 <li>让旧主节点的从节点成为新主节点的从节点，开始从新的主节点同步数据</li>
-<li>将新主节点的IP地址和信息，通知给客户端</li>
+<li>将新主节点信息，通知给客户端（通过 Redis 的发布者&#x2F;订阅者机制来实现）</li>
 <li>继续监视旧主节点，当这个旧主节点重新上线时，将它设置为新主节点的从节点</li>
 </ol>
-<h4 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h4><ol>
-<li>如何从 Sentinel 集群中选择出 Leader ？（由哪个哨兵进行主从故障转移）</li>
+<p><strong>TODO</strong></p>
+<ol>
 <li>脑裂Sentinel 可以防止脑裂吗？（在小林”主从复制是怎么实现的“那里最后有提到脑裂，可结合gpt看看）</li>
 </ol>
-<h3 id="6-3、分片集群（Cluster-）"><a href="#6-3、分片集群（Cluster-）" class="headerlink" title="6.3、分片集群（Cluster ）"></a>6.3、分片<strong>集群</strong>（<strong>Cluster</strong> ）</h3><blockquote>
-<p>为什么需要 Redis Cluster？解决了什么问题？有什么优势？</p>
-</blockquote>
-<p>主从解决了高并发（读）问题，但存在高可用问题，哨兵解决了高可用问题。但还有两个问题没有解决：</p>
-<ul>
-<li>海量数据存储问题</li>
-<li>高并发写的问题</li>
-</ul>
-<p>使用分片集群可以解决上述问题，分片集群特征：</p>
-<ul>
-<li>集群中有多个主节点，每个主节点保存不同数据</li>
-<li>每个主节点都可以有多个从节点</li>
-<li>主节点之间通过ping监测彼此健康状态</li>
-<li>客户端请求可以访问集群任意节点，最终都会被转发到正确节点</li>
-</ul>
+<h2 id="3-分片集群（Cluster-）"><a href="#3-分片集群（Cluster-）" class="headerlink" title="3.分片集群（Cluster ）"></a>3.分片<strong>集群</strong>（<strong>Cluster</strong> ）</h2><p>最少三主三从</p>
+<p>Redis 集群通过分片的方式存储数据，每个节点存储数据的一部分，用户请求可以并行处理。集群模式支持自动分区、故障转移，并且可以在不停机的情况下进行节点增加或删除。 Redis Cluster 功能强大，直接集成了 <strong>主从复制</strong> 和 <strong>哨兵</strong> 的功能。 </p>
+<p><strong>核心概念</strong></p>
+<ol>
+<li><strong>数据分片</strong>： Redis集群将整个数据集划分为 <strong>16384个哈希槽（slots）</strong>。每个键通过哈希计算被分配到一个特定的槽位，而这些槽位由集群中的节点负责管理。这样的设计使得数据可以均匀分布在多个节点上。</li>
+<li><strong>重定向机制：</strong>客户端可以向集群中的任意节点发送请求。如果请求的键所在的槽位不由当前节点负责，该节点会返回一个重定向响应，告诉客户端应该联系哪个节点。这种机制确保客户端最终能访问到正确的节点。</li>
+<li><strong>主从复制与高可用性</strong>： Redis集群支持主从复制。每个槽位可以有一个主节点和多个从节点。<strong>主节点</strong>负责处理写请求。 <strong>从节点</strong>负责处理读请求，并在主节点故障时作为备份。 当主节点发生故障时，集群会自动从其从节点中选举一个新的主节点接管服务，从而保证高可用性。 </li>
+<li><strong>故障转移</strong> ：Redis集群使用一种类似于Raft的共识算法来实现故障转移。当主节点不可用时，集群会自动检测并将某个从节点提升为主节点，确保服务的连续性。 </li>
+<li><strong>动态伸缩</strong> ：Redis集群支持在线添加或删除节点，允许在不中断服务的情况下扩展存储容量和处理能力。</li>
+</ol>
 <blockquote>
-<p>Redis Cluster 是如何分片的？</p>
+<p>散列插槽</p>
 </blockquote>
+<p>Redis集群将整个数据集划分为 <strong>16384个哈希槽（slots）</strong>。这些槽被Redis节点共同负责，每个节点负责一部分。对key计算 <code>CRC16</code> 值 （也就是哈希值），然后用这个值对16384取余，可以得到这个key对应的哈希槽，然后去对应的Redis节点找数据</p>
+<p>如果请求的键所在的槽位不由当前节点负责，该节点会返回一个<strong>重定向</strong>响应，告诉客户端应该联系哪个节点。</p>
 <blockquote>
-<p>为什么 Redis Cluster 的哈希槽是 16384 个?</p>
+<p>集群伸缩</p>
 </blockquote>
+<p>集群扩容和缩容的关键，在于槽和节点之间的对应关系。 当需要扩容时，新的节点被添加到集群中，集群会自动执行数据迁移，以重新分布哈希槽到新的节点。<strong>数据迁移的过程可以确保在扩容期间数据的正常访问和插入</strong>。 当数据正在迁移时，客户端请求可能被路由到原有节点或新节点。 如果请求被路由到正在迁移数据的哈希槽，Redis Cluster 会返回一个 MOVED 响应，指示客户端重新路由请求到正确的目标节点。这种机制也就保证了数据迁移过程中的最终一致性。 当需要缩容时，Redis 集群会将槽从要缩容的节点上迁移到其他节点上，然后将要缩容的节点从集群中移除。 </p>
 <blockquote>
-<p>如何确定给定 key 的应该分布到哪个哈希槽中？</p>
+<p>Redis Cluster 中的节点是怎么进行通信的</p>
 </blockquote>
 <blockquote>
 <p>Redis Cluster 支持重新分配哈希槽吗？</p>
 </blockquote>
 <blockquote>
-<p>Redis Cluster 扩容缩容期间可以提供服务吗？</p>
 </blockquote>
+<h1 id="7-场景"><a href="#7-场景" class="headerlink" title="7.场景"></a>7.场景</h1><h2 id="1-分布式锁"><a href="#1-分布式锁" class="headerlink" title="1.分布式锁"></a>1.分布式锁</h2><p>一个最基本的分布式锁需要满足：</p>
+<ul>
+<li><strong>互斥</strong>：任意一个时刻，锁只能被一个线程持有。</li>
+<li><strong>高可用</strong>：锁服务是高可用的，当一个锁服务出现问题，能够自动切换到另外一个锁服务。并且，即使客户端的释放锁的代码逻辑出现问题，锁最终一定还是会被释放，不会影响其他线程对共享资源的访问。这一般是通过超时机制实现的。</li>
+<li><strong>可重入</strong>：一个节点获取了锁之后，还可以再次获取锁。</li>
+</ul>
+<p>除了上面这三个基本条件之外，一个好的分布式锁还需要满足下面这些条件：</p>
+<ul>
+<li><strong>高性能</strong>：获取和释放锁的操作应该快速完成，并且不应该对整个系统的性能造成过大影响。</li>
+<li><strong>非阻塞</strong>：如果获取不到锁，不能无限期等待，避免对系统正常运行造成影响。</li>
+</ul>
 <blockquote>
-<p>Redis Cluster 中的节点是怎么进行通信的？</p>
+<p>使用Redis命令设计的基础分布式锁</p>
 </blockquote>
-<h1 id="7-场景"><a href="#7-场景" class="headerlink" title="7.场景"></a>7.场景</h1><h2 id="1-分布式锁的设计方案"><a href="#1-分布式锁的设计方案" class="headerlink" title="1.分布式锁的设计方案"></a>1.分布式锁的设计方案</h2><p>设计一个分布式锁要考虑以下因素：</p>
-<ol>
-<li>避免死锁：如果一个进程获得锁后因为某些原因崩溃了，不能主动释放锁，要保证其它客户端依然能获得锁</li>
-<li>同一个客户端：必须保证获得锁和释放锁的是同一个客户端</li>
-</ol>
+<p><code>setnx ex</code>，这样可以设置一个简单的分布式锁，<code>setnnx</code>是如果key不存在，则创建key，否则失败；而<code>ex</code>则给这个key设置了过期时间，避免锁无法释放。</p>
+<p>而且Redis的命令都是原子性的，这样就保持了获得锁和设置过期时间是一起操作的</p>
+<p>对于自己设计的分布式锁，如果要保证<strong>判断该锁是否为自己的</strong>和<strong>释放锁</strong>这两个操作为原子操作，就需要用<strong>Lua脚本</strong>。释放锁的时候判断是否与获得锁的线程id一样</p>
+<blockquote>
+<p>Redisson</p>
+</blockquote>
+<p>Redisson 是一个开源的 Java 语言 Redis 客户端，提供了很多开箱即用的功能，不仅仅包括多种分布式锁的实现。 </p>
 <p>而redisson不仅实现了上述功能，还更为强大，有以下功能：</p>
 <ol>
-<li>自动续期：</li>
-<li>读写锁：</li>
-<li>公平锁：</li>
+<li><strong>自动续期</strong></li>
+<li>读写锁</li>
+<li>公平锁</li>
 </ol>
 <p>下面介绍redisson原理</p>
 <p>加锁</p>
-<p>key是锁的名称，value是个map，map的key是线程id，value是锁的重入次数，然后设置锁过期时间</p>
+<p>key是锁的名称，value是个map，<strong>map的key是线程id，value是锁的重入次数，然后设置锁过期时间</strong></p>
+<p><img src="https://oss.javaguide.cn/github/javaguide/distributed-system/distributed-lock/distributed-lock-redisson-renew-expiration.png" class="lazyload" data-srcset="https://oss.javaguide.cn/github/javaguide/distributed-system/distributed-lock/distributed-lock-redisson-renew-expiration.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="加锁成功"></p>
 <ul>
 <li>如果加锁成功，锁的重入次数加一，这就实现了重入锁的功能；<ul>
-<li>加锁成功后，就会执行一个看门狗的机制。看门狗机制是为了防止业务还没执行完，但锁到期了的问题。看门狗就是一个定时任务，只要当前线程任务没有挂掉，且没有主动释放锁，就会隔一段时间给锁续期</li>
+<li>加锁成功后，就会执行一个看门狗的机制。看门狗机制是为了防止业务还没执行完，但锁到期了的问题。看门狗就是一个<strong>定时任务</strong>，只要当前线程任务没有挂掉，且没有主动释放锁，就会隔一段时间给锁续期。默认情况下，每过 10 秒，看门狗就会执行续期操作，将锁的超时时间设置为 30 秒。</li>
 </ul>
 </li>
 <li>如果失败，返回锁的过期时间<ul>
@@ -3368,10 +3451,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-03-02T22:21:38+08:00">
+          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-03-20T10:44:24+08:00">
   <a class='notlink'>
     <i class="fa-solid fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2025年3月2日</p>
+    <p>更新于：2025年3月20日</p>
   </a>
 </div>
 
@@ -3492,7 +3575,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 
     <div class='content'>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80"><span class="toc-text">1.基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Redis%E4%B8%BA%E4%BB%80%E4%B9%88%E5%BF%AB%EF%BC%9F"><span class="toc-text">1.Redis为什么快？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%B8%89%E7%A7%8D%E5%B8%B8%E7%94%A8%E7%9A%84%E7%BC%93%E5%AD%98%E8%AF%BB%E5%86%99%E7%AD%96%E7%95%A5"><span class="toc-text">1.三种常用的缓存读写策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Redis%E6%9C%89%E5%93%AA%E4%BA%9B%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%EF%BC%9F%E5%B8%B8%E7%94%A8%E7%9A%84%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">2.Redis有哪些数据类型？常用的使用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Redis%E5%8F%AF%E4%BB%A5%E7%94%A8%E6%9D%A5%E5%81%9A%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">3.Redis可以用来做什么？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-text">2.持久化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-RDB"><span class="toc-text">1.RDB</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-AOF"><span class="toc-text">2.AOF</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Redis%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-text">3.Redis内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E8%BF%87%E6%9C%9F%E9%94%AE%E7%9A%84%E5%88%A0%E9%99%A4%E7%AD%96%E7%95%A5%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="toc-text">1.过期键的删除策略有哪些</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%86%85%E5%AD%98%E6%B7%98%E6%B1%B0%E7%B2%97%E7%95%A5%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="toc-text">2.内存淘汰粗略有哪些</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text"></span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-Redis%E7%94%9F%E4%BA%A7%E9%97%AE%E9%A2%98"><span class="toc-text">4.Redis生产问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F"><span class="toc-text">1.缓存穿透</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-text">2.布隆过滤器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF"><span class="toc-text">3.缓存击穿</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9"><span class="toc-text">4.缓存雪崩</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%A4%A7Key%E9%97%AE%E9%A2%98"><span class="toc-text">5.大Key问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E7%83%ADKey"><span class="toc-text">6.热Key</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E7%BC%93%E5%AD%98%E9%A2%84%E7%83%AD"><span class="toc-text">6.缓存预热</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6%E3%80%81%E9%AB%98%E5%8F%AF%E7%94%A8"><span class="toc-text">6、高可用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1%E3%80%81%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6"><span class="toc-text">6.1、主从复制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2%E3%80%81%E5%93%A8%E5%85%B5%EF%BC%88Sentinel%EF%BC%89%E6%9C%BA%E5%88%B6"><span class="toc-text">6.2、哨兵（Sentinel）机制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#TODO"><span class="toc-text">TODO</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3%E3%80%81%E5%88%86%E7%89%87%E9%9B%86%E7%BE%A4%EF%BC%88Cluster-%EF%BC%89"><span class="toc-text">6.3、分片集群（Cluster ）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E5%9C%BA%E6%99%AF"><span class="toc-text">7.场景</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%A1%88"><span class="toc-text">1.分布式锁的设计方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E7%A7%92%E6%9D%80%E5%9C%BA%E6%99%AF"><span class="toc-text">2.如何设计一个秒杀场景</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80"><span class="toc-text">1.基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Redis%E4%B8%BA%E4%BB%80%E4%B9%88%E5%BF%AB%EF%BC%9F"><span class="toc-text">1.Redis为什么快？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Redis%E6%9C%89%E5%93%AA%E4%BA%9B%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%EF%BC%9F%E5%B8%B8%E7%94%A8%E7%9A%84%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">2.Redis有哪些数据类型？常用的使用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Redis%E5%8F%AF%E4%BB%A5%E7%94%A8%E6%9D%A5%E5%81%9A%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">3.Redis可以用来做什么？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-text">2.持久化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-RDB"><span class="toc-text">1.RDB</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-AOF"><span class="toc-text">2.AOF</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9"><span class="toc-text">3.如何选择</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Redis%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-text">3.Redis内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E8%BF%87%E6%9C%9F%E9%94%AE%E7%9A%84%E5%88%A0%E9%99%A4%E7%AD%96%E7%95%A5%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="toc-text">1.过期键的删除策略有哪些</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%86%85%E5%AD%98%E6%B7%98%E6%B1%B0%E7%B2%97%E7%95%A5%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="toc-text">2.内存淘汰粗略有哪些</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text"></span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E7%BC%93%E5%AD%98%E7%AF%87"><span class="toc-text">4.缓存篇</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%BC%93%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7%E6%96%B9%E6%A1%88"><span class="toc-text">1.缓存一致性方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F"><span class="toc-text">2.缓存穿透</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-text">3.布隆过滤器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF"><span class="toc-text">4.缓存击穿</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9"><span class="toc-text">5.缓存雪崩</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%A4%A7Key%E9%97%AE%E9%A2%98"><span class="toc-text">6.大Key问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E7%83%ADKey"><span class="toc-text">7.热Key</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E7%BC%93%E5%AD%98%E9%A2%84%E7%83%AD"><span class="toc-text">8.缓存预热</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E5%BA%95%E5%B1%82%E7%BB%93%E6%9E%84"><span class="toc-text">5.底层结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-SDS"><span class="toc-text">1.SDS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8"><span class="toc-text">2.双向链表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8ZipList"><span class="toc-text">3.压缩列表ZipList</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%93%88%E5%B8%8C%E8%A1%A8"><span class="toc-text">4.哈希表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%95%B4%E6%95%B0%E9%9B%86%E5%90%88"><span class="toc-text">5.整数集合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E8%B7%B3%E8%A1%A8"><span class="toc-text">6.跳表</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-Redis%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="toc-text">6.Redis线程模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%8D%95%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="toc-text">1.单线程模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%B8%BA%E4%BB%80%E4%B9%88Redis%E5%8D%95%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B%E4%B9%9F%E8%83%BD%E6%95%88%E7%8E%87%E8%BF%99%E4%B9%88%E9%AB%98%EF%BC%9F"><span class="toc-text">2.为什么Redis单线程模型也能效率这么高？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E9%AB%98%E5%8F%AF%E7%94%A8"><span class="toc-text">7.高可用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6"><span class="toc-text">1.主从复制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%93%A8%E5%85%B5%EF%BC%88Sentinel%EF%BC%89%E6%9C%BA%E5%88%B6"><span class="toc-text">2.哨兵（Sentinel）机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%88%86%E7%89%87%E9%9B%86%E7%BE%A4%EF%BC%88Cluster-%EF%BC%89"><span class="toc-text">3.分片集群（Cluster ）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E5%9C%BA%E6%99%AF"><span class="toc-text">7.场景</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-text">1.分布式锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E7%A7%92%E6%9D%80%E5%9C%BA%E6%99%AF"><span class="toc-text">2.如何设计一个秒杀场景</span></a></li></ol></li></ol>
     </div>
   </section>
 
@@ -4684,7 +4767,7 @@ window.matchMedia('(prefers-color-scheme: light)').addListener(darkModelListener
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/10/28/八股/Redis/","name":"Redis"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"Redis","description":"这里是Redis相关的八股","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/Redis/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/Redis/","wordCount":13,"datePublished":"2024-10-28T12:14:56.000Z","dateModified":"2025-03-02T14:21:38.210Z","articleSection":"八股","keywords":"Redis","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/10/28/八股/Redis/","name":"Redis"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"Redis","description":"这里是Redis相关的八股","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/Redis/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/Redis/","wordCount":13,"datePublished":"2024-10-28T12:14:56.000Z","dateModified":"2025-03-20T02:44:24.465Z","articleSection":"八股","keywords":"Redis","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 
