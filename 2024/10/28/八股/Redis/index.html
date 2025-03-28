@@ -46,7 +46,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
 <meta property="article:published_time" content="2024-10-28T12:14:56.000Z">
-<meta property="article:modified_time" content="2025-03-20T02:44:24.465Z">
+<meta property="article:modified_time" content="2025-03-26T13:00:59.028Z">
 <meta property="article:author" content="Light">
 <meta property="article:tag" content="Redis">
 <meta name="twitter:card" content="summary">
@@ -1847,7 +1847,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: false,
     cdn: {"js":{"app":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/app.js","parallax":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/parallax.js","rightMenu":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenu.js","rightMenus":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenus.js","sites":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/sites.js","friends":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/friends.js","contributors":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/contributors.js","search":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1742520519381),
+    lastupdate: new Date(1743154998018),
     sidebar: {
       for_page: ["blogger","category","donate","webinfo"],
       for_post: ["toc"],
@@ -2900,13 +2900,13 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <div class="new-meta-item wordcount">
     <a class='notlink'>
       <i class="fa-solid fa-keyboard fa-fw" aria-hidden="true"></i>
-      <p>字数：11.5k 字</p>
+      <p>字数：12k 字</p>
     </a>
   </div>
   <div class="new-meta-item readtime">
     <a class='notlink'>
       <i class="fa-solid fa-hourglass-half fa-fw" aria-hidden="true"></i>
-      <p>时长：39 分钟</p>
+      <p>时长：41 分钟</p>
     </a>
   </div>
 
@@ -2928,6 +2928,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 
 
+<p>Redis默认端口6379</p>
 <h1 id="1-基础"><a href="#1-基础" class="headerlink" title="1.基础"></a>1.基础</h1><h2 id="1-Redis为什么快？"><a href="#1-Redis为什么快？" class="headerlink" title="1.Redis为什么快？"></a>1.Redis为什么快？</h2><ul>
 <li><p><strong>内存操作：</strong>完全基于内存，绝大部分请求是纯粹的内存操作，非常快速</p>
 </li>
@@ -2959,6 +2960,21 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 </ul>
 </li>
 </ol>
+<h2 id="3-String还是Hash存储对象更好呢？"><a href="#3-String还是Hash存储对象更好呢？" class="headerlink" title="3.String还是Hash存储对象更好呢？"></a>3.String还是Hash存储对象更好呢？</h2><p><strong>性能</strong></p>
+<ul>
+<li><strong>String</strong>：适合存储和读取大对象，因为它是整体操作，性能较高。</li>
+<li><strong>Hash</strong>：适合操作大量小字段，可以只处理需要的字段，减少不必要的数据传输。</li>
+</ul>
+<p><strong>内存</strong></p>
+<ul>
+<li><strong>String</strong>：存储大对象时内存开销可能较大，尤其是对象频繁序列化和反序列化。</li>
+<li><strong>Hash</strong>：在存储大量小对象时更节省内存，因为字段共享同一个键名。</li>
+</ul>
+<p><strong>操作需求</strong></p>
+<ul>
+<li><strong>String</strong>：如果对象不可变，或者总是整体读写，String更简单。</li>
+<li><strong>Hash</strong>：如果需要频繁访问或修改对象的某个字段，Hash更合适。</li>
+</ul>
 <h2 id="3-Redis可以用来做什么？"><a href="#3-Redis可以用来做什么？" class="headerlink" title="3.Redis可以用来做什么？"></a><strong>3.Redis可以用来做什么？</strong></h2><ul>
 <li>缓存</li>
 <li>排行榜</li>
@@ -2980,7 +2996,26 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <li><code>save</code>:同步保存操作，会阻塞 Redis 主进程； </li>
 <li><code>bgsave</code>:fork 出一个子进程，子进程执行，不会阻塞 Redis 主线程，默认选项。</li>
 </ul>
-<h2 id="2-AOF"><a href="#2-AOF" class="headerlink" title="2.AOF"></a>2.AOF</h2><p>AOF持久化(即Append Only File)，Redis 在执行完一条写操作命令后，就会把该命令以追加的方式写入到一个文件里， 然后 Redis 重启时，会读取该文件记录的命令，然后逐一执行命令的方式来进行数据恢复。 </p>
+<h2 id="2-RDB写时复制（Copy-on-Write）"><a href="#2-RDB写时复制（Copy-on-Write）" class="headerlink" title="2.RDB写时复制（Copy-on-Write）"></a>2.RDB写时复制（Copy-on-Write）</h2><p>假如RDB持久化过程中数据发生了改变怎么办？</p>
+<p>在 RDB 快照生成过程中，如果数据发生了改变，Redis 的处理机制可以保证快照的一致性，同时不会丢失后续的修改。具体来说，Redis 使用了一种叫做 <strong>Copy-on-Write（写时复制）</strong> 的技术来解决这个问题。 </p>
+<p>先回顾快照的生成过程：</p>
+<ul>
+<li>当 Redis 触发 RDB 持久化时（比如通过 SAVE 或 BGSAVE 命令），它会创建一个子进程。</li>
+<li>子进程负责将内存中的数据写入磁盘，生成 .rdb 文件。</li>
+<li>主进程继续处理客户端的请求（比如读写操作）。</li>
+</ul>
+<p><strong>Copy-on-Write 机制</strong> ：</p>
+<ul>
+<li>在子进程生成快照时，它会基于某个时间点（触发快照的瞬间）的内存数据进行操作。</li>
+<li>如果主进程在这期间修改了数据，操作系统会利用 <strong>写时复制</strong>：<ul>
+<li>被修改的数据会被复制一份，主进程在新副本上操作。 </li>
+<li>子进程仍然使用原始数据（未修改时的内存快照）生成快照。</li>
+</ul>
+</li>
+<li>这样，主进程的修改不会影响子进程正在生成的快照，快照仍然是触发时刻的一致性数据。</li>
+</ul>
+<p><strong>数据丢失风险</strong>：快照生成后到下一次快照之间的修改，如果没来得及保存（比如 Redis 崩溃），会丢失。 </p>
+<h2 id="3-AOF"><a href="#3-AOF" class="headerlink" title="3.AOF"></a>3.AOF</h2><p>AOF持久化(即Append Only File)，Redis 在执行完一条写操作命令后，就会把该命令以追加的方式写入到一个文件里， 然后 Redis 重启时，会读取该文件记录的命令，然后逐一执行命令的方式来进行数据恢复。 </p>
 <blockquote>
 <p>AOF为什么是在执行完写命令才将该命令记录到AOF日志？</p>
 </blockquote>
@@ -2999,7 +3034,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <li>缺点：因为记录了每一个写操作，所以AOF文件通常比RDB文件更大，<strong>消耗更多的磁盘空间</strong>。</li>
 </ul>
 <p>总结：RDB是Redis的快照持久化方式，通过<strong>周期性</strong>的快照将数据保存到硬盘，占用更少的磁盘空间和 CPU资源，适用于数据备份和恢复，但可能存在数据丢失的风险。AOF 是追加日志持久化方式，将每个写操作以追加的方式记录到日志文件中，确保了更高的数据完整性和持久性，但相对于RDB 消耗更多的磁盘空间和写入性能，适用于数据持久化和灾难恢复，且可以通过配置实现不同的同步频率。</p>
-<h2 id="3-如何选择"><a href="#3-如何选择" class="headerlink" title="3.如何选择"></a>3.如何选择</h2><p>1.RDB</p>
+<h2 id="4-如何选择"><a href="#4-如何选择" class="headerlink" title="4.如何选择"></a>4.如何选择</h2><p>1.RDB</p>
 <p>缺点：周期性保存快照，但如果下次快照前宕机，会<strong>丢失数据很多</strong></p>
 <p>优点：保存的是原始数据，<strong>恢复起来比AOF更快</strong>（因为AOF保存的是命令还要执行）；<strong>文件小</strong>，适合做数据的备份，灾难恢复。 </p>
 <p>2.AOF</p>
@@ -3451,10 +3486,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-03-20T10:44:24+08:00">
+          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-03-26T21:00:59+08:00">
   <a class='notlink'>
     <i class="fa-solid fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2025年3月20日</p>
+    <p>更新于：2025年3月26日</p>
   </a>
 </div>
 
@@ -3517,7 +3552,8 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 
 
-1.基础知识1.MyISAM与InnoDB区别存储引擎（Storage Engine）是用来定义数据表如何存储、读取、管理和处理数据的底层机制。换句...</p>
+MySQL默认端口3306
+1.基础知识1.MyISAM与InnoDB区别存储引擎（Storage Engine）是用来定义数据表如何存储、读取、管...</p>
         </a>
       
     </div>
@@ -3575,7 +3611,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 
     <div class='content'>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80"><span class="toc-text">1.基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Redis%E4%B8%BA%E4%BB%80%E4%B9%88%E5%BF%AB%EF%BC%9F"><span class="toc-text">1.Redis为什么快？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Redis%E6%9C%89%E5%93%AA%E4%BA%9B%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%EF%BC%9F%E5%B8%B8%E7%94%A8%E7%9A%84%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">2.Redis有哪些数据类型？常用的使用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Redis%E5%8F%AF%E4%BB%A5%E7%94%A8%E6%9D%A5%E5%81%9A%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">3.Redis可以用来做什么？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-text">2.持久化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-RDB"><span class="toc-text">1.RDB</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-AOF"><span class="toc-text">2.AOF</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9"><span class="toc-text">3.如何选择</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Redis%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-text">3.Redis内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E8%BF%87%E6%9C%9F%E9%94%AE%E7%9A%84%E5%88%A0%E9%99%A4%E7%AD%96%E7%95%A5%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="toc-text">1.过期键的删除策略有哪些</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%86%85%E5%AD%98%E6%B7%98%E6%B1%B0%E7%B2%97%E7%95%A5%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="toc-text">2.内存淘汰粗略有哪些</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text"></span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E7%BC%93%E5%AD%98%E7%AF%87"><span class="toc-text">4.缓存篇</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%BC%93%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7%E6%96%B9%E6%A1%88"><span class="toc-text">1.缓存一致性方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F"><span class="toc-text">2.缓存穿透</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-text">3.布隆过滤器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF"><span class="toc-text">4.缓存击穿</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9"><span class="toc-text">5.缓存雪崩</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%A4%A7Key%E9%97%AE%E9%A2%98"><span class="toc-text">6.大Key问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E7%83%ADKey"><span class="toc-text">7.热Key</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E7%BC%93%E5%AD%98%E9%A2%84%E7%83%AD"><span class="toc-text">8.缓存预热</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E5%BA%95%E5%B1%82%E7%BB%93%E6%9E%84"><span class="toc-text">5.底层结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-SDS"><span class="toc-text">1.SDS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8"><span class="toc-text">2.双向链表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8ZipList"><span class="toc-text">3.压缩列表ZipList</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%93%88%E5%B8%8C%E8%A1%A8"><span class="toc-text">4.哈希表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%95%B4%E6%95%B0%E9%9B%86%E5%90%88"><span class="toc-text">5.整数集合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E8%B7%B3%E8%A1%A8"><span class="toc-text">6.跳表</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-Redis%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="toc-text">6.Redis线程模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%8D%95%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="toc-text">1.单线程模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%B8%BA%E4%BB%80%E4%B9%88Redis%E5%8D%95%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B%E4%B9%9F%E8%83%BD%E6%95%88%E7%8E%87%E8%BF%99%E4%B9%88%E9%AB%98%EF%BC%9F"><span class="toc-text">2.为什么Redis单线程模型也能效率这么高？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E9%AB%98%E5%8F%AF%E7%94%A8"><span class="toc-text">7.高可用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6"><span class="toc-text">1.主从复制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%93%A8%E5%85%B5%EF%BC%88Sentinel%EF%BC%89%E6%9C%BA%E5%88%B6"><span class="toc-text">2.哨兵（Sentinel）机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%88%86%E7%89%87%E9%9B%86%E7%BE%A4%EF%BC%88Cluster-%EF%BC%89"><span class="toc-text">3.分片集群（Cluster ）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E5%9C%BA%E6%99%AF"><span class="toc-text">7.场景</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-text">1.分布式锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E7%A7%92%E6%9D%80%E5%9C%BA%E6%99%AF"><span class="toc-text">2.如何设计一个秒杀场景</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80"><span class="toc-text">1.基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Redis%E4%B8%BA%E4%BB%80%E4%B9%88%E5%BF%AB%EF%BC%9F"><span class="toc-text">1.Redis为什么快？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Redis%E6%9C%89%E5%93%AA%E4%BA%9B%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%EF%BC%9F%E5%B8%B8%E7%94%A8%E7%9A%84%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">2.Redis有哪些数据类型？常用的使用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-String%E8%BF%98%E6%98%AFHash%E5%AD%98%E5%82%A8%E5%AF%B9%E8%B1%A1%E6%9B%B4%E5%A5%BD%E5%91%A2%EF%BC%9F"><span class="toc-text">3.String还是Hash存储对象更好呢？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Redis%E5%8F%AF%E4%BB%A5%E7%94%A8%E6%9D%A5%E5%81%9A%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">3.Redis可以用来做什么？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-text">2.持久化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-RDB"><span class="toc-text">1.RDB</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-RDB%E5%86%99%E6%97%B6%E5%A4%8D%E5%88%B6%EF%BC%88Copy-on-Write%EF%BC%89"><span class="toc-text">2.RDB写时复制（Copy-on-Write）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-AOF"><span class="toc-text">3.AOF</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9"><span class="toc-text">4.如何选择</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Redis%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-text">3.Redis内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E8%BF%87%E6%9C%9F%E9%94%AE%E7%9A%84%E5%88%A0%E9%99%A4%E7%AD%96%E7%95%A5%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="toc-text">1.过期键的删除策略有哪些</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%86%85%E5%AD%98%E6%B7%98%E6%B1%B0%E7%B2%97%E7%95%A5%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="toc-text">2.内存淘汰粗略有哪些</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text"></span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E7%BC%93%E5%AD%98%E7%AF%87"><span class="toc-text">4.缓存篇</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%BC%93%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7%E6%96%B9%E6%A1%88"><span class="toc-text">1.缓存一致性方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F"><span class="toc-text">2.缓存穿透</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-text">3.布隆过滤器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF"><span class="toc-text">4.缓存击穿</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9"><span class="toc-text">5.缓存雪崩</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%A4%A7Key%E9%97%AE%E9%A2%98"><span class="toc-text">6.大Key问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E7%83%ADKey"><span class="toc-text">7.热Key</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E7%BC%93%E5%AD%98%E9%A2%84%E7%83%AD"><span class="toc-text">8.缓存预热</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E5%BA%95%E5%B1%82%E7%BB%93%E6%9E%84"><span class="toc-text">5.底层结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-SDS"><span class="toc-text">1.SDS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8"><span class="toc-text">2.双向链表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8ZipList"><span class="toc-text">3.压缩列表ZipList</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%93%88%E5%B8%8C%E8%A1%A8"><span class="toc-text">4.哈希表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%95%B4%E6%95%B0%E9%9B%86%E5%90%88"><span class="toc-text">5.整数集合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E8%B7%B3%E8%A1%A8"><span class="toc-text">6.跳表</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-Redis%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="toc-text">6.Redis线程模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%8D%95%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="toc-text">1.单线程模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%B8%BA%E4%BB%80%E4%B9%88Redis%E5%8D%95%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B%E4%B9%9F%E8%83%BD%E6%95%88%E7%8E%87%E8%BF%99%E4%B9%88%E9%AB%98%EF%BC%9F"><span class="toc-text">2.为什么Redis单线程模型也能效率这么高？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E9%AB%98%E5%8F%AF%E7%94%A8"><span class="toc-text">7.高可用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6"><span class="toc-text">1.主从复制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%93%A8%E5%85%B5%EF%BC%88Sentinel%EF%BC%89%E6%9C%BA%E5%88%B6"><span class="toc-text">2.哨兵（Sentinel）机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%88%86%E7%89%87%E9%9B%86%E7%BE%A4%EF%BC%88Cluster-%EF%BC%89"><span class="toc-text">3.分片集群（Cluster ）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%E5%9C%BA%E6%99%AF"><span class="toc-text">7.场景</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-text">1.分布式锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E7%A7%92%E6%9D%80%E5%9C%BA%E6%99%AF"><span class="toc-text">2.如何设计一个秒杀场景</span></a></li></ol></li></ol>
     </div>
   </section>
 
@@ -4767,7 +4803,7 @@ window.matchMedia('(prefers-color-scheme: light)').addListener(darkModelListener
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/10/28/八股/Redis/","name":"Redis"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"Redis","description":"这里是Redis相关的八股","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/Redis/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/Redis/","wordCount":13,"datePublished":"2024-10-28T12:14:56.000Z","dateModified":"2025-03-20T02:44:24.465Z","articleSection":"八股","keywords":"Redis","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/10/28/八股/Redis/","name":"Redis"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"Redis","description":"这里是Redis相关的八股","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/Redis/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/Redis/","wordCount":13,"datePublished":"2024-10-28T12:14:56.000Z","dateModified":"2025-03-26T13:00:59.028Z","articleSection":"八股","keywords":"Redis","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 
