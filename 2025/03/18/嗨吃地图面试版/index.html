@@ -46,7 +46,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
 <meta property="article:published_time" content="2025-03-18T01:40:54.000Z">
-<meta property="article:modified_time" content="2025-03-21T01:39:13.096Z">
+<meta property="article:modified_time" content="2025-03-31T01:47:50.486Z">
 <meta property="article:author" content="Light">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
@@ -1846,7 +1846,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: false,
     cdn: {"js":{"app":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/app.js","parallax":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/parallax.js","rightMenu":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenu.js","rightMenus":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenus.js","sites":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/sites.js","friends":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/friends.js","contributors":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/contributors.js","search":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1743154998018),
+    lastupdate: new Date(1743518268572),
     sidebar: {
       for_page: ["blogger","category","donate","webinfo"],
       for_post: ["toc"],
@@ -2889,13 +2889,13 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <div class="new-meta-item wordcount">
     <a class='notlink'>
       <i class="fa-solid fa-keyboard fa-fw" aria-hidden="true"></i>
-      <p>字数：5.1k 字</p>
+      <p>字数：5.6k 字</p>
     </a>
   </div>
   <div class="new-meta-item readtime">
     <a class='notlink'>
       <i class="fa-solid fa-hourglass-half fa-fw" aria-hidden="true"></i>
-      <p>时长：18 分钟</p>
+      <p>时长：20 分钟</p>
     </a>
   </div>
 
@@ -3074,8 +3074,25 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <p>困惑点补充：</p>
 <p>1.Lua脚本怎么检查库存和下单记录的</p>
 <p>因为Redis保存了库存数量，以及用set集合了下单记录，所以可以很快查找到</p>
-<h1 id="五-点赞关注模块"><a href="#五-点赞关注模块" class="headerlink" title="五.点赞关注模块"></a>五.点赞关注模块</h1><h2 id="1-点赞"><a href="#1-点赞" class="headerlink" title="1.点赞"></a>1.点赞</h2><p>Zset，key为业务名+UserID，value为点赞数</p>
+<h1 id="五-点赞关注模块"><a href="#五-点赞关注模块" class="headerlink" title="五.点赞关注模块"></a>五.点赞关注模块</h1><h2 id="1-点赞"><a href="#1-点赞" class="headerlink" title="1.点赞"></a>1.点赞</h2><p>使用Zset的原因</p>
+<ol>
+<li>点赞这种高频变化的数据，如果我们使用MySQL是十分不理智的，因为MySQL慢、并且并发请求MySQL会影响其它重要业务，容易影响整个系统的性能，继而降低了用户体验。 </li>
+<li>不重复</li>
+<li></li>
+</ol>
+<p>Zset，key为业务名+UserID，value为点赞数</p>
+<p>1.判断是否点赞可以用ZSet的<code>ZSCORE</code>方法判断用户是否存在 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 判断当前用户是否点赞该博客</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">isBlogLiked</span><span class="params">(Blog blog)</span> &#123;</span><br><span class="line">       <span class="type">UserDTO</span> <span class="variable">user</span> <span class="operator">=</span> ThreadLocalUtls.getUser();</span><br><span class="line">       <span class="keyword">if</span> (Objects.isNull(user))&#123;</span><br><span class="line">           <span class="comment">// 当前用户未登录，无需查询点赞</span></span><br><span class="line">           <span class="keyword">return</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="type">Long</span> <span class="variable">userId</span> <span class="operator">=</span> user.getId();</span><br><span class="line">       <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> BLOG_LIKED_KEY + blog.getId();</span><br><span class="line">       <span class="type">Double</span> <span class="variable">score</span> <span class="operator">=</span> stringRedisTemplate.opsForZSet().score(key, userId.toString());</span><br><span class="line">       blog.setIsLike(Objects.nonNull(score));</span><br><span class="line">   &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>2.SortedList可以使用<code>ZRANGE</code>方法实现范围查询 </p>
+<p>key为用户，value为点赞次数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 查询所有点赞博客的用户</span></span><br><span class="line"><span class="comment">    *</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> id</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> Result <span class="title function_">queryBlogLikes</span><span class="params">(Long id)</span> &#123;</span><br><span class="line">       <span class="comment">// 查询Top5的点赞用户 zrange key 0 4</span></span><br><span class="line">       <span class="type">Long</span> <span class="variable">userId</span> <span class="operator">=</span> ThreadLocalUtls.getUser().getId();</span><br><span class="line">       <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> BLOG_LIKED_KEY + id;</span><br><span class="line">       Set&lt;String&gt; top5 = stringRedisTemplate.opsForZSet().range(key, <span class="number">0</span>, <span class="number">4</span>);</span><br><span class="line">       <span class="keyword">if</span> (top5 == <span class="literal">null</span> || top5.isEmpty()) &#123;</span><br><span class="line">           <span class="keyword">return</span> Result.ok(Collections.emptyList());</span><br><span class="line">       &#125;</span><br><span class="line">       List&lt;Long&gt; ids = top5.stream().map(Long::valueOf).collect(Collectors.toList());</span><br><span class="line">       List&lt;UserDTO&gt; userDTOList = userService.listByIds(ids).stream()</span><br><span class="line">               .map(user -&gt; BeanUtil.copyProperties(user, UserDTO.class))</span><br><span class="line">               .collect(Collectors.toList());</span><br><span class="line">       <span class="keyword">return</span> Result.ok(userDTOList);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+
+
 <h2 id="2-关注-共同关注"><a href="#2-关注-共同关注" class="headerlink" title="2.关注&#x2F;共同关注"></a>2.关注&#x2F;共同关注</h2><p>Set记录关注博主，对于共同关注，可以用两个Set求交集</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 查询共同关注</span></span><br><span class="line"><span class="comment">    *</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> id</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> Result <span class="title function_">followCommons</span><span class="params">(Long id)</span> &#123;</span><br><span class="line">       <span class="type">Long</span> <span class="variable">userId</span> <span class="operator">=</span> ThreadLocalUtls.getUser().getId();</span><br><span class="line">       <span class="type">String</span> <span class="variable">key1</span> <span class="operator">=</span> FOLLOW_KEY + userId;</span><br><span class="line">       <span class="type">String</span> <span class="variable">key2</span> <span class="operator">=</span> FOLLOW_KEY + id;</span><br><span class="line">       <span class="comment">// 查询当前用户与目标用户的共同关注对象</span></span><br><span class="line">       Set&lt;String&gt; intersect = stringRedisTemplate.opsForSet().intersect(key1, key2);</span><br><span class="line">       <span class="keyword">if</span> (Objects.isNull(intersect) || intersect.isEmpty()) &#123;</span><br><span class="line">           <span class="keyword">return</span> Result.ok(Collections.emptyList());</span><br><span class="line">       &#125;</span><br><span class="line">       List&lt;Long&gt; ids = intersect.stream().map(Long::valueOf).collect(Collectors.toList());</span><br><span class="line">       <span class="comment">// 查询共同关注的用户信息</span></span><br><span class="line">       List&lt;UserDTO&gt; userDTOList = userService.listByIds(ids).stream()</span><br><span class="line">               .map(user -&gt; BeanUtil.copyProperties(user, UserDTO.class))</span><br><span class="line">               .collect(Collectors.toList());</span><br><span class="line">       <span class="keyword">return</span> Result.ok(userDTOList);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
 
   </div>
   
@@ -3100,10 +3117,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-03-21T09:39:13+08:00">
+          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-03-31T09:47:50+08:00">
   <a class='notlink'>
     <i class="fa-solid fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2025年3月21日</p>
+    <p>更新于：2025年3月31日</p>
   </a>
 </div>
 
@@ -3142,6 +3159,13 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
   
     <div class="prev-next">
+      
+        <a class='prev' href='/2025/03/31/%E9%9D%A2%E7%BB%8F/%E8%85%BE%E8%AE%AF%E9%9D%A2%E7%BB%8F/'>
+          <p class='title'><i class="fa-solid fa-chevron-left" aria-hidden="true"></i>腾讯面经</p>
+          <p class='content'>d
+这是第二次面腾讯，之前面的wxg的企业微信后台开发，太没有体验了。就给了三道题，然后面试官人就没了，最后也就做出来一道，直接就结束面试了。。。
+3.21-wxg-企业微信1.（mid），给一...</p>
+        </a>
       
       
         <a class='next' href='/2025/03/08/%E9%9D%A2%E7%BB%8F/%E7%BE%8E%E5%9B%A2%E6%9A%91%E6%9C%9F%E9%9D%A2%E8%AF%95/'>
@@ -4404,7 +4428,7 @@ window.matchMedia('(prefers-color-scheme: light)').addListener(darkModelListener
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2025/03/18/嗨吃地图面试版/","name":"嗨吃地图面试版"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"嗨吃地图面试版","description":"这个项目还是要好好打磨，因为网上资料多，比较透明，而且也看了好长时间了，还有待发掘的点。这里就快速再重新梳理一下项目，然后引出其中需要熟悉的八股","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2025/03/18/%E5%97%A8%E5%90%83%E5%9C%B0%E5%9B%BE%E9%9D%A2%E8%AF%95%E7%89%88/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2025/03/18/%E5%97%A8%E5%90%83%E5%9C%B0%E5%9B%BE%E9%9D%A2%E8%AF%95%E7%89%88/","wordCount":72,"datePublished":"2025-03-18T01:40:54.000Z","dateModified":"2025-03-21T01:39:13.096Z","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2025/03/18/嗨吃地图面试版/","name":"嗨吃地图面试版"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"嗨吃地图面试版","description":"这个项目还是要好好打磨，因为网上资料多，比较透明，而且也看了好长时间了，还有待发掘的点。这里就快速再重新梳理一下项目，然后引出其中需要熟悉的八股","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2025/03/18/%E5%97%A8%E5%90%83%E5%9C%B0%E5%9B%BE%E9%9D%A2%E8%AF%95%E7%89%88/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2025/03/18/%E5%97%A8%E5%90%83%E5%9C%B0%E5%9B%BE%E9%9D%A2%E8%AF%95%E7%89%88/","wordCount":72,"datePublished":"2025-03-18T01:40:54.000Z","dateModified":"2025-03-31T01:47:50.486Z","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 
