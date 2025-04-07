@@ -46,7 +46,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
 <meta property="article:published_time" content="2024-10-28T12:30:49.000Z">
-<meta property="article:modified_time" content="2025-04-01T14:37:20.418Z">
+<meta property="article:modified_time" content="2025-04-07T06:52:04.332Z">
 <meta property="article:author" content="Light">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
@@ -1846,7 +1846,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: false,
     cdn: {"js":{"app":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/app.js","parallax":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/parallax.js","rightMenu":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenu.js","rightMenus":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenus.js","sites":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/sites.js","friends":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/friends.js","contributors":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/contributors.js","search":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1743518268572),
+    lastupdate: new Date(1744009020318),
     sidebar: {
       for_page: ["blogger","category","donate","webinfo"],
       for_post: ["toc"],
@@ -2899,13 +2899,13 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <div class="new-meta-item wordcount">
     <a class='notlink'>
       <i class="fa-solid fa-keyboard fa-fw" aria-hidden="true"></i>
-      <p>字数：11.2k 字</p>
+      <p>字数：11.9k 字</p>
     </a>
   </div>
   <div class="new-meta-item readtime">
     <a class='notlink'>
       <i class="fa-solid fa-hourglass-half fa-fw" aria-hidden="true"></i>
-      <p>时长：38 分钟</p>
+      <p>时长：40 分钟</p>
     </a>
   </div>
 
@@ -3007,7 +3007,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <p>僵尸进程</p>
 </blockquote>
 <p>子进程已经终止，但是其父进程仍在运行，且父进程没有调用 wait()或 waitpid()等系统调用来获取子进程的状态信息，释放子进程占用的资源，导致子进程的 PCB 依然存在于系统中， 但无法被进一步使用。</p>
-<p>这种情况下，子进程被称为“僵尸进程”。避免僵尸进程的产生，父进程需要及时调用 wait()或 waitpid()系统调用来回收子进程。 </p>
+<p>这种情况下，子进程被称为“僵尸进程”。避免僵尸进程的产生，父进程需要及时调用 <code>wait()</code>或 <code>waitpid()</code>系统调用来回收子进程。 </p>
 <blockquote>
 <p>孤儿进程</p>
 </blockquote>
@@ -3184,7 +3184,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <p><strong>优点：</strong></p>
 <ol>
 <li><strong>扩展内存容量</strong>：虚拟内存允许程序使用的内存空间超过物理内存的大小。操作系统通过将不常用的页面存储到硬盘中，使得程序可以“认为”它有更大的内存。 </li>
-<li><strong>内存隔离和保护</strong>：每个进程都有独立的虚拟地址空间，进程间的内存是隔离的，这提供了更好的内存保护和安全性。<strong>进程之间彼此隔离</strong>，一个进程中的代码无法更改正在由另一进程或操作系统使用的物理内存。 </li>
+<li><strong>内存隔离和保护</strong>：每个进程都有独立的虚拟地址空间，进程间的内存是隔离的，这提供了更好的内存保护和安全性。<strong>进程之间彼此隔离</strong>，一个进程中的代码无法更改正在由另一进程或操作系统使用的物理内存。 【补充】：还可以避免用户可以直接访问到物理地址</li>
 <li><strong>简化程序设计</strong>：程序员不需要关心物理内存的具体分配，虚拟内存使得每个程序可以拥有独立的内存空间，极大地简化了内存管理。</li>
 </ol>
 <p>虚拟地址和物理地址的<strong>映射方式</strong>主要有</p>
@@ -3244,31 +3244,9 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <li>先来先服务：按照请求到达磁盘调度器的顺序进行处理，先到达的请求的先被服务。</li>
 </ol>
 <hr>
-<h1 id="4-I-O"><a href="#4-I-O" class="headerlink" title="4.I&#x2F;O"></a>4.I&#x2F;O</h1><h2 id="1-零拷贝"><a href="#1-零拷贝" class="headerlink" title="1.零拷贝"></a>1.零拷贝</h2><p>零拷贝（Zero-copy）是一种优化数据传输的技术，旨在减<strong>少或消除数据在用户态和内核态之间的拷贝操作</strong>，从而提高I&#x2F;O性能。在传统的I&#x2F;O操作中，数据通常需要从内核缓冲区拷贝到用户缓冲区，或者从用户缓冲区拷贝回内核缓冲区，这会带来额外的CPU和内存开销。零拷贝技术通过避免这些不必要的拷贝，显著提升数据传输的效率，尤其在高并发、大数据量的场景下效果尤为明显。 </p>
-<ol>
-<li><p><strong>零拷贝的原理</strong></p>
-<p>在操作系统（如Linux）中，传统的I&#x2F;O操作通常涉及以下步骤：</p>
-<ol>
-<li>数据从外部设备（如磁盘、网络）读取到内核缓冲区。</li>
-<li>内核将数据拷贝到用户进程的缓冲区。</li>
-<li>用户进程处理数据后，再将数据从用户缓冲区拷贝回内核缓冲区。</li>
-<li>内核将数据发送到目标设备。</li>
-</ol>
-<p>在这个过程中，数据在用户态和内核态之间进行了多次拷贝，导致性能开销。零拷贝技术的核心在于优化这些步骤，减少或完全消除用户态和内核态之间的数据拷贝。</p>
-</li>
-</ol>
-<p>以下是几种常见的零拷贝技术及其原理：</p>
-<ol>
-<li>mmap（内存映射）<ul>
-<li><strong>原理</strong>：通过mmap系统调用，文件或设备的数据被直接映射到进程的地址空间。进程可以像访问内存一样访问这些数据，而无需将数据从内核缓冲区拷贝到用户缓冲区。</li>
-<li><strong>优点</strong>：减少了一次数据拷贝，适合频繁读写文件的场景。</li>
-<li><strong>应用场景</strong>：数据库系统、内存映射文件等。</li>
-</ul>
-</li>
-</ol>
-<p><strong>总结</strong></p>
-<p>零拷贝是一种通过优化数据传输路径，减少或消除用户态和内核态之间数据拷贝的技术。它在I&#x2F;O密集型应用中（如文件传输、网络通信、数据库等）具有重要意义。常见的实现方式包括mmap、sendfile、splice、DMA和页缓存共享等，这些技术显著提升了系统性能，尤其在高并发和大流量场景下。</p>
-<h2 id="2-I-O模型"><a href="#2-I-O模型" class="headerlink" title="2.I&#x2F;O模型"></a>2.I&#x2F;O模型</h2><p>Java的IO模型是一个综合性的概念，既包括<strong>本地数据IO</strong>（文件读写等），也涵盖<strong>网络IO</strong>（Socket通信等）。它们的核心区别在于数据来源和底层实现，但共享相同的设计思想。 </p>
+<h1 id="4-I-O"><a href="#4-I-O" class="headerlink" title="4.I&#x2F;O"></a>4.I&#x2F;O</h1><h2 id="1-I-O模型"><a href="#1-I-O模型" class="headerlink" title="1.I&#x2F;O模型"></a>1.I&#x2F;O模型</h2><p>五种I&#x2F;O模式</p>
+<p><img src="https://pic1.imgdb.cn/item/67f3265b0ba3d5a1d7eeffb4.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67f3265b0ba3d5a1d7eeffb4.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="五种IO对比"></p>
+<p>Java的IO模型是一个综合性的概念，既包括<strong>本地数据IO</strong>（文件读写等），也涵盖<strong>网络IO</strong>（Socket通信等）。它们的核心区别在于数据来源和底层实现，但共享相同的设计思想。 </p>
 <blockquote>
 <p>阻塞I&#x2F;O——BIO</p>
 </blockquote>
@@ -3279,65 +3257,129 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 </blockquote>
 <p>应用程序发起I&#x2F;O操作后立即返回，不会被阻塞，但需要<strong>不断轮询</strong>或者使用。</p>
 <p>特点：<strong>用户进程需要不断的主动询问kernel数据好了没有</strong> </p>
+<p><img src="https://pic1.imgdb.cn/item/67f282620ba3d5a1d7eedd7b.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67f282620ba3d5a1d7eedd7b.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="NIO"></p>
+<p>第一个阶段：等待数据的时候是非阻塞的，第二个阶段：从内核拷贝数据到用户空间仍然是阻塞的</p>
 <p>当用户进程发出 <code>read</code> 操作时，如果 <code>kernel</code> 中的数据还没有准备好，那么它并不会 <code>block</code> 用户进程，而是立刻返回一个 <code>error</code> 。从用户进程角度讲 ，它发起一个 <code>read</code> 操作后，并不需要等待，而是马上就得到了一个结果。用户进程判断结果是一个 <code>error</code> 时，它就知道数据还没有准备好，于是它可以再次发送 <code>read</code> 操作。一旦 <code>kernel</code> 中的数据准备好了，并且又再次收到了用户进程的 <code>system call</code> ，那么它马上就将数据拷贝到了用户内存，然后返回。 </p>
 <blockquote>
 <p>I&#x2F;O多路复用</p>
 </blockquote>
-<p>特点：<strong>一个进程能同时等待多个文件描述符，而这些文件描述符（套接字描述符）其中的任意一个进入读就绪状态，select()函数就可以返回。</strong> </p>
+<p>特点：<strong>一个线程能同时等待多个文件描述符，而这些文件描述符（套接字）其中的任意一个进入读就绪状态，select()函数就可以返回。</strong> </p>
 <p>它的基本原理就是select，poll，epoll这个function会不断的轮询所负责的所有socket，当某个socket有数据到达了，就通知用户进程。 </p>
 <p><img src="https://pic1.imgdb.cn/item/67ebf9dd0ba3d5a1d7e96523.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67ebf9dd0ba3d5a1d7e96523.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="IO多路复用"></p>
 <blockquote>
-<p>异步I&#x2F;O——AIO</p>
+<p>信号驱动I&#x2F;O</p>
 </blockquote>
-<p>用户进程发起 <code>read</code> 操作之后，立刻就可以开始去做其它的事。而另一方面，从 <code>kernel</code> 的角度，当它受到一个 <code>asynchronous read</code> 之后，首先它会立刻返回，所以不会对用户进程产生任何 <code>block</code> 。然后，<code>kernel</code> 会等待数据准备完成，然后将数据拷贝到用户内存，当这一切都完成之后，<code>kernel</code> 会给用户进程发送一个 <code>signal</code> ，告诉它 <code>read</code> 操作完成了。 </p>
-<p>最后，再举几个不是很恰当的例子来说明这四个IO Model:<br>有A，B，C，D四个人在钓鱼：<br>A用的是最老式的鱼竿，所以呢，得一直守着，等到鱼上钩了再拉杆；<br>B的鱼竿有个功能，能够显示是否有鱼上钩，所以呢，B就和旁边的MM聊天，隔会再看看有没有鱼上钩，有的话就迅速拉杆；<br>C用的鱼竿和B差不多，但他想了一个好办法，就是同时放好几根鱼竿，然后守在旁边，一旦有显示说鱼上钩了，它就将对应的鱼竿拉起来；<br>D是个有钱人，干脆雇了一个人帮他钓鱼，一旦那个人把鱼钓上来了，就给D发个短信。</p>
-<h2 id="3-I-O多路复用"><a href="#3-I-O多路复用" class="headerlink" title="3.I&#x2F;O多路复用"></a>3.I&#x2F;O多路复用</h2><p>传统的 I&#x2F;O 模型中，如果服务端需要支持多个客户端，我们可能要为每个客户端分配一个进程&#x2F;线程。 引入多路复用之后，一个进程&#x2F;线程维护多个 Socket，这个多路复用就是多个连接复用一个进程&#x2F;线程。 它们允许单个线程同时监控多个 I&#x2F;O 操作，是高并发服务器（如 Nginx、Redis）的核心技术。 </p>
-<p> I&#x2F;O 多路复用三种实现机制</p>
-<blockquote>
-<p>select&#x2F;poll</p>
-</blockquote>
-<p>用户将需要监视的文件描述符集合（分为读、写、异常三类）传递给 select 函数。select 函数会阻塞进程，直到有文件描述符就绪（即可读、可写或发生异常）或达到指定的超时时间。当有文件描述符就绪时，select 返回就绪的文件描述符数量，用户需要遍历整个集合，检查哪些fd处于就绪状态。</p>
+<p>信号驱动I0是与内核建立SIGI0的信号关联并设置回调，当内核有FD就绪时，会发出SIGIO信号通知用户，期间用户应用可以执行其它业务，而无需等待</p>
+<p><img src="https://pic1.imgdb.cn/item/67f327210ba3d5a1d7eefffc.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67f327210ba3d5a1d7eefffc.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="信号驱动IO"></p>
 <p>缺点：</p>
 <ol>
-<li><strong>性能开销大</strong>：每次调用 select 时，文件描述符集合需要从用户态复制到内核态，开销随着fd数量增加而显著增大。 </li>
-<li><strong>fd数量限制</strong>：select 使用位图表示fd集合，默认最大支持1024个文件描述符（某些系统可调整，但仍有限制）。 </li>
-<li><strong>效率低下</strong>：返回后，用户必须<strong>遍历</strong>整个fd集合才能确定哪些fd就绪，时间复杂度为O(n)。</li>
+<li>当有大量I0操作时，信号较多，SIGIO处理函数不能及时处理可能导致信号队列溢出</li>
+<li>而且内核空间与用户空间的频繁信号交互性能也较低。</li>
 </ol>
-<p>poll和select类似，最大的改进是<strong>无fd数量硬性限制</strong> ，不过仍然需要<strong>遍历</strong>才能知道就绪的fd，还有就是用户态和内核态的<strong>开销</strong></p>
-<p>select和poll这种依赖<strong>遍历</strong>和<strong>拷贝</strong>的方式，这种方式随着并发数上来，性能的损耗会呈指数级增长。 </p>
 <blockquote>
-<p>epoll</p>
+<p>异步I&#x2F;O——AIO</p>
 </blockquote>
-<p>与 <code>select()</code> 和 <code>poll()</code> 不同，<code>epoll()</code> 并不每次都遍历整个文件描述符集合。<code>epoll()</code> 使用了<strong>事件驱动机制</strong>：不需要每次调用都传递所有的文件描述符，而是通过epoll_ctl注册感兴趣的事件，之后通过epoll_wait获取就绪的事件。这种方式在处理<strong>大量文件描述符</strong>时性能更好，因为只需要处理实际就绪的事件，而不是遍历所有描述符。 </p>
-<p>epoll的用法如下：</p>
+<p>异步I0的整个过程都是非阻塞的，用户进程调用完异步API后就可以去做其它事情，内核等待数据就绪并拷贝到用户空间后才会递交信号，通知用户进程。</p>
+<p><img src="https://pic1.imgdb.cn/item/67f3274a0ba3d5a1d7ef0015.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67f3274a0ba3d5a1d7ef0015.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="异步IO"></p>
+<p>缺点：<strong>忙的忙死，闲的闲死</strong>。用户进程由于可以一直做其它业务，然而内核却要一直准备数据，可能导致内核承受不住。所以要想使用这种方式，一个是增加用户进程处理数据的复杂度，让用户进程没那么“闲”，另一个是对用户进程限流。</p>
+<p>最后，再举几个不是很恰当的例子来说明这四个IO Model:<br>有A，B，C，D四个人在钓鱼：<br>A用的是最老式的鱼竿，所以呢，得一直守着，等到鱼上钩了再拉杆；<br>B的鱼竿有个功能，能够显示是否有鱼上钩，所以呢，B就和旁边的MM聊天，隔会再看看有没有鱼上钩，有的话就迅速拉杆；<br>C用的鱼竿和B差不多，但他想了一个好办法，就是同时放好几根鱼竿，然后守在旁边，一旦有显示说鱼上钩了，它就将对应的鱼竿拉起来；<br>D是个有钱人，干脆雇了一个人帮他钓鱼，一旦那个人把鱼钓上来了，就给D发个短信。</p>
+<h2 id="2-I-O多路复用"><a href="#2-I-O多路复用" class="headerlink" title="2.I&#x2F;O多路复用"></a>2.I&#x2F;O多路复用</h2><p>传统的 I&#x2F;O 模型中，如果服务端需要支持多个客户端，我们可能要为每个客户端分配一个进程&#x2F;线程。 引入多路复用之后，一个进程&#x2F;线程维护多个 Socket，这个多路复用就是多个连接复用一个进程&#x2F;线程。 它们允许单个线程同时监控多个 I&#x2F;O 操作，是高并发服务器（如 Nginx、Redis）的核心技术。 </p>
+<p> 1.select</p>
+<p>select 实现多路复用的方式是，将已连接的 Socket（一个Socket连接对应一个文件描述符fd） 都放到一个<strong>文件描述符集合（fd_set）</strong>，然后调用 select 函数将文件描述符集合<strong>拷贝</strong>到内核里，让内核来检查是否有网络事件产生，检查的方式很粗暴，就是通过<strong>遍历</strong>文件描述符集合的方式，当检查到有事件产生后，将此 Socket 标记为可读或可写，返回给用户空间的是<strong>就绪的事件个数</strong>，接着再把整个文件描述符集合<strong>拷贝</strong>回用户态里（实际上是覆盖原来的fd_set），然后用户态还需要再通过<strong>遍历</strong>的方法找到可读或可写的 Socket，然后再对其处理。</p>
+<p>对于 select 这种方式，需要进行 <strong>2 次「遍历」文件描述符集合</strong>，一次是在内核态里， 一个次是在用户态里 ，而且还会发生 <strong>2 次「拷贝」文件描述符集合</strong>，先从用户空间传入内核空间，由内核修改后，再传出到用户空间中。 </p>
+<p>select 使用固定长度的 BitsMap，表示文件描述符集合， 所支持的文件描述符的个数是有限制的，默认最大值为 <code>1024</code> </p>
+<p><strong>缺点：</strong></p>
 <ol>
-<li>调用 epoll_create 创建一个epoll实例，返回一个epoll文件描述符。</li>
-<li>使用 epoll_ctl 向epoll实例中添加、修改或删除需要监视的文件描述符及其事件。</li>
-<li>调用 epoll_wait 阻塞进程，等待事件发生。返回时，直接提供就绪的文件描述符列表，用户无需遍历。</li>
+<li>两次拷贝：先从用户空间传入内核空间，由内核修改后，再传出到用户空间中。</li>
+<li>需要遍历才能得知就绪的fd</li>
+<li>可传入的fd数量有限制</li>
 </ol>
-<p><img src="https://pic1.imgdb.cn/item/67b5f655d0e0a243d400d544.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67b5f655d0e0a243d400d544.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="epoll原理"></p>
-<p>优点：<strong>高性能</strong>：事件驱动机制仅返回就绪的fd，时间复杂度为O(1)，无需轮询整个集合。</p>
-<p><strong>支持大量fd</strong>：理论上只受系统资源限制，适合大规模并发。</p>
-<p>epoll 通过两个方面，很好解决了 select&#x2F;poll 的问题。 </p>
+<p>2.poll</p>
+<p>流程基本和select类似</p>
+<p>唯一不同的是，在传入fd的数量上有了突破，用户空间传入的是可自定义大小的<code>pollfd</code>数组，然后传入内核空间后，用链表形式组织。所以说fd的数量<strong>理论上</strong>是没有限制的（但实际受限于查询效率的问题，不可能没有限制的）。但仍然没有解决select的问题，拷贝，遍历。</p>
+<p>3.epoll</p>
+<p><img src="https://pic1.imgdb.cn/item/67b5f655d0e0a243d400d544.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67b5f655d0e0a243d400d544.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="Epoll"></p>
+<p><strong>执行流程</strong></p>
+<ol>
+<li><code>epoll_create()</code>创建epoll实例，返回对应的句柄epfd。具体而言，这个实例包括一个红黑树和一个链表。红黑树用于记录要监听的fd，每个节点就是一个fd。而链表用于记录就绪的fd</li>
+<li><code>epoll_ctl()</code>将要监听的fd添加到红黑树中，当这个fd就绪的时候，内核通过回调函数将该fd添加到链表中</li>
+<li><code>epoll_wait()</code>等待fd就绪，调用该方法会在用户空间创建一个数组，用于接受就绪的fd</li>
+</ol>
+<p>改进点</p>
+<ol>
+<li>红黑树结构增加效率：基于红黑树保存要监听的fd，增删改查效率高</li>
+<li>减少重复拷贝：每个fd只需要一次<code>epoll_ctl()</code>添加到红黑树，无需重复拷贝fd到内核空间（相对于select和poll）</li>
+<li>无需遍历就能得到就绪fd：内核将就绪的fd拷贝到用户空间的数组中，用户空间无需再次遍历，可以直接得到就绪的fd</li>
+</ol>
+<h2 id="3-epoll的边缘触发和水平触发"><a href="#3-epoll的边缘触发和水平触发" class="headerlink" title="3.epoll的边缘触发和水平触发"></a>3.epoll的边缘触发和水平触发</h2><p>epoll事件的通知机制有两种模式，分别是：</p>
+<p>水平触发（levelTrrigered， LT）：当有fd就绪时，会重复通知多次，直至数据被处理完。是epoll的默认模式</p>
+<p>边缘触发（edgeTrrigered， ET）：当有fd就绪时，仅通知一次，如果数据没有被处理完就会丢失</p>
+<p>LT模式的缺点：</p>
+<ol>
+<li>频繁调用<code>epoll_wait()</code>会产生很多开销</li>
+<li>可能会产生“惊群”现象，比如当前剩余没有被处理的数据仅仅一两个线程就能解决，但在这种模式下会唤醒所有线程处理数据，也就是会产生不必要的唤醒</li>
+</ol>
+<p>ET模式如何保证数据可以被处理完毕？</p>
+<ol>
+<li><p>采用非阻塞IO一次性把就绪fd处理完。不能采用阻塞IO，如果采用阻塞IO在处理完就绪的fd后会<strong>阻塞等待</strong>未就绪的fd到就绪的状态，而非阻塞IO在处理完就绪的fd后就会返回错误，代表就绪的fd已经处理完了，剩下的都是未就绪的fd了。</p>
+</li>
+<li><p>手动把未处理完的fd添加到epoll实例中。（类似<strong>手动挡</strong>的LT）</p>
+<p><strong>前置了解：</strong>在拷贝就绪fd到用户空间时，会在就绪链表中移除拷贝的fd，同时会检查当前通知模式时ET还是LT，如果是ET，会永久的移除拷贝的fd，如果是LT，则会检查就绪fd数据有没有被处理完毕，如果没有，会重新把移除的fd添加到链表中。</p>
+<p>我们可以调用<code>epoll_ctl()</code>手动将未处理完的fd添加到epoll实例上，完了之后红黑树检测到fd就绪，就会重新给这些就绪的fd添加到链表上。</p>
+</li>
+</ol>
+<h2 id="4-零拷贝"><a href="#4-零拷贝" class="headerlink" title="4.零拷贝"></a>4.零拷贝</h2><p>零拷贝（Zero-copy）是一种优化数据传输的技术，旨在减<strong>少或消除数据在用户态和内核态之间的拷贝操作</strong>，从而提高I&#x2F;O性能。在传统的I&#x2F;O操作中，数据通常需要从内核缓冲区拷贝到用户缓冲区，或者从用户缓冲区拷贝回内核缓冲区，这会带来额外的CPU和内存开销。零拷贝技术通过避免这些不必要的拷贝，显著提升数据传输的效率，尤其在高并发、大数据量的场景下效果尤为明显。 </p>
+<blockquote>
+<p>1.DMA技术</p>
+</blockquote>
+<p>在DMA技术出现之前，IO过程如下：</p>
+<p><img src="https://pic1.imgdb.cn/item/67f33c000ba3d5a1d7ef0825.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67f33c000ba3d5a1d7ef0825.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="DMA之前"></p>
+<p>可以看到，整个数据的传输过程，都要需要 CPU 亲自参与搬运数据的过程，而且这个过程，CPU 是不能做其他事情的。</p>
+<p>简单的搬运几个字符数据那没问题，但是如果我们用千兆网卡或者硬盘传输大量数据的时候，都用 CPU来搬运的话，肯定忙不过来。</p>
+<p>所以引出了DMA技术</p>
+<p>什么是 DMA 技术？简单理解就是，<strong>在进行 I&#x2F;O 设备和内存的数据传输的时候，</strong> <strong>数据搬运的工作全部交给 DMA 控制器，而 CPU 不再参与任何与数据搬运相关的事情，</strong> <strong>这样 CPU 就可以去处理别的事务</strong>。 </p>
+<p>使用DMA技术的IO流程如下：</p>
+<p><img src="https://pic1.imgdb.cn/item/67f33c5a0ba3d5a1d7ef0870.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67f33c5a0ba3d5a1d7ef0870.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="DMA技术"></p>
+<blockquote>
+<p>2.传统的文件传输</p>
+</blockquote>
+<p><img src="https://pic1.imgdb.cn/item/67f33cd70ba3d5a1d7ef08ae.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67f33cd70ba3d5a1d7ef08ae.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="传统IO"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1. 应用程序调用read()，触发DMA将磁盘数据拷贝到内核缓冲区</span><br><span class="line">   （用户态→内核态切换）</span><br><span class="line">2. 内核将数据从内核缓冲区拷贝到用户缓冲区</span><br><span class="line">   （内核态→用户态切换）</span><br><span class="line">3. 应用程序调用write()，将数据从用户缓冲区拷贝到Socket缓冲区</span><br><span class="line">   （用户态→内核态切换）</span><br><span class="line">4. DMA将Socket缓冲区数据拷贝到网卡进行传输</span><br><span class="line">   （内核态→用户态切换）</span><br></pre></td></tr></table></figure>
+
+<p>期间共<strong>发生了 4 次用户态与内核态的上下文切换</strong>， 因为发生了两次系统调用，一次是 read() ，一次是 write() ，每次系统调用都得先从用户态切换到内核态，等内核完成任务后， 每次系统调用都得先从用户态切换到内核态，等内核完成任务后， 再从内核态切换回用户态。 </p>
+<p><strong>4次数据拷贝</strong>：2次CPU拷贝 + 2次DMA拷贝</p>
+<p>所以，<strong>要想提高文件传输的性能，就需要减少「用户态与内核态的上下文切换」和「内存拷贝」的次数。</strong></p>
+<p>在前面我们知道了，传统的文件传输方式会历经4次数据拷贝，而且这里面，「从内核的读缓冲区拷贝到用户的缓冲区里，再从用户的缓冲区里拷贝到 socket 的缓冲区里」，这个过程是没有必要的。</p>
+<p>因为文件传输的应用场景中，在用户空间我们并不会对数据「再加工」，所以数据实际上可以不用搬运到用户空间，因此用户的缓冲区是没有必要存在的，</p>
+<blockquote>
+<p>3.零拷贝的实现</p>
+</blockquote>
+<p>1.mmap + write（内存映射）</p>
+<p>mmap替换read系统调用函数</p>
+<p><img src="https://pic1.imgdb.cn/item/67f33e7f0ba3d5a1d7ef09a9.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67f33e7f0ba3d5a1d7ef09a9.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="mmap拷贝"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. DMA拷贝到内核缓冲区</span><br><span class="line">2. 共享缓冲区（用户空间直接访问内核缓冲区）</span><br><span class="line">3. CPU拷贝到Socket缓冲区</span><br><span class="line">4. DMA拷贝到网卡</span><br></pre></td></tr></table></figure>
+
+<p>特点：</p>
 <ul>
-<li>epoll 在内核里使用<strong>红黑树来跟踪进程所有待检测的文件描述字</strong>，把需要监控的 socket 通过epoll_ctl() 函数加入内核中的红黑树里</li>
-<li> epoll 使用<strong>事件驱动</strong>的机制，内核里<strong>维护了一个链表来记录就绪事件</strong>，当某个 socket 有事件发生时，通过<strong>回调函数</strong>内核会将其加入到这个就绪事件链表中， 当用户调用 epoll_wait() 函数时， 只会返回有事件发生的文件描述符的个数， 不需要像 select&#x2F;poll 那样轮询扫描整个 socket 集合，大大提高了检测的效率。</li>
+<li>减少1次CPU拷贝</li>
+<li>仍然需要4次上下文切换</li>
 </ul>
-<p><strong>性能差异的原因</strong></p>
-<ul>
-<li><strong>select&#x2F;poll</strong>：<br>每次调用涉及全量数据拷贝和线性扫描，适合少量活跃连接。</li>
-<li><strong>epoll</strong>：<br>通过事件驱动和回调机制，仅处理活跃连接，适合海量连接中只有少数活跃的场景（如 Web 服务器）。</li>
-</ul>
-<h2 id="4-epoll的边缘触发和水平触发"><a href="#4-epoll的边缘触发和水平触发" class="headerlink" title="4.epoll的边缘触发和水平触发"></a>4.epoll的边缘触发和水平触发</h2><p>epoll 支持两种事件触发模式，分别是边缘触发(edge-triggered，ET)和水平触发(level-triggered,	LT)</p>
-<p>select和poll仅支持水平触发。<strong>ET模式可以减少epoll_wait的调用次数</strong>，提高效率，但需要应用程序正确处理所有可用数据，否则可能会丢失事件。 <strong>在边缘触发（ET）模式下，必须一次性读取或写入所有数据，否则可能丢失事件</strong></p>
-<ul>
-<li><strong>边缘触发（ET）：</strong>使用边缘触发模式时，当被监控的 Socket 描述符上有可读事件发生时，<strong>服务器端只会从 epoll_wait 中苏醒一次</strong>，即使进程没有调用read 函数从内核读取数据，也依然只苏醒一次，因此我们程序要保证次性将内核缓冲区的数据读取完;</li>
-<li><strong>水平触发（LT）：</strong>使用水平触发模式时，当被监控的 Socket 上有可读事件发生时，<strong>服务器端不断地从 epoll_wait 中苏醒</strong>，直到内核缓冲区数据被 read 函数读完才结束，目的是告诉我们有数据需要读取;</li>
-</ul>
-<p><strong>水平触发（LT）</strong>：默认模式，只要fd上有数据未处理完，就会持续通知。</p>
-<p><strong>边缘触发（ET）</strong>：仅在fd状态变化时通知一次，可减少系统调用次数，进一步提升效率。</p>
-<p>举个例子，你的快递被放到了一个快递箱里，如果快递箱只会通过短信通知你一次，即使你一直没有去取，它也不会再发送第二条短信提醒你，这个方式就是边缘触发;如果快递箱发现你的快递没有被取出它就会不停地发短信通知你，直到你取出了快递，它才消停，这个就是水平触发的方式。</p>
-<p>一般来说，边缘触发的效率比水平触发的效率要高， 因为边缘触发可以减少 epoll_wait 的系统调用次数， 系统调用也是有一定的开销的的，毕竟也存在上下文的切换 </p>
+<p>2.sendfile</p>
+<p>在 Linux 内核版本 2.1 中，提供了一个专门发送文件的系统调用函数 <code>sendfile()</code>，可以替代前面的 <code>read()</code> 和 <code>write()</code> 这两个系统调用 	，这样就可以减少一次系统调用，也就减少了 2 次上下文切换的开销。 </p>
+<p>该系统调用，可以直接把内核缓冲区里的数据拷贝到 socket 缓冲区里，不再拷贝到用户态， 这样就只有 2 次上下文切换，和 3 次数据拷贝。如下图： </p>
+<p><img src="https://pic1.imgdb.cn/item/67f3756ae381c3632bee4f12.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67f3756ae381c3632bee4f12.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="send file普通版"></p>
+<ol>
+<li>DMA拷贝到内核缓冲区</li>
+<li>CPU拷贝到Socket缓冲区</li>
+<li>DMA拷贝到网卡</li>
+</ol>
+<p>如果网卡支持 SG-DMA 技术（和普通的 DMA 有所不同），可以进一步减少通过 CPU 把内核缓冲区里的数据拷贝到 socket 缓冲区的过程。 </p>
+<p><img src="https://pic1.imgdb.cn/item/67f375bde381c3632bee4f4d.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67f375bde381c3632bee4f4d.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="SG-DMA"></p>
+<ol>
+<li>DMA拷贝到内核缓冲区</li>
+<li>SG-DMA直接从内核缓冲区到网卡</li>
+</ol>
+<p>这个零拷贝技术可以实现<strong>只需要 2 次上下文切换和数据拷贝次数，就可以完成文件的传输</strong> ，<strong>而且 2 次的数据拷贝过程，都不需要通过 CPU，2 次都是由 DMA 来搬运。</strong> 相比传统文件传输的方式，减少了 2 次上下文切换和数据拷贝次数</p>
 
   </div>
   
@@ -3362,10 +3404,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-04-01T22:37:20+08:00">
+          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-04-07T14:52:04+08:00">
   <a class='notlink'>
     <i class="fa-solid fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2025年4月1日</p>
+    <p>更新于：2025年4月7日</p>
   </a>
 </div>
 
@@ -3486,7 +3528,7 @@ OSI参考模型
 
 
     <div class='content'>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80"><span class="toc-text">0.操作系统基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%9F"><span class="toc-text">1.什么是操作系统？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%9C%89%E5%93%AA%E4%BA%9B%E5%8A%9F%E8%83%BD%EF%BC%9F"><span class="toc-text">2.操作系统有哪些功能？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E5%86%85%E6%A0%B8%E6%80%81"><span class="toc-text">3.用户态和内核态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="toc-text">4.系统调用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86"><span class="toc-text">1.进程管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%B9%B6%E5%8F%91%E5%92%8C%E5%B9%B6%E8%A1%8C"><span class="toc-text">1.并发和并行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E8%BF%9B%E7%A8%8B%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2"><span class="toc-text">2.进程上下文切换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%BF%9B%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81"><span class="toc-text">3.进程的状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%BB%80%E4%B9%88%E6%98%AFPCB%EF%BC%9F"><span class="toc-text">4.什么是PCB？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%83%B5%E5%B0%B8%E8%BF%9B%E7%A8%8B-%E5%AD%A4%E5%84%BF%E8%BF%9B%E7%A8%8B"><span class="toc-text">5.僵尸进程&#x2F;孤儿进程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95"><span class="toc-text">6.进程调度算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E8%BF%9B%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F"><span class="toc-text">7.进程间的通信方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">8.进程和线程的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F-TODO"><span class="toc-text">9.线程间的通信方式(TODO)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E7%BA%BF%E7%A8%8B%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2"><span class="toc-text">10.线程上下文切换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E6%AD%BB%E9%94%81"><span class="toc-text">11.死锁</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-text">2.内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E5%86%85%E5%AD%98%E7%A2%8E%E7%89%87"><span class="toc-text">1.什么是内存碎片?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%B1%80%E9%83%A8%E6%80%A7%E5%8E%9F%E7%90%86"><span class="toc-text">2.局部性原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98"><span class="toc-text">3.虚拟内存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%88%86%E9%A1%B5%E6%9C%BA%E5%88%B6"><span class="toc-text">4.分页机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%88%86%E6%AE%B5%E6%9C%BA%E5%88%B6"><span class="toc-text">5.分段机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%88%86%E9%A1%B5%E5%92%8C%E5%88%86%E6%AE%B5%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">6.分页和分段的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95"><span class="toc-text">7.页面置换算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-text">3.文件系统</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%A1%AC%E9%93%BE%E6%8E%A5%E5%92%8C%E8%BD%AF%E9%93%BE%E6%8E%A5%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">1.硬链接和软链接的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%B8%B8%E8%A7%81%E7%9A%84%E7%A3%81%E7%9B%98%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95"><span class="toc-text">2.常见的磁盘调度算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-I-O"><span class="toc-text">4.I&#x2F;O</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%9B%B6%E6%8B%B7%E8%B4%9D"><span class="toc-text">1.零拷贝</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-I-O%E6%A8%A1%E5%9E%8B"><span class="toc-text">2.I&#x2F;O模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-I-O%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8"><span class="toc-text">3.I&#x2F;O多路复用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-epoll%E7%9A%84%E8%BE%B9%E7%BC%98%E8%A7%A6%E5%8F%91%E5%92%8C%E6%B0%B4%E5%B9%B3%E8%A7%A6%E5%8F%91"><span class="toc-text">4.epoll的边缘触发和水平触发</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80"><span class="toc-text">0.操作系统基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%9F"><span class="toc-text">1.什么是操作系统？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%9C%89%E5%93%AA%E4%BA%9B%E5%8A%9F%E8%83%BD%EF%BC%9F"><span class="toc-text">2.操作系统有哪些功能？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E5%86%85%E6%A0%B8%E6%80%81"><span class="toc-text">3.用户态和内核态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="toc-text">4.系统调用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86"><span class="toc-text">1.进程管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%B9%B6%E5%8F%91%E5%92%8C%E5%B9%B6%E8%A1%8C"><span class="toc-text">1.并发和并行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E8%BF%9B%E7%A8%8B%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2"><span class="toc-text">2.进程上下文切换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%BF%9B%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81"><span class="toc-text">3.进程的状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%BB%80%E4%B9%88%E6%98%AFPCB%EF%BC%9F"><span class="toc-text">4.什么是PCB？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%83%B5%E5%B0%B8%E8%BF%9B%E7%A8%8B-%E5%AD%A4%E5%84%BF%E8%BF%9B%E7%A8%8B"><span class="toc-text">5.僵尸进程&#x2F;孤儿进程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95"><span class="toc-text">6.进程调度算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E8%BF%9B%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F"><span class="toc-text">7.进程间的通信方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">8.进程和线程的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F-TODO"><span class="toc-text">9.线程间的通信方式(TODO)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E7%BA%BF%E7%A8%8B%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2"><span class="toc-text">10.线程上下文切换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E6%AD%BB%E9%94%81"><span class="toc-text">11.死锁</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-text">2.内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E5%86%85%E5%AD%98%E7%A2%8E%E7%89%87"><span class="toc-text">1.什么是内存碎片?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%B1%80%E9%83%A8%E6%80%A7%E5%8E%9F%E7%90%86"><span class="toc-text">2.局部性原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98"><span class="toc-text">3.虚拟内存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%88%86%E9%A1%B5%E6%9C%BA%E5%88%B6"><span class="toc-text">4.分页机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%88%86%E6%AE%B5%E6%9C%BA%E5%88%B6"><span class="toc-text">5.分段机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%88%86%E9%A1%B5%E5%92%8C%E5%88%86%E6%AE%B5%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">6.分页和分段的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95"><span class="toc-text">7.页面置换算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-text">3.文件系统</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%A1%AC%E9%93%BE%E6%8E%A5%E5%92%8C%E8%BD%AF%E9%93%BE%E6%8E%A5%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">1.硬链接和软链接的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%B8%B8%E8%A7%81%E7%9A%84%E7%A3%81%E7%9B%98%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95"><span class="toc-text">2.常见的磁盘调度算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-I-O"><span class="toc-text">4.I&#x2F;O</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-I-O%E6%A8%A1%E5%9E%8B"><span class="toc-text">1.I&#x2F;O模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-I-O%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8"><span class="toc-text">2.I&#x2F;O多路复用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-epoll%E7%9A%84%E8%BE%B9%E7%BC%98%E8%A7%A6%E5%8F%91%E5%92%8C%E6%B0%B4%E5%B9%B3%E8%A7%A6%E5%8F%91"><span class="toc-text">3.epoll的边缘触发和水平触发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E9%9B%B6%E6%8B%B7%E8%B4%9D"><span class="toc-text">4.零拷贝</span></a></li></ol></li></ol>
     </div>
   </section>
 
@@ -4678,7 +4720,7 @@ window.matchMedia('(prefers-color-scheme: light)').addListener(darkModelListener
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/10/28/八股/OS/","name":"OS"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"OS","description":"本文主要是找工作时针对操作系统可能会碰到的一些问题","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/OS/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/OS/","wordCount":25,"datePublished":"2024-10-28T12:30:49.000Z","dateModified":"2025-04-01T14:37:20.418Z","articleSection":"八股","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/10/28/八股/OS/","name":"OS"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"OS","description":"本文主要是找工作时针对操作系统可能会碰到的一些问题","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/OS/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/OS/","wordCount":25,"datePublished":"2024-10-28T12:30:49.000Z","dateModified":"2025-04-07T06:52:04.332Z","articleSection":"八股","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 

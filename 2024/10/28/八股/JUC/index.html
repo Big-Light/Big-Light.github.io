@@ -46,7 +46,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
 <meta property="article:published_time" content="2024-10-28T12:14:32.000Z">
-<meta property="article:modified_time" content="2025-03-26T13:05:53.199Z">
+<meta property="article:modified_time" content="2025-04-02T08:19:11.823Z">
 <meta property="article:author" content="Light">
 <meta property="article:tag" content="JUC">
 <meta name="twitter:card" content="summary">
@@ -1847,7 +1847,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: false,
     cdn: {"js":{"app":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/app.js","parallax":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/parallax.js","rightMenu":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenu.js","rightMenus":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenus.js","sites":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/sites.js","friends":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/friends.js","contributors":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/contributors.js","search":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1743518268572),
+    lastupdate: new Date(1744009020318),
     sidebar: {
       for_page: ["blogger","category","donate","webinfo"],
       for_post: ["toc"],
@@ -2900,13 +2900,13 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <div class="new-meta-item wordcount">
     <a class='notlink'>
       <i class="fa-solid fa-keyboard fa-fw" aria-hidden="true"></i>
-      <p>字数：9.9k 字</p>
+      <p>字数：10.9k 字</p>
     </a>
   </div>
   <div class="new-meta-item readtime">
     <a class='notlink'>
       <i class="fa-solid fa-hourglass-half fa-fw" aria-hidden="true"></i>
-      <p>时长：35 分钟</p>
+      <p>时长：39 分钟</p>
     </a>
   </div>
 
@@ -2928,7 +2928,66 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 
 
-<h1 id="1-线程基础"><a href="#1-线程基础" class="headerlink" title="1.线程基础"></a>1.线程基础</h1><h2 id="1-线程和进程的区别"><a href="#1-线程和进程的区别" class="headerlink" title="1.线程和进程的区别"></a>1.线程和进程的区别</h2><ul>
+<h1 id="1-线程基础"><a href="#1-线程基础" class="headerlink" title="1.线程基础"></a>1.线程基础</h1><h2 id="补充1：什么是线程安全"><a href="#补充1：什么是线程安全" class="headerlink" title="补充1：什么是线程安全"></a>补充1：什么是线程安全</h2><p><strong>线程安全</strong> 的核心是 <strong>避免多线程访问共享资源时的数据竞争和内存可见性问题</strong>。</p>
+<p>线程安全（Thread Safety）是指 <strong>在多线程环境下，某个函数、类或数据结构能够被多个线程同时访问，并且仍然保持正确的行为</strong>，不会出现数据竞争（Race Condition）、脏读（Dirty Read）、死锁（Deadlock）等问题。 </p>
+<blockquote>
+<p>为什么需要线程安全？</p>
+</blockquote>
+<p>在 <strong>多线程并发</strong> 环境下，如果多个线程同时访问 <strong>共享资源</strong>（如变量、对象、文件等），可能会出现以下问题：</p>
+<ul>
+<li><strong>数据不一致</strong>：多个线程同时修改数据，导致最终结果不符合预期。</li>
+<li><strong>竞态条件（Race Condition）</strong>：多个线程竞争同一资源，执行顺序不确定，导致程序行为不可预测。</li>
+<li><strong>内存可见性问题</strong>：一个线程修改了数据，但其他线程看不到最新值（由于 CPU 缓存、指令重排序等）。</li>
+</ul>
+<blockquote>
+<p>线程安全的典型场景</p>
+</blockquote>
+<p><strong>共享变量被多个线程修改</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UnsafeCounter</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">increment</span><span class="params">()</span> &#123;</span><br><span class="line">        count++; <span class="comment">// 非原子操作，可能导致数据错误</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>问题</strong>：<code>count++</code> 不是原子操作（分为 <code>读取→修改→写入</code>），多个线程同时执行时可能导致 <strong>少加</strong>。</p>
+</li>
+<li><p><strong>解决方案</strong>：</p>
+<ul>
+<li><p>使用 <code>synchronized</code> 同步方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title function_">increment</span><span class="params">()</span> &#123;</span><br><span class="line">    count++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用 <code>AtomicInteger</code>（基于 CAS）： </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">AtomicInteger</span> <span class="variable">count</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AtomicInteger</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">increment</span><span class="params">()</span> &#123;</span><br><span class="line">    count.incrementAndGet();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<p> <strong>集合类在多线程环境下操作</strong></p>
+<p> <strong>单例模式（Singleton）</strong></p>
+<p>多线程环境下，<code>instance</code> 可能被多次初始化。 </p>
+<p>解决方案：使用 <code>synchronized</code>或者使用 <strong>双重检查锁（DCL）</strong></p>
+<h2 id="补充2：线程安全的实现方式"><a href="#补充2：线程安全的实现方式" class="headerlink" title="补充2：线程安全的实现方式"></a>补充2：线程安全的实现方式</h2><blockquote>
+<p>常见的线程安全问题</p>
+</blockquote>
+<p><strong>(1) 竞态条件（Race Condition）</strong></p>
+<p>多个线程同时修改共享数据，导致结果不可预测。<br><strong>解决方案</strong>：<code>synchronized</code> 或 <code>Atomic</code> 类。</p>
+<p><strong>(2) 死锁（Deadlock）</strong></p>
+<p>多个线程互相持有对方需要的锁，导致无限等待。<br><strong>解决方案</strong>：</p>
+<ul>
+<li>避免嵌套锁。</li>
+<li>使用 <code>tryLock()</code> 设置超时。</li>
+</ul>
+<p><strong>(3) 内存可见性问题</strong></p>
+<p>一个线程修改了变量，但其他线程看不到最新值。<br><strong>解决方案</strong>：<code>volatile</code> 或 <code>synchronized</code>。</p>
+<blockquote>
+<p>保证线程安全的方式</p>
+</blockquote>
+<ol>
+<li>使用<strong>synchronized</strong>关键字 ：基于 <strong>对象监视器锁（Monitor）</strong>，可以保证被修饰的方法或代码块在同一时刻只能被一个线程访问</li>
+<li>使用<strong>Lock接口及其实现类</strong>，如<strong>ReentrantLock</strong>：可以提供更灵活的锁机制，支持可中断锁，公平锁。</li>
+<li>使用<strong>原子类，如AtomicInteger</strong>，AtomicLong：底层基于 <strong>CAS（Compare-And-Swap）</strong> 实现无锁线程安全，适用于 <strong>单个变量的原子操作</strong>（如计数、标志位） </li>
+<li>使用线程安全的集合，如：ConcurrentHashMap ，CopyOnWriteArrayList ，<code>BlockingQueue</code>线程安全的队列</li>
+<li>使用<strong>volatile</strong>关键字：保证变量的 <strong>可见性</strong>（一个线程修改后，其他线程立即可见）</li>
+<li>使用<strong>ThreadLocal类</strong>：<code>ThreadLocal</code> 让每个线程拥有自己的变量副本，避免共享变量竞争。 适用于 <strong>线程隔离数据</strong>（如用户会话、数据库连接）。</li>
+</ol>
+<p>Java并发工具类并不直接保证线程安全，而是协调线程之间的执行顺序和资源访问！！这点之前一直理解错了，腾讯s线回答的时候答了这个就❌了！！</p>
+<h2 id="1-线程和进程的区别"><a href="#1-线程和进程的区别" class="headerlink" title="1.线程和进程的区别"></a>1.线程和进程的区别</h2><ul>
 <li><p><strong>进程：</strong>进程是程序在操作系统中的执行实例，是系统资源分配的基本单位。每个进程拥有自己的地址空间、数据段、堆栈、程序计数器等，进程间相互独立，通常不能直接共享内存。</p>
 <p><strong>特点</strong>：</p>
 <ul>
@@ -3162,7 +3221,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <p>只对一个共享变量操作可以保证原子性，但是多个则不行,多个可以通过AtomicReference来处理或者使用锁synchronized实现。</p>
 </li>
 </ol>
-<h2 id="3-synchronized"><a href="#3-synchronized" class="headerlink" title="3.synchronized"></a>3.synchronized</h2><p>在 Java 中，关键字 synchronized（翻译过来就是“同步”的意思） 可以保证在同一个时刻，只有一个线程可以执行某个方法或者某个代码块(主要是对方法或者代码块中存在共享数据的操作) 。</p>
+<h2 id="3-synchronized"><a href="#3-synchronized" class="headerlink" title="3.synchronized"></a>3.synchronized</h2><p>在 Java 中，关键字 synchronized（翻译过来就是“同步”的意思）用于实现线程同步，保证多个线程对共享资源的操作是互斥的。 </p>
 <p>synchronized 可用来修饰普通方法、静态方法和代码块 </p>
 <ul>
 <li><code>synchronized</code> 关键字加到 <code>static</code> 静态方法和 <code>synchronized(class)</code> 代码块上都是是给 <strong>Class 类</strong>上锁；</li>
@@ -3171,6 +3230,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <blockquote>
 <p>1.synchronized关键字的底层原理</p>
 </blockquote>
+<p>synchronize的原理是基于对象内部的一个监视器锁（monitor）来实现的，每个对象都有一个monitor，当一个线程进入synchronize修饰的方法或代码块时，就会获取该对象的monitor，其他线程就无法进入该方法或代码块，直到持有monitor的线程退出并释放monitor。</p>
 <ul>
 <li>使用synchronized之后，编译之后在同步的代码块前后<strong>加上monitorenter和monitorexit字节码指令</strong>，他依赖操作系统底层互斥锁实现。他的作用主要就是实现原子性操作和解决共享变量的内存可见性问题,</li>
 <li>执行monitorenter指令时会尝试获取对象锁，如果对象没有被锁定或者已经获得了锁，锁的<strong>计数器</strong>+1。此时其他竞争锁的线程则会进入等待队列中。执行monitorexit指令时则会把计数器-1，当计数器值为0时则锁释放，处于等待队列中的线程再继续竞争锁。</li>
@@ -3227,6 +3287,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 </ul>
 <p>有序性：monitorenter 和 monitorexit，来确保加锁代码块内的指令不会被重排。 </p>
 <h2 id="4-什么是自旋"><a href="#4-什么是自旋" class="headerlink" title="4.什么是自旋"></a>4.什么是自旋</h2><p>很多 synchronized 里面的代码只是一些很简单的代码，执行时间非常快，此时等待的线程都加锁可能是一种不太值得的操作，因为<strong>线程阻塞涉及到用户态和内核态切换</strong>的问题。既然 synchronized 里面的代码执行得非常快，不妨让等待锁的线程不要被阻塞，而是在 synchronized 的边界<strong>做忙循环</strong>，这就是自旋。如果做了多次循环发现还没有获得锁，再阻塞，这样可能是一种更好的策略。 </p>
+<p>自旋锁有多种实现方式，例如CAS </p>
 <h2 id="5-synchronized-和-volatile-的区别"><a href="#5-synchronized-和-volatile-的区别" class="headerlink" title="5.synchronized 和 volatile 的区别"></a>5.synchronized 和 volatile 的区别</h2><p>​	<code>synchronized</code> 关键字和 <code>volatile</code> 关键字是两个<strong>互补</strong>的存在，而不是对立的存在！ 二者的应用场景也不同</p>
 <ol>
 <li>volatile 是变量修饰符；synchronized 修饰修饰类、方法。</li>
@@ -3353,7 +3414,8 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <p><strong>优先级队列</strong>（如 PriorityBlockingQueue）：适合需要优先级调度的场景。</p>
 <p><strong>延迟队列</strong>（如 DelayedWorkQueue）：适合定时或延迟任务。</p>
 <hr>
-<h1 id="5-并发工具类"><a href="#5-并发工具类" class="headerlink" title="5.并发工具类"></a>5.并发工具类</h1><h2 id="1-AQS"><a href="#1-AQS" class="headerlink" title="1.AQS"></a>1.AQS</h2><p>AQS，全称是 <code>Abstract Queued Synchronizer</code>，中文意思是<strong>抽象队列同步器</strong>。AQS 就是一个抽象类，主要用来构建锁和同步器。 </p>
+<h1 id="5-并发工具类"><a href="#5-并发工具类" class="headerlink" title="5.并发工具类"></a>5.并发工具类</h1><p>⚠️Java 并发工具类（如 <code>Semaphore</code>、<code>CountDownLatch</code>、<code>CyclicBarrier</code>）主要用于 <strong>协调多线程之间的执行顺序和资源访问</strong>，而不是直接保证线程安全（如 <code>synchronized</code> 或 <code>Atomic</code> 那样）。它们的作用是 <strong>控制线程的并发行为</strong>，解决特定场景下的同步问题。 </p>
+<h2 id="1-AQS"><a href="#1-AQS" class="headerlink" title="1.AQS"></a>1.AQS</h2><p>AQS，全称是 <code>Abstract Queued Synchronizer</code>，中文意思是<strong>抽象队列同步器</strong>。AQS 就是一个抽象类，主要用来构建锁和同步器。 </p>
 <p>AQS 的思想是，如果被请求的<strong>共享资源</strong>空闲，则当前线程能够成功获取资源；否则，它将进入一个<strong>等待队列</strong>，当有其他线程释放资源时，系统会挑选等待队列中的一个线程，赋予其资源。 </p>
 <blockquote>
 <p>原理</p>
@@ -3370,7 +3432,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 </ul>
 <p>以 <code>ReentrantLock</code> 为例，<code>state</code> 初始值为 0，表示未锁定状态。A 线程 <code>lock()</code> 时，会调用 <code>tryAcquire()</code> 独占该锁并将 <code>state+1</code> 。此后，其他线程再 <code>tryAcquire()</code> 时就会失败，直到 A 线程 <code>unlock()</code> 到 <code>state=</code>0（即释放锁）为止，其它线程才有机会获取该锁。当然，释放锁之前，A 线程自己是可以重复获取此锁的（<code>state</code> 会累加），这就是可重入的概念。但要注意，获取多少次就要释放多少次，这样才能保证 state 是能回到零态的。</p>
 <p>再以 <code>CountDownLatch</code> 以例，任务分为 N 个子线程去执行，<code>state</code> 也初始化为 N（注意 N 要与线程个数一致）。这 N 个子线程是并行执行的，每个子线程执行完后<code>countDown()</code> 一次，state 会 CAS(Compare and Swap) 减 1。等到所有子线程都执行完后(即 <code>state=0</code> )，会 <code>unpark()</code> 主调用线程，然后主调用线程就会从 <code>await()</code> 函数返回，继续后余动作。</p>
-<h2 id="2-semaphore"><a href="#2-semaphore" class="headerlink" title="2.semaphore"></a>2.semaphore</h2><p><code>synchronized</code> 和 <code>ReentrantLock</code> 都是一次只允许一个线程访问某个资源，而<code>Semaphore</code>(信号量)可以用来控制同时访问特定资源的线程数量。</p>
+<h2 id="2-semaphore"><a href="#2-semaphore" class="headerlink" title="2.semaphore"></a>2.semaphore</h2><p><code>synchronized</code> 和 <code>ReentrantLock</code> 都是一次只允许一个线程访问某个资源，而<code>Semaphore</code>(信号量)可以用来限制同时访问某个资源的线程数量 </p>
 <p><code>Semaphore</code> 通常用于那些资源有明确访问数量限制的场景比如限流，也就是<strong>流量控制</strong> </p>
 <blockquote>
 <p>semaphore的原理</p>
@@ -3378,7 +3440,8 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <p><code>Semaphore</code> 是共享锁的一种实现，它默认构造 AQS 的 <code>state</code> 值为 <code>permits</code>，你可以将 <code>permits</code> 的值理解为许可证的数量，只有拿到许可证的线程才能执行。</p>
 <p>调用<code>semaphore.acquire()</code> ，线程尝试获取许可证，如果 <code>state &gt;= 0</code> 的话，则表示可以获取成功。如果获取成功的话，使用 CAS 操作去修改 <code>state</code> 的值 <code>state=state-1</code>。如果 <code>state&lt;0</code> 的话，则表示许可证数量不足。此时会创建一个 Node 节点加入阻塞队列，挂起当前线程。</p>
 <p>调用<code>semaphore.release();</code> ，线程尝试释放许可证，并使用 CAS 操作去修改 <code>state</code> 的值 <code>state=state+1</code>。释放许可证成功之后，同时会唤醒同步队列中的一个线程。 被唤醒的线程会重新尝试去修改 <code>state</code> 的值 <code>state=state-1</code> ，如果 <code>state&gt;=0</code> 则获取令牌成功，否则重新进入阻塞队列，挂起线程。 </p>
-<h2 id="3-CountDownLatch"><a href="#3-CountDownLatch" class="headerlink" title="3.CountDownLatch"></a>3.CountDownLatch</h2><p><code>CountDownLatch</code> （倒计时器）用于协调多个线程之间的同步。 它允许 <code>count</code> 个线程阻塞在一个地方，直至所有线程的<strong>任务</strong>都执行完毕。</p>
+<h2 id="3-CountDownLatch"><a href="#3-CountDownLatch" class="headerlink" title="3.CountDownLatch"></a>3.CountDownLatch</h2><p><strong>作用：</strong>让一个或多个线程等待其他线程完成操作后再继续执行。 </p>
+<p><code>CountDownLatch</code> （倒计时器）用于协调多个线程之间的同步。 它允许 <code>count</code> 个线程阻塞在一个地方，直至所有线程的<strong>任务</strong>都执行完毕。</p>
 <p>CountDownLatch 的<strong>核心方法</strong>也不多：</p>
 <ul>
 <li><code>CountDownLatch(int count)</code>：创建一个带有给定计数器的 CountDownLatch。</li>
@@ -3398,8 +3461,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 
 
-<h2 id="4-ConcurrentHashMap"><a href="#4-ConcurrentHashMap" class="headerlink" title="4.ConcurrentHashMap"></a>4.ConcurrentHashMap</h2><p>参照集合篇</p>
-<h2 id="5-CyclicBarrier"><a href="#5-CyclicBarrier" class="headerlink" title="5.CyclicBarrier"></a>5.CyclicBarrier</h2><p>同步屏障。CyclicBarrier 的字面意思是可循环使用（Cyclic）的屏障（Barrier）。</p>
+
+
+<h2 id="4-CyclicBarrier"><a href="#4-CyclicBarrier" class="headerlink" title="4.CyclicBarrier"></a>4.CyclicBarrier</h2><p><strong>作用：</strong>让一组线程互相等待，到达屏障点后同时继续执行（可重复使用）。 </p>
+<p>同步屏障。CyclicBarrier 的字面意思是可循环使用（Cyclic）的屏障（Barrier）。</p>
 <p>CyclicBarrier 允许一组线程互相等待，直到到达一个公共的屏障点。 当所有线程都到达这个屏障点后，它们可以继续执行后续操作， 并且这个屏障可以被重置循环使用。 </p>
 <p>它和 CountDownLatch 类似，都可以协调多线程的结束动作，在它们结束后都可以执行特定动作 </p>
 
@@ -3426,10 +3491,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-03-26T21:05:53+08:00">
+          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-04-02T16:19:11+08:00">
   <a class='notlink'>
     <i class="fa-solid fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2025年3月26日</p>
+    <p>更新于：2025年4月2日</p>
   </a>
 </div>
 
@@ -3551,7 +3616,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 
     <div class='content'>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80"><span class="toc-text">1.线程基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%BA%BF%E7%A8%8B%E5%92%8C%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">1.线程和进程的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%B9%B6%E8%A1%8C%E4%B8%8E%E5%B9%B6%E5%8F%91%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">2.并行与并发的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B%E7%9A%84%E6%96%B9%E5%BC%8F-%E5%9B%9B%E7%A7%8D%EF%BC%89"><span class="toc-text">3.创建线程的方式(四种）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-run-%E5%92%8C-start-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">4.run()和 start()的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%8F%AF%E4%BB%A5%E7%9B%B4%E6%8E%A5%E8%B0%83%E7%94%A8Thread%E7%9A%84run%E6%96%B9%E6%B3%95%E5%90%97%EF%BC%9F"><span class="toc-text">5.可以直接调用Thread的run方法吗？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E7%BA%BF%E7%A8%8B%E5%8C%85%E6%8B%AC%E5%93%AA%E4%BA%9B%E7%8A%B6%E6%80%81%EF%BC%8C%E7%8A%B6%E6%80%81%E4%B9%8B%E9%97%B4%E6%98%AF%E5%A6%82%E4%BD%95%E5%8F%98%E5%8C%96%E7%9A%84"><span class="toc-text">6.线程包括哪些状态，状态之间是如何变化的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-sleep%E5%92%8Cwait%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">7.sleep和wait的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E7%BA%BF%E7%A8%8B%E4%B9%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F"><span class="toc-text">8.线程之间的通信方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B8%89%E8%A6%81%E7%B4%A0"><span class="toc-text">9.并发编程三要素</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-JMM%E2%80%94%E2%80%94Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B"><span class="toc-text">10.JMM——Java内存模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B"><span class="toc-text">11.虚拟线程</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E9%94%81"><span class="toc-text">2.锁</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-voliatle"><span class="toc-text">1.voliatle</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%B9%90%E8%A7%82%E9%94%81%E5%92%8C%E6%82%B2%E8%A7%82%E9%94%81"><span class="toc-text">2.乐观锁和悲观锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-synchronized"><span class="toc-text">3.synchronized</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%BB%80%E4%B9%88%E6%98%AF%E8%87%AA%E6%97%8B"><span class="toc-text">4.什么是自旋</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-synchronized-%E5%92%8C-volatile-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">5.synchronized 和 volatile 的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-ReentrantLock"><span class="toc-text">6.ReentrantLock</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-synchronized-%E5%92%8C-ReentrantLock-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">7.synchronized 和 ReentrantLock 的区别</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-ThreadLocal"><span class="toc-text">3.ThreadLocal</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="toc-text">4.线程池</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8F%82%E6%95%B0%EF%BC%88%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E6%89%A7%E8%A1%8C%E5%8E%9F%E7%90%86%EF%BC%89"><span class="toc-text">1.线程池的核心参数（线程池的执行原理）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E6%8B%92%E7%BB%9D%E7%AD%96%E7%95%A5"><span class="toc-text">2.线程池的拒绝策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%A6%82%E4%BD%95%E5%85%B3%E9%97%AD"><span class="toc-text">3.线程池如何关闭</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%A6%82%E4%BD%95%E8%AE%BE%E5%AE%9A"><span class="toc-text">4.线程池的大小如何设定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E6%8E%A8%E8%8D%90%E4%BD%BF%E7%94%A8Executors%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="toc-text">5.为什么不推荐使用Executors创建线程池</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E4%BB%BB%E5%8A%A1%E9%98%9F%E5%88%97%E7%9A%84%E7%A7%8D%E7%B1%BB"><span class="toc-text">6.任务队列的种类</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB"><span class="toc-text">5.并发工具类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-AQS"><span class="toc-text">1.AQS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-semaphore"><span class="toc-text">2.semaphore</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-CountDownLatch"><span class="toc-text">3.CountDownLatch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-ConcurrentHashMap"><span class="toc-text">4.ConcurrentHashMap</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-CyclicBarrier"><span class="toc-text">5.CyclicBarrier</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80"><span class="toc-text">1.线程基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%A5%E5%85%851%EF%BC%9A%E4%BB%80%E4%B9%88%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="toc-text">补充1：什么是线程安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%A5%E5%85%852%EF%BC%9A%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="toc-text">补充2：线程安全的实现方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%BA%BF%E7%A8%8B%E5%92%8C%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">1.线程和进程的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%B9%B6%E8%A1%8C%E4%B8%8E%E5%B9%B6%E5%8F%91%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">2.并行与并发的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B%E7%9A%84%E6%96%B9%E5%BC%8F-%E5%9B%9B%E7%A7%8D%EF%BC%89"><span class="toc-text">3.创建线程的方式(四种）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-run-%E5%92%8C-start-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">4.run()和 start()的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%8F%AF%E4%BB%A5%E7%9B%B4%E6%8E%A5%E8%B0%83%E7%94%A8Thread%E7%9A%84run%E6%96%B9%E6%B3%95%E5%90%97%EF%BC%9F"><span class="toc-text">5.可以直接调用Thread的run方法吗？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E7%BA%BF%E7%A8%8B%E5%8C%85%E6%8B%AC%E5%93%AA%E4%BA%9B%E7%8A%B6%E6%80%81%EF%BC%8C%E7%8A%B6%E6%80%81%E4%B9%8B%E9%97%B4%E6%98%AF%E5%A6%82%E4%BD%95%E5%8F%98%E5%8C%96%E7%9A%84"><span class="toc-text">6.线程包括哪些状态，状态之间是如何变化的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-sleep%E5%92%8Cwait%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">7.sleep和wait的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E7%BA%BF%E7%A8%8B%E4%B9%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F"><span class="toc-text">8.线程之间的通信方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B8%89%E8%A6%81%E7%B4%A0"><span class="toc-text">9.并发编程三要素</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-JMM%E2%80%94%E2%80%94Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B"><span class="toc-text">10.JMM——Java内存模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B"><span class="toc-text">11.虚拟线程</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E9%94%81"><span class="toc-text">2.锁</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-voliatle"><span class="toc-text">1.voliatle</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%B9%90%E8%A7%82%E9%94%81%E5%92%8C%E6%82%B2%E8%A7%82%E9%94%81"><span class="toc-text">2.乐观锁和悲观锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-synchronized"><span class="toc-text">3.synchronized</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%BB%80%E4%B9%88%E6%98%AF%E8%87%AA%E6%97%8B"><span class="toc-text">4.什么是自旋</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-synchronized-%E5%92%8C-volatile-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">5.synchronized 和 volatile 的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-ReentrantLock"><span class="toc-text">6.ReentrantLock</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-synchronized-%E5%92%8C-ReentrantLock-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">7.synchronized 和 ReentrantLock 的区别</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-ThreadLocal"><span class="toc-text">3.ThreadLocal</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="toc-text">4.线程池</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8F%82%E6%95%B0%EF%BC%88%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E6%89%A7%E8%A1%8C%E5%8E%9F%E7%90%86%EF%BC%89"><span class="toc-text">1.线程池的核心参数（线程池的执行原理）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E6%8B%92%E7%BB%9D%E7%AD%96%E7%95%A5"><span class="toc-text">2.线程池的拒绝策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%A6%82%E4%BD%95%E5%85%B3%E9%97%AD"><span class="toc-text">3.线程池如何关闭</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%A6%82%E4%BD%95%E8%AE%BE%E5%AE%9A"><span class="toc-text">4.线程池的大小如何设定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E6%8E%A8%E8%8D%90%E4%BD%BF%E7%94%A8Executors%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="toc-text">5.为什么不推荐使用Executors创建线程池</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E4%BB%BB%E5%8A%A1%E9%98%9F%E5%88%97%E7%9A%84%E7%A7%8D%E7%B1%BB"><span class="toc-text">6.任务队列的种类</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB"><span class="toc-text">5.并发工具类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-AQS"><span class="toc-text">1.AQS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-semaphore"><span class="toc-text">2.semaphore</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-CountDownLatch"><span class="toc-text">3.CountDownLatch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-CyclicBarrier"><span class="toc-text">4.CyclicBarrier</span></a></li></ol></li></ol>
     </div>
   </section>
 
@@ -4743,7 +4808,7 @@ window.matchMedia('(prefers-color-scheme: light)').addListener(darkModelListener
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/10/28/八股/JUC/","name":"JUC"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"JUC","description":"这里是JAVA并发相关的一些八股","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/JUC/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/JUC/","wordCount":16,"datePublished":"2024-10-28T12:14:32.000Z","dateModified":"2025-03-26T13:05:53.199Z","articleSection":"八股","keywords":"JUC","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/10/28/八股/JUC/","name":"JUC"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"JUC","description":"这里是JAVA并发相关的一些八股","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/JUC/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/JUC/","wordCount":16,"datePublished":"2024-10-28T12:14:32.000Z","dateModified":"2025-04-02T08:19:11.823Z","articleSection":"八股","keywords":"JUC","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 
