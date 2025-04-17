@@ -46,7 +46,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
 <meta property="article:published_time" content="2024-10-28T12:29:13.000Z">
-<meta property="article:modified_time" content="2025-04-15T15:26:40.680Z">
+<meta property="article:modified_time" content="2025-04-16T14:07:51.721Z">
 <meta property="article:author" content="Light">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
@@ -1847,7 +1847,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: false,
     cdn: {"js":{"app":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/app.js","parallax":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/parallax.js","rightMenu":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenu.js","rightMenus":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenus.js","sites":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/sites.js","friends":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/friends.js","contributors":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/contributors.js","search":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1744730830372),
+    lastupdate: new Date(1744906169889),
     sidebar: {
       for_page: ["blogger","category","donate","webinfo"],
       for_post: ["toc"],
@@ -2900,13 +2900,13 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <div class="new-meta-item wordcount">
     <a class='notlink'>
       <i class="fa-solid fa-keyboard fa-fw" aria-hidden="true"></i>
-      <p>字数：10.8k 字</p>
+      <p>字数：11.5k 字</p>
     </a>
   </div>
   <div class="new-meta-item readtime">
     <a class='notlink'>
       <i class="fa-solid fa-hourglass-half fa-fw" aria-hidden="true"></i>
-      <p>时长：37 分钟</p>
+      <p>时长：39 分钟</p>
     </a>
   </div>
 
@@ -3056,6 +3056,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <li>JDK6及之前的版本中，静态变量是存放在方法区中的，也就是永久代。</li>
 <li>JDK7及之后的版本中，静态变量是存放在堆中的Class对象中，脱离了永久代。具体源码可参考虚拟机源码：BytecodeInterpreter针对putstatic指令的处理。</li>
 </ul>
+<p>全局变量（可以认为是static修饰的变量）就是放在方法区中。成员变量放在堆中，局部变量放在栈中。</p>
 <p><strong>方法区和永久代以及元空间是什么关系呢？</strong> 方法区和永久代以及元空间的关系很像 Java 中 接口和类的关系，类实现了接口，这里的类就可以看作是永久代和元空间， 接口可以看作是方法区，也就是说永久代以及元空间是 HotSpot 虚拟机对虚拟机规范中方法区的两种实现方式。 并且，永久代是 JDK 1.8 之前的方法区实现，JDK 1.8 及以后方法区的实现变成了元空间。 <strong>元空间使用的是本地内存</strong></p>
 <p><img src="https://pic1.imgdb.cn/item/67ce3c47066befcec6e24755.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67ce3c47066befcec6e24755.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="方法区永久代元空间的关系"></p>
 <p><strong>为什么要将永久代 (PermGen) 替换为元空间 (MetaSpace) 呢?</strong> </p>
@@ -3240,26 +3241,45 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <li><p><strong>标记-清除算法</strong>： 标记-清除算法分为“标记”和“清除”两个阶段，首先通过可达性分析，标记出所有需要回收的对象， 然后统一回收所有被标记的对象。 </p>
 <p><strong>缺点：</strong>一个是效率问题，标记和清除的过程<strong>效率都不高</strong> ；另一个就是，清除结束后会造成<strong>大量不连续的碎片</strong>空间。</p>
 </li>
-<li><p><strong>复制算法</strong>：为了解决碎片空间的问题，出现了“复制算法”。 它把内存空间划为两个相等的区域，每次只使用其中一个区域。垃圾收集时，遍历当前使用的区域，把存活对象复制到另外一个区域中，最后将当前区域清空。 </p>
+<li><p><strong>复制算法</strong>：为了解决碎片空间的问题，出现了“复制算法”。 它把内存空间划为两个相等的区域，每次只使用其中一个区域（from区）。垃圾收集时，遍历当前使用的区域，把存活对象复制到另外一个区域（to区）中，最后将当前区域（from）清空。 然后将两块区间的名字互换，即from区变to区，to区变from区，之后继续在from区创建对象</p>
 <p>缺点：因为每次在申请内存时，都<strong>只能使用一半的内存</strong>空间。内存利用率严重不足。 </p>
 </li>
 <li><p><strong>标记-整理算法</strong>： 复制算法在 GC 之后存活对象较少的情况下效率比较高，但如果存活对象比较多时， 会执行较多的复制操作，效率就会下降。 标记-整理算法的“标记”过程与“标记-清除算法”的标记过程一致，但标记之后不会直接清理。 而是将所有存活对象都移动到内存的一端。移动结束后直接清理掉剩余部分。 </p>
 <p>缺点：由于多了整理这一步，因此效率也不高 </p>
 </li>
-<li><p><strong>分代回收算法</strong>： 分代收集是将内存划分成了新生代和老年代。分配的依据是对象的生存周期，或者说经历过的 GC 次数。 对象创建时，一般在新生代申请内存，当经历一次 GC 之后如果对还存活，那么对象的年龄 +1。 对象创建时，一般在新生代申请内存，当经历一次 GC 之后如果对还存活，那么对象的年龄 +1。 <strong>新生代通常使用复制算法，老年代使用标记-清除或标记-整理算法。</strong></p>
+<li><p><strong>分代回收算法</strong>： <strong>年轻代通常使用复制算法，老年代使用标记-清除或标记-整理算法。</strong></p>
+<ol>
+<li>分代回收时，创建出来的对象，首先会被放入Eden伊甸园区。 eden[首次]满时，会触发垃圾回收，根据可达性判断存活的对象，将存活的对象复制到某个幸存区（假设为From区），同时Eden区清空。 </li>
+<li>当后续eden再满时，就会触发年轻代的GC，称为<strong>Minor GC或者Young GC</strong>。 Minor GC会把eden中和From需要回收的对象回收，把没有回收的对象放入To区。 然后交换from区和to区的名字，下次edan区满了还是放入from区，这个就是复制算法的“换名”</li>
+<li>如果Minor GC后对象的年龄达到阈值（最大15，默认值和垃圾回收器有关），对象就会被晋升至老年代。 </li>
+<li>当老年代中空间不足，无法放入新的对象时，先尝试minor gc。如果还是不足，就会触发Full GC，涉及整个 Java 堆和方法区（或元空间）。它是最耗时的 GC，通常在 JVM 压力很大时发生。</li>
+</ol>
 </li>
 </ul>
-<p><strong>延伸问题：</strong> HotSpot 为什么要分为新生代和老年代？ </p>
-<h2 id="5-CMS垃圾收集器"><a href="#5-CMS垃圾收集器" class="headerlink" title="5.CMS垃圾收集器"></a>5.CMS垃圾收集器</h2><p><strong>CMS（Concurrent Mark Sweep）收集器是 HotSpot 虚拟机第一款真正意义上的并发收集器，它第一次实现了让垃圾收集线程与用户线程（基本上）同时工作。</strong> </p>
-<p>以获取最短GC回收停顿时间为目标的收集器，具有高并发、低停顿的特点，采取<strong>标记——清除</strong>算法</p>
+<h2 id="5-为什么要分为新生代和老年代？"><a href="#5-为什么要分为新生代和老年代？" class="headerlink" title="5.为什么要分为新生代和老年代？"></a>5.为什么要分为新生代和老年代？</h2><p>首先我们要知道堆内存中对象的特性：</p>
+<ul>
+<li>系统中的大部分对象，都是创建出来之后很快就不再使用可以被回收，比如用户获取订单数据，订单数据返回给用户之后就可以释放了。</li>
+<li>老年代中会存放长期存活的对象，比如Spring的大部分bean对象，在程序启动之后就不会被回收了。</li>
+<li>在虚拟机的默认设置中，新生代大小要远小于老年代的大小。</li>
+</ul>
+<p>分代GC算法将堆分成年轻代和老年代主要原因有：</p>
+<p>1、可以通过调整年轻代和老年代的比例来适应不同类型的应用程序，提高内存的利用率和性能。</p>
+<p>2、<strong>新生代和老年代使用不同的垃圾回收算法</strong>，新生代一般选择复制算法，老年代可以选择标记-清除和标记-整理算法，由程序员来选择灵活度较高。</p>
+<blockquote>
+<p>比如在新生代中，每次收集都会有大量对象死去，所以可以选择”标记-复制“算法，只需要付出少量对象的复制成本就可以完成每次垃	圾收集。而老年代的对象存活几率是比较高的，而且没有额外的空间对它进行分配担保，所以我们必须选择“标记-清除”或“标记-整理”算法进行垃圾收集。</p>
+</blockquote>
+<p>3、分代的设计中允许只回收新生代（minor gc），如果能满足对象分配的要求就不需要对整个堆进行回收(full gc),STW时间就会减少。分代设计的核心思想，尽可能的做minor gc 不做full gc </p>
+<h2 id="6-CMS垃圾收集器"><a href="#6-CMS垃圾收集器" class="headerlink" title="6.CMS垃圾收集器"></a>6.CMS垃圾收集器</h2><p>CMS垃圾回收器<strong>关注的是系统的暂停时间</strong>，允许用户线程和垃圾回收线程在某些步骤中同时执行，减少了用户线程的等待时间。 </p>
+<p>以获取最短GC回收停顿时间为目标的收集器，具有高并发、低停顿的特点，采取<strong>标记——清除</strong>算法，回收老年代</p>
 <p>工作步骤</p>
+<p><img src="https://pic1.imgdb.cn/item/67ffb4d588c538a9b5d46de8.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67ffb4d588c538a9b5d46de8.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="CMS"></p>
 <ol>
 <li><p><strong>初始标记：</strong> 短暂停顿（Stop-The-World，STW），标记<strong>直接</strong>与 GCRoots 相连的对象（根对象），该阶段需要STW，由于只标记直接引用的对象，这一阶段通常很快。 </p>
 </li>
 <li><p><strong>并发标记：</strong> 指的是对「初始标记阶段」标记的对 象进行整个引用链的扫描，该阶段与用户线程同时运行, 不需要STW 。因为是并发进行，应用线程可能修改对象图，导致标记可能不完全准确。 即：</p>
 <p>并发标记的时候，引用可能发生变化，因此可能发生<strong>漏标</strong>（本应该回收的垃圾没有被回收）和<strong>多标</strong>（本不应该回收的垃圾被回收）了。 </p>
 </li>
-<li><p><strong>重新标记：</strong>  重新标记阶段就是为了修正并发标记期间因为用户程序继续运行而导致标记产生变动的那一部分对象的标记记录，这个阶段的停顿时间一般会比初始标记阶段的时间稍长，远远比并发标记阶段时间短 </p>
+<li><p><strong>重新标记：</strong>  重新标记阶段就是为了修正并发标记期间因为用户程序继续运行而导致标记产生变动的那一部分对象的标记记录，这个阶段的停顿时间一般会比初始标记阶段的时间稍长，远远比并发标记阶段时间短，需要STW</p>
 </li>
 <li><p><strong>并发清除：</strong>指的是将标记为垃圾的对象进行清 除，该阶段与用户线程同时运行,不需要STW</p>
 </li>
@@ -3268,8 +3288,9 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <ol>
 <li>无法处理在<strong>并发清理</strong>过程中产生的“浮动垃圾”， 不能做到完全的垃圾回收 </li>
 <li>它使用的回收算法“<strong>标记-清除</strong>”算法会导致收集结束时会有大量空间碎片产生。</li>
+<li>如果老年代内存不足无法分配对象，CMS就会退化成Serial Old单线程回收老年代。</li>
 </ol>
-<h2 id="6-G1收集器"><a href="#6-G1收集器" class="headerlink" title="6.G1收集器"></a>6.G1收集器</h2><p><strong>G1 (Garbage-First) 是一款面向服务器的垃圾收集器,主要针对配备多颗处理器及大容量内存的机器. 以极高概率满足 GC 停顿时间要求的同时,还具备高吞吐量性能特征。</strong> 同时注重吞吐量(Throughput)和低延迟 </p>
+<h2 id="7-G1收集器"><a href="#7-G1收集器" class="headerlink" title="7.G1收集器"></a>7.G1收集器</h2><p><strong>G1 (Garbage-First) 是一款面向服务器的垃圾收集器,主要针对配备多颗处理器及大容量内存的机器. 以极高概率满足 GC 停顿时间要求的同时,还具备高吞吐量性能特征。</strong> 同时注重吞吐量(Throughput)和低延迟 </p>
 <p>工作步骤：</p>
 <ol>
 <li><strong>初始标记</strong>： 短暂停顿，标记从 GC Roots 可直接引用的对象，即标记所有直接可达的活跃对象</li>
@@ -3334,10 +3355,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-04-15T23:26:40+08:00">
+          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-04-16T22:07:51+08:00">
   <a class='notlink'>
     <i class="fa-solid fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2025年4月15日</p>
+    <p>更新于：2025年4月16日</p>
   </a>
 </div>
 
@@ -3466,7 +3487,7 @@ Redis默认端口6379
 
 
     <div class='content'>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%BC%95%E8%A8%80"><span class="toc-text">1.引言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-JVM%E7%9A%84%E7%89%B9%E6%80%A7"><span class="toc-text">1.JVM的特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%AD%97%E8%8A%82%E7%A0%81%E6%96%87%E4%BB%B6"><span class="toc-text">2.字节码文件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-text">2.内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-JVM%E7%9A%84%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F"><span class="toc-text">1.JVM的内存区域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-JDK1-6%E3%80%811-7%E3%80%811-8%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E7%9A%84%E5%8F%98%E5%8C%96"><span class="toc-text">2.JDK1.6、1.7、1.8内存区域的变化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%9B%9B%E7%A7%8D%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B"><span class="toc-text">3.四种引用类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%92%8C%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2"><span class="toc-text">4.内存溢出和内存泄露</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="toc-text">2.类加载器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80"><span class="toc-text">1.对象的内存布局</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-text">2.对象创建的过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%B8%BA%E5%AF%B9%E8%B1%A1%E5%88%86%E9%85%8D%E5%86%85%E5%AD%98%EF%BC%88%E5%A0%86%E5%86%85%E5%AD%98%E5%A6%82%E4%BD%95%E5%88%86%E9%85%8D%EF%BC%89"><span class="toc-text">3.为对象分配内存（堆内存如何分配）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%A4%84%E7%90%86%E5%B9%B6%E5%8F%91%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98"><span class="toc-text">4.处理并发安全问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-JVM%E5%A6%82%E4%BD%95%E8%AE%BF%E9%97%AE%E5%AF%B9%E8%B1%A1%EF%BC%88%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%AE%BF%E9%97%AE%E5%AE%9A%E4%BD%8D%EF%BC%89"><span class="toc-text">5.JVM如何访问对象（对象的访问定位）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E7%9A%84%E8%BF%87%E7%A8%8B%EF%BC%88%E7%B1%BB%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%EF%BC%89"><span class="toc-text">6.类加载的过程（类的生命周期）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E4%BB%80%E4%B9%88%E6%98%AF%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%EF%BC%8C%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="toc-text">7.什么是类加载器，类加载器有哪些</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E4%BB%80%E4%B9%88%E6%98%AF%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6%EF%BC%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E9%87%87%E7%94%A8%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6"><span class="toc-text">8.什么是双亲委派机制？为什么采用双亲委派机制</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86"><span class="toc-text">3.垃圾收集</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%88%A4%E6%96%AD%E5%9E%83%E5%9C%BE%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-text">1.判断垃圾的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%93%AA%E4%BA%9B%E5%AF%B9%E8%B1%A1%E5%8F%AF%E4%BB%A5%E4%BD%9C%E4%B8%BAGC-Root"><span class="toc-text">2.哪些对象可以作为GC Root</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-finalize-%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-text">3.finalize()方法的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95"><span class="toc-text">4.垃圾收集算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-CMS%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8"><span class="toc-text">5.CMS垃圾收集器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-G1%E6%94%B6%E9%9B%86%E5%99%A8"><span class="toc-text">6.G1收集器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-Minor-GC-Young-GC%E3%80%81Major-GC-Old-GC%E3%80%81Mixed-GC%E3%80%81Full-GC-%E9%83%BD%E6%98%AF%E4%BB%80%E4%B9%88%E6%84%8F%E6%80%9D%EF%BC%9F"><span class="toc-text">6.Minor GC&#x2F;Young GC、Major GC&#x2F;Old GC、Mixed GC、Full GC 都是什么意思？</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%BC%95%E8%A8%80"><span class="toc-text">1.引言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-JVM%E7%9A%84%E7%89%B9%E6%80%A7"><span class="toc-text">1.JVM的特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%AD%97%E8%8A%82%E7%A0%81%E6%96%87%E4%BB%B6"><span class="toc-text">2.字节码文件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-text">2.内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-JVM%E7%9A%84%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F"><span class="toc-text">1.JVM的内存区域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-JDK1-6%E3%80%811-7%E3%80%811-8%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E7%9A%84%E5%8F%98%E5%8C%96"><span class="toc-text">2.JDK1.6、1.7、1.8内存区域的变化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%9B%9B%E7%A7%8D%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B"><span class="toc-text">3.四种引用类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%92%8C%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2"><span class="toc-text">4.内存溢出和内存泄露</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="toc-text">2.类加载器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80"><span class="toc-text">1.对象的内存布局</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-text">2.对象创建的过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%B8%BA%E5%AF%B9%E8%B1%A1%E5%88%86%E9%85%8D%E5%86%85%E5%AD%98%EF%BC%88%E5%A0%86%E5%86%85%E5%AD%98%E5%A6%82%E4%BD%95%E5%88%86%E9%85%8D%EF%BC%89"><span class="toc-text">3.为对象分配内存（堆内存如何分配）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%A4%84%E7%90%86%E5%B9%B6%E5%8F%91%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98"><span class="toc-text">4.处理并发安全问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-JVM%E5%A6%82%E4%BD%95%E8%AE%BF%E9%97%AE%E5%AF%B9%E8%B1%A1%EF%BC%88%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%AE%BF%E9%97%AE%E5%AE%9A%E4%BD%8D%EF%BC%89"><span class="toc-text">5.JVM如何访问对象（对象的访问定位）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E7%9A%84%E8%BF%87%E7%A8%8B%EF%BC%88%E7%B1%BB%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%EF%BC%89"><span class="toc-text">6.类加载的过程（类的生命周期）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E4%BB%80%E4%B9%88%E6%98%AF%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%EF%BC%8C%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="toc-text">7.什么是类加载器，类加载器有哪些</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E4%BB%80%E4%B9%88%E6%98%AF%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6%EF%BC%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E9%87%87%E7%94%A8%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6"><span class="toc-text">8.什么是双亲委派机制？为什么采用双亲委派机制</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86"><span class="toc-text">3.垃圾收集</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%88%A4%E6%96%AD%E5%9E%83%E5%9C%BE%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-text">1.判断垃圾的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%93%AA%E4%BA%9B%E5%AF%B9%E8%B1%A1%E5%8F%AF%E4%BB%A5%E4%BD%9C%E4%B8%BAGC-Root"><span class="toc-text">2.哪些对象可以作为GC Root</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-finalize-%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-text">3.finalize()方法的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95"><span class="toc-text">4.垃圾收集算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%88%86%E4%B8%BA%E6%96%B0%E7%94%9F%E4%BB%A3%E5%92%8C%E8%80%81%E5%B9%B4%E4%BB%A3%EF%BC%9F"><span class="toc-text">5.为什么要分为新生代和老年代？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-CMS%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8"><span class="toc-text">6.CMS垃圾收集器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-G1%E6%94%B6%E9%9B%86%E5%99%A8"><span class="toc-text">7.G1收集器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-Minor-GC-Young-GC%E3%80%81Major-GC-Old-GC%E3%80%81Mixed-GC%E3%80%81Full-GC-%E9%83%BD%E6%98%AF%E4%BB%80%E4%B9%88%E6%84%8F%E6%80%9D%EF%BC%9F"><span class="toc-text">6.Minor GC&#x2F;Young GC、Major GC&#x2F;Old GC、Mixed GC、Full GC 都是什么意思？</span></a></li></ol></li></ol>
     </div>
   </section>
 
@@ -4658,7 +4679,7 @@ window.matchMedia('(prefers-color-scheme: light)').addListener(darkModelListener
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/10/28/八股/JVM/","name":"JVM"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"JVM","description":"这里是有关JVM的八股","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/JVM/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/JVM/","wordCount":11,"datePublished":"2024-10-28T12:29:13.000Z","dateModified":"2025-04-15T15:26:40.680Z","articleSection":"八股","keywords":"JVM","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/10/28/八股/JVM/","name":"JVM"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"JVM","description":"这里是有关JVM的八股","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/JVM/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/JVM/","wordCount":11,"datePublished":"2024-10-28T12:29:13.000Z","dateModified":"2025-04-16T14:07:51.721Z","articleSection":"八股","keywords":"JVM","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 
