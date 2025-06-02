@@ -46,7 +46,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
 <meta property="article:published_time" content="2024-11-28T12:57:13.000Z">
-<meta property="article:modified_time" content="2025-04-08T07:02:38.388Z">
+<meta property="article:modified_time" content="2025-05-29T15:35:43.556Z">
 <meta property="article:author" content="Light">
 <meta property="article:tag" content="设计模式">
 <meta property="article:tag" content="Linux">
@@ -1849,7 +1849,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: false,
     cdn: {"js":{"app":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/app.js","parallax":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/parallax.js","rightMenu":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenu.js","rightMenus":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenus.js","sites":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/sites.js","friends":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/friends.js","contributors":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/contributors.js","search":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1748418653604),
+    lastupdate: new Date(1748849489757),
     sidebar: {
       for_page: ["blogger","category","donate","webinfo"],
       for_post: ["toc"],
@@ -2902,13 +2902,13 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <div class="new-meta-item wordcount">
     <a class='notlink'>
       <i class="fa-solid fa-keyboard fa-fw" aria-hidden="true"></i>
-      <p>字数：6.4k 字</p>
+      <p>字数：6.8k 字</p>
     </a>
   </div>
   <div class="new-meta-item readtime">
     <a class='notlink'>
       <i class="fa-solid fa-hourglass-half fa-fw" aria-hidden="true"></i>
-      <p>时长：23 分钟</p>
+      <p>时长：24 分钟</p>
     </a>
   </div>
 
@@ -2930,7 +2930,12 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 
 
-<h1 id="1-设计模式"><a href="#1-设计模式" class="headerlink" title="1.设计模式"></a>1.设计模式</h1><h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h2><blockquote>
+<h1 id="1-设计模式"><a href="#1-设计模式" class="headerlink" title="1.设计模式"></a>1.设计模式</h1><h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h2><ol>
+<li>创建型模式：创建型模式关注对象的创建过程，让对象的创建更灵活、更可控。 这类模式的特点是，<strong>不让用户依赖于对象的创建或排列方式，避免用户直接使用new运算符创建对象。</strong> </li>
+<li>结构型模式：结构型模式关注<strong>类和对象的组合，形成更大的结构，提升系统的灵活性</strong>。 和类有关的结构型模式设计如何合理地使用继承机制；和对象有关的结构型模式涉及如何合理地使用对象组合机制。 </li>
+<li>行为型模式：行为型模式关注<strong>对象之间的通信和职责分配</strong>，让协作更清晰。</li>
+</ol>
+<blockquote>
 <p><strong>创建型模式</strong></p>
 </blockquote>
 <p>创建型模式关注对象的创建过程，让对象的创建更灵活、更可控。 这类模式的特点是，<strong>不让用户依赖于对象的创建或排列方式，避免用户直接使用new运算符创建对象。</strong> </p>
@@ -3036,7 +3041,14 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <p><strong>解释</strong>：像请专家来检查设备，不用自己动手改。</p>
 </li>
 </ol>
-<h2 id="2-单例模式"><a href="#2-单例模式" class="headerlink" title="2.单例模式"></a>2.单例模式</h2><p>Java 中的单例模式（Singleton Pattern）是一种常用的设计模式，<strong>旨在确保一个类只有一个实例，并提供一个全局的访问点。</strong>单例模式通常用于管理全局共享资源，例如数据库连接池、日志对象等。 </p>
+<h2 id="2-单例模式"><a href="#2-单例模式" class="headerlink" title="2.单例模式"></a>2.单例模式</h2><p><strong>单例模式</strong>是一种创建型设计模式， 让你能够<strong>保证一个类只有一个实例， 并提供一个访问该实例的全局节点</strong>。 </p>
+<p>单例模式通常用于管理全局共享资源，例如数据库连接池、日志对象等。 </p>
+<p>所有单例的实现都包含以下两个相同的步骤：</p>
+<ul>
+<li>将默认构造函数设为私有， 防止其他对象使用单例类的 <code>new</code>运算符。</li>
+<li>新建一个静态构建方法作为构造函数。 该函数会 “偷偷” 调用私有构造函数来创建对象， 并将其保存在一个静态成员变量中。 此后所有对于该函数的调用都将返回这一缓存对象。</li>
+</ul>
+<p>如果你的代码能够访问单例类， 那它就能调用单例类的静态方法。 无论何时调用该方法， 它总是会返回相同的对象。</p>
 <p>实现单例模式的关键点</p>
 <ol>
 <li><strong>私有构造方法</strong>：确保外部代码不能通过构造器创建类的实例。</li>
@@ -3133,7 +3145,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <li><strong>双重锁检查</strong>：性能较好，推荐使用。</li>
 <li><strong>枚举单例</strong>：推荐使用，简洁且线程安全。</li>
 </ul>
-<h2 id="二、工厂模式"><a href="#二、工厂模式" class="headerlink" title="二、工厂模式"></a>二、工厂模式</h2><p>Java 中的 <strong>工厂模式</strong>（Factory Pattern）是一种创建型设计模式，旨在通过定义一个接口来创建对象，但让子类决定实例化哪个类。工厂模式可以帮助减少客户端与具体产品类之间的耦合，提高代码的灵活性和扩展性。 </p>
+<h2 id="3-工厂模式"><a href="#3-工厂模式" class="headerlink" title="3.工厂模式"></a>3.工厂模式</h2><p>Java 中的 <strong>工厂模式</strong>（Factory Pattern）是一种创建型设计模式，旨在通过定义一个接口来创建对象，但让子类决定实例化哪个类。工厂模式可以帮助减少客户端与具体产品类之间的耦合，提高代码的灵活性和扩展性。 </p>
 <p>1、<strong>简单工厂模式</strong></p>
 <p>简单工厂模式通过一个工厂类来根据提供的信息生成不同类型的对象。它不需要暴露创建对象的具体逻辑，只暴露一个工厂方法供客户端调用。</p>
 <p>结构：</p>
@@ -3412,10 +3424,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-04-08T15:02:38+08:00">
+          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-05-29T23:35:43+08:00">
   <a class='notlink'>
     <i class="fa-solid fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2025年4月8日</p>
+    <p>更新于：2025年5月29日</p>
   </a>
 </div>
 
@@ -3536,7 +3548,7 @@ Java 集合，也叫作容器，主要是由两大接口派生而来：一个是
 
 
     <div class='content'>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="toc-text">1.设计模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%A6%82%E8%BF%B0"><span class="toc-text">1.概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="toc-text">2.单例模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%8F%8C%E9%87%8D%E6%A3%80%E6%9F%A5%EF%BC%9F"><span class="toc-text">1. 为什么要双重检查？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="toc-text">二、工厂模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Spring-%E6%A1%86%E6%9E%B6%E4%B8%AD%E9%83%BD%E7%94%A8%E5%88%B0%E4%BA%86%E5%93%AA%E4%BA%9B%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%9F"><span class="toc-text">3.Spring 框架中都用到了哪些设计模式？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Linux"><span class="toc-text">2.Linux</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Linux%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-text">1.Linux文件系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-inode"><span class="toc-text">1.1.inode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E7%A1%AC%E9%93%BE%E6%8E%A5%E5%92%8C%E8%BD%AF%E9%93%BE%E6%8E%A5"><span class="toc-text">1.2.硬链接和软链接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">2.Linux常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%96%87%E4%BB%B6%E7%9B%B8%E5%85%B3"><span class="toc-text">2.1.文件相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86%E7%9B%B8%E5%85%B3"><span class="toc-text">2.2.系统管理相关</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E9%AB%98%E9%A2%91%E9%97%AE%E9%A2%98"><span class="toc-text">3.高频问题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Git"><span class="toc-text">3.Git</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-git-merge%E5%92%8C-git-rebase%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">1.git merge和 git rebase的区别</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%9C%BA%E6%99%AF"><span class="toc-text">3.场景</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1"><span class="toc-text">1.秒杀系统设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%88%86%E5%B8%83%E5%BC%8FID"><span class="toc-text">2.分布式ID</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="toc-text">1.设计模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%A6%82%E8%BF%B0"><span class="toc-text">1.概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="toc-text">2.单例模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%8F%8C%E9%87%8D%E6%A3%80%E6%9F%A5%EF%BC%9F"><span class="toc-text">1. 为什么要双重检查？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="toc-text">3.工厂模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Spring-%E6%A1%86%E6%9E%B6%E4%B8%AD%E9%83%BD%E7%94%A8%E5%88%B0%E4%BA%86%E5%93%AA%E4%BA%9B%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%9F"><span class="toc-text">3.Spring 框架中都用到了哪些设计模式？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Linux"><span class="toc-text">2.Linux</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Linux%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-text">1.Linux文件系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-inode"><span class="toc-text">1.1.inode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E7%A1%AC%E9%93%BE%E6%8E%A5%E5%92%8C%E8%BD%AF%E9%93%BE%E6%8E%A5"><span class="toc-text">1.2.硬链接和软链接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">2.Linux常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%96%87%E4%BB%B6%E7%9B%B8%E5%85%B3"><span class="toc-text">2.1.文件相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86%E7%9B%B8%E5%85%B3"><span class="toc-text">2.2.系统管理相关</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E9%AB%98%E9%A2%91%E9%97%AE%E9%A2%98"><span class="toc-text">3.高频问题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Git"><span class="toc-text">3.Git</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-git-merge%E5%92%8C-git-rebase%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">1.git merge和 git rebase的区别</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%9C%BA%E6%99%AF"><span class="toc-text">3.场景</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1"><span class="toc-text">1.秒杀系统设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%88%86%E5%B8%83%E5%BC%8FID"><span class="toc-text">2.分布式ID</span></a></li></ol></li></ol>
     </div>
   </section>
 
@@ -4728,7 +4740,7 @@ window.matchMedia('(prefers-color-scheme: light)').addListener(darkModelListener
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/11/28/八股/其它/","name":"其它"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"其它","description":"这里是有关设计模式，Linux，Git的一些八股，后续会补充场景题","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/11/28/%E5%85%AB%E8%82%A1/%E5%85%B6%E5%AE%83/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/11/28/%E5%85%AB%E8%82%A1/%E5%85%B6%E5%AE%83/","wordCount":33,"datePublished":"2024-11-28T12:57:13.000Z","dateModified":"2025-04-08T07:02:38.388Z","articleSection":"八股","keywords":"设计模式,Linux,Git","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/11/28/八股/其它/","name":"其它"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"其它","description":"这里是有关设计模式，Linux，Git的一些八股，后续会补充场景题","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/11/28/%E5%85%AB%E8%82%A1/%E5%85%B6%E5%AE%83/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/11/28/%E5%85%AB%E8%82%A1/%E5%85%B6%E5%AE%83/","wordCount":33,"datePublished":"2024-11-28T12:57:13.000Z","dateModified":"2025-05-29T15:35:43.556Z","articleSection":"八股","keywords":"设计模式,Linux,Git","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 
