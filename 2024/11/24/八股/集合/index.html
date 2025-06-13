@@ -46,7 +46,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
 <meta property="article:published_time" content="2024-11-24T09:11:53.000Z">
-<meta property="article:modified_time" content="2025-05-21T10:31:55.082Z">
+<meta property="article:modified_time" content="2025-06-13T07:50:15.468Z">
 <meta property="article:author" content="Light">
 <meta property="article:tag" content="JavaSE">
 <meta name="twitter:card" content="summary">
@@ -1847,7 +1847,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: false,
     cdn: {"js":{"app":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/app.js","parallax":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/parallax.js","rightMenu":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenu.js","rightMenus":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenus.js","sites":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/sites.js","friends":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/friends.js","contributors":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/contributors.js","search":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1749737988703),
+    lastupdate: new Date(1749821862930),
     sidebar: {
       for_page: ["blogger","category","donate","webinfo"],
       for_post: ["toc"],
@@ -2900,13 +2900,13 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <div class="new-meta-item wordcount">
     <a class='notlink'>
       <i class="fa-solid fa-keyboard fa-fw" aria-hidden="true"></i>
-      <p>字数：4.3k 字</p>
+      <p>字数：5.2k 字</p>
     </a>
   </div>
   <div class="new-meta-item readtime">
     <a class='notlink'>
       <i class="fa-solid fa-hourglass-half fa-fw" aria-hidden="true"></i>
-      <p>时长：15 分钟</p>
+      <p>时长：18 分钟</p>
     </a>
   </div>
 
@@ -2937,12 +2937,13 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 </ol>
 <p>此外，<code>java.util.concurrent </code>包提供的都是线程安全的集合： </p>
 <h1 id="1-List"><a href="#1-List" class="headerlink" title="1.List"></a>1.List</h1><h2 id="1-ArrayList和LinkedList的区别"><a href="#1-ArrayList和LinkedList的区别" class="headerlink" title="1.ArrayList和LinkedList的区别"></a>1.ArrayList和LinkedList的区别</h2><ul>
-<li><strong>底层数据结构</strong>：ArrayList 是动态数组的数据结构实现，而 LinkedList 是双向链表的数据结构实现。 </li>
+<li><strong>底层数据结构</strong>：ArrayList 是动态数组的数据结构实现，而 LinkedList 是<strong>双向链表</strong>的数据结构实现。 </li>
 <li><strong>操作效率不同</strong>：多数情况下，ArrayList更利于查找，LinkedList更利于增删，<strong>LinkedList只有在首尾的增删效率是O(1)，如果是中间的元素也是O(n)</strong></li>
-<li><strong>占用空间</strong>：LinkedList 比 ArrayList 更占内存，因为 LinkedList 的节点除了存储数据，还存储了两个引用，一个指向前一个元素，一个指向后一个元素。 </li>
-<li><strong>是否支持随机访问</strong></li>
+<li><strong>占用空间</strong>：<code>ArrayList</code> 的空间浪费主要体现在在 list 列表的结尾会预留一定的容量空间， 而 LinkedList 的空间花费则体现在它的每一个元素都需要消耗比 ArrayList 更多的空间（因为要存放直接后继和直接前驱以及数据）。 </li>
+<li><strong>是否支持随机访问</strong>： <code>LinkedList</code> 不支持高效的随机元素访问，而 <code>ArrayList</code>（实现了 <code>RandomAccess</code> 接口） 支持。</li>
 </ul>
-<h2 id="2-ArrayList的扩容机制"><a href="#2-ArrayList的扩容机制" class="headerlink" title="2.ArrayList的扩容机制"></a>2.ArrayList的扩容机制</h2><p>ArrayList底层采用的是Object[] 动态数组实现，当我们向ArrayList中添加元素时，它会自动调整数组的大小以适应新的元素。当数组的容量不足以容纳新元素时，ArrayList会创建一个更大的数组，并将原数组中的元素复制到新数组中。 </p>
+<h2 id="2-ArrayList的扩容机制"><a href="#2-ArrayList的扩容机制" class="headerlink" title="2.ArrayList的扩容机制"></a>2.ArrayList的扩容机制</h2><p>ArrayList底层采用的是<code>Object[] </code>动态数组实现，当我们向ArrayList中添加元素时，它会自动调整数组的大小以适应新的元素。当数组的容量不足以容纳新元素时，ArrayList会创建一个更大的数组，并将原数组中的元素复制到新数组中。</p>
+<p><strong>以无参数构造方法创建 ArrayList 时，实际上初始化赋值的是一个空数组。当真正对数组进行添加元素操作时，才真正分配容量。即向数组中添加第一个元素时，数组容量扩为 10。</strong>  </p>
 <p>插入时候，会先检查是否需要扩容，如果当前容量+1超过数组长度，就会进行扩容。</p>
 <p>ArrayList的扩容是创建一个1.5倍的新数组，然后把原数组的值拷贝过去。</p>
 <p>扩容完成后更新引用到新的数组上</p>
@@ -2970,11 +2971,24 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <li>索引越界异常：线程1走到扩容那里发现当前size是9，数组容量是10不用扩容，cpu让出执行权，线程2也发现不用扩容，这时候数组的容量就是10，而线程1set完之后size++，这时候<strong>线程2再进来size就是10，数组的大小只有10，而你要设置下标索引为10的就会越界</strong>(数组的下标索引从0开始);</li>
 <li>size与我们add的数量不符：这个基本上每次都会发生，这个理解起来也很简单，因为<strong>size++本身就不是原子操作</strong>，可以分为三步:获取size的值，将size的值加1，将新的size值覆盖掉原来的，线程1和线程2拿到一样的size值加完了同时覆盖，就会导致一次没有加上，所以肯定不会与我们add的数量保持一致的;</li>
 </ul>
-<h2 id="4-CopyOnWriteArrayList为什么线程安全"><a href="#4-CopyOnWriteArrayList为什么线程安全" class="headerlink" title="4.CopyOnWriteArrayList为什么线程安全"></a>4.CopyOnWriteArrayList为什么线程安全</h2><p>CopyOnWriteArrayList就是线程安全版本的ArrayList。</p>
+<h2 id="4-CopyOnWriteArrayList为什么线程安全"><a href="#4-CopyOnWriteArrayList为什么线程安全" class="headerlink" title="4.CopyOnWriteArrayList为什么线程安全"></a>4.CopyOnWriteArrayList为什么线程安全</h2><p>CopyOnWriteArrayList就是线程安全版本的ArrayList。它可以保证读读不互斥、读写不互斥、只有写写互斥 </p>
 <p>CopyOnWriteArrayList底层也是通过一个数组保存数据， 使用volatile关键字修饰数组，保证当前线程对数组对象重新赋值后， 其他线程可以及时感知到。 </p>
-<p>在写入操作时，加了一把互斥锁ReentrantLock以保证线程安全。 </p>
+<p><code>add</code>方法内部用到了 <code>ReentrantLock</code> 加锁，保证了同步，避免了多线程写的时候会复制出多个副本出来。 </p>
 <p>CopyOnWriteArrayList采用了一种读写分离的并发策略。CopyOnWriteArrayList容器允许并发读，读操作是无锁的，性能较高。至于写操作，比如向容器中添加一个元素，则首先将当前容器复制一份，然后在新副本上执行写操作，结束之后再将原容器的引用指向新容器。 </p>
 <p><img src="https://pic.imgdb.cn/item/66e2ba72d9c307b7e9d20b38.png" class="lazyload" data-srcset="https://pic.imgdb.cn/item/66e2ba72d9c307b7e9d20b38.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="CopyOnWriteArrayList原理 "></p>
+<h2 id="5-Copy-On-Write思想"><a href="#5-Copy-On-Write思想" class="headerlink" title="5.Copy-On-Write思想"></a>5.Copy-On-Write思想</h2><p>这个是一种思想，在Redis的RDB持久化那里也用到了这种技术——来应对在持久化的过程中数据发生了改变。</p>
+<p>维基百科对 Copy-On-Write 的介绍，介绍的挺不错：</p>
+<blockquote>
+<p>写入时复制（英语：Copy-on-write，简称 COW）是一种计算机程序设计领域的优化策略。其核心思想是，如果有多个调用者（callers）同时请求相同资源（如内存或磁盘上的数据存储），他们会共同获取相同的指针指向相同的资源，直到某个调用者试图修改资源的内容时，系统才会真正复制一份专用副本（private copy）给该调用者，而其他调用者所见到的最初的资源仍然保持不变。这过程对其他的调用者都是透明的。此作法主要的优点是如果调用者没有修改该资源，就不会有副本（private copy）被创建，因此多个调用者只是读取操作时可以共享同一份资源</p>
+</blockquote>
+<p>这里再以 <code>CopyOnWriteArrayList</code>为例介绍：当需要修改（ <code>add</code>，<code>set</code>、<code>remove</code> 等操作） <code>CopyOnWriteArrayList</code> 的内容时，不会直接修改原数组，而是会先创建底层数组的副本，对副本数组进行 修改，修改完之后再将修改后的数组赋值回去，这样就可以保证写操作不会影响读操作了。 </p>
+<p>可以看出，写时复制机制非常适合读多写少的并发场景，能够极大地提高系统的并发性能。 </p>
+<p>不过，写时复制机制并不是银弹，其依然存在一些缺点，下面列举几点：</p>
+<ol>
+<li>内存占用：每次写操作都需要复制一份原始数据，会占用额外的内存空间，在数据量比较大的情况下，可能会导致内存资源不足。</li>
+<li>写操作开销：每一次写操作都需要复制一份原始数据，然后再进行修改和替换，所以写操作的开销相对较大，在写入比较频繁的场景下，性能可能会受到影响。</li>
+<li>数据一致性问题：修改操作不会立即反映到最终结果中，还需要等待复制完成，这可能会导致一定的数据一致性问题。</li>
+</ol>
 <hr>
 <h1 id="2-Set"><a href="#2-Set" class="headerlink" title="2.Set"></a>2.Set</h1><h2 id="1-List和Set的区别？"><a href="#1-List和Set的区别？" class="headerlink" title="1.List和Set的区别？"></a>1.List和Set的区别？</h2><ul>
 <li>List：一个<strong>有序</strong>（元素存入集合的顺序和取出的顺序一致）容器，元素<strong>可以重复</strong>，<strong>可以插入多个null元素</strong>，元素都有索引。  List 支持for循环，也就是<strong>通过下标来遍历</strong>，<strong>也可以用迭代器</strong></li>
@@ -2985,22 +2999,24 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <p>TreeSet：有序，底层基于红黑树</p>
 <p>LinkedHashSet：有序，底层基于链表（双向）和哈希表</p>
 <hr>
-<h1 id="3-Map"><a href="#3-Map" class="headerlink" title="3.Map"></a>3.Map</h1><h2 id="1-HashMap怎么处理Hash冲突"><a href="#1-HashMap怎么处理Hash冲突" class="headerlink" title="1.HashMap怎么处理Hash冲突"></a>1.HashMap怎么处理Hash冲突</h2><ol>
+<h1 id="3-Map"><a href="#3-Map" class="headerlink" title="3.Map"></a>3.Map</h1><p><code>HashMap</code> 可以存储 null 的 key 和 value，但 null 作为键只能有一个，null 作为值可以有多个 </p>
+<h2 id="1-HashMap怎么处理Hash冲突"><a href="#1-HashMap怎么处理Hash冲突" class="headerlink" title="1.HashMap怎么处理Hash冲突"></a>1.HashMap怎么处理Hash冲突</h2><ol>
 <li><strong>链接法：</strong>使用<strong>链表或其他数据结构</strong>来存储冲突的键值对，将它们链接在同一个哈希桶中。</li>
 <li><strong>开放寻址法：</strong>在哈希表中找到另一个可用的位置来存储冲突的键值对，而不是存储在链表中。常见的开放寻址方法包括线性探测、二次探测和双重散列。</li>
 <li><strong>再哈希法(Rehashing)：</strong>当发生冲突时，<strong>使用另一个哈希函数再次计算键的哈希值</strong>，直到找到一个空位来存储键值对。</li>
 </ol>
 <h2 id="2-HasMap的底层数据结构及实现原理"><a href="#2-HasMap的底层数据结构及实现原理" class="headerlink" title="2.HasMap的底层数据结构及实现原理"></a>2.HasMap的底层数据结构及实现原理</h2><p><img src="https://pic1.imgdb.cn/item/67b83bc0d0e0a243d401567f.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67b83bc0d0e0a243d401567f.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="hashmap底层"></p>
-<p>数组（<code>Node[] table</code>）用来存储<strong>键值对</strong>。数组中的每个元素被称为<strong>“桶”</strong>（Bucket），每个桶的索引通过<strong>对键key的哈希值</strong>进行 <code>hash()</code> 处理得到。 </p>
+<p>数组（<code>Node[] table</code>）用来存储<strong>键值对</strong>。数组中的每个元素被称为<strong>“桶”</strong>（Bucket）</p>
+<p><strong>计算每个桶的索引流程：</strong>通过 key 的 <code>hashcode()</code> 经过扰动函数处理过后得到 hash 值，然后通过 <code>(n - 1) &amp; hash</code>得到实际索引。详见<strong>5.hashmap的寻址算法</strong></p>
 <p><strong>扰动函数<code>hash()</code></strong> 的目标是尽量减少哈希冲突，保证元素能够均匀地分布在数组的每个位置上。 </p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="title function_">hash</span><span class="params">(Object key)</span> &#123;</span><br><span class="line">    <span class="type">int</span> h;</span><br><span class="line">    <span class="keyword">return</span> (key == <span class="literal">null</span>) ? <span class="number">0</span> : (h = key.hashCode()) ^ (h &gt;&gt;&gt; <span class="number">16</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>存储时，如果出现hash值相同的key，此时有两种情况。(1)如果key相同，则覆盖原始值；(2)如果key不同（出现冲突），则将当前的放入链表或红黑树中</p>
-<p>不过，链表过长时，查询效率会比较低，于是当<strong>链表的长度超过 8 时（且数组的长度大于 64）</strong>，链表就会转换为红黑树。红黑树的查询效率是 O(logn)，比链表的 O(n) 要快。 </p>
-<p>当从 HashMap 中获取元素时，也会使用 <code>hash()</code> 计算键的位置【HashMap 通过 key 的 <code>hashcode</code> 经过扰动函数处理过后得到 hash 值，然后通过 <code>(n - 1) &amp; hash</code> 判断当前元素存放的位置（这里的 n 指的是数组的长度）】，然后根据位置在数组查找元素。 </p>
+<p>不过，链表过长时，查询效率会比较低，于是当<strong>链表的长度超过 8 时（且数组的长度大于 64）</strong>，链表就会转换为红黑树。红黑树的查询效率是 **O(logn)**，比链表的 O(n) 要快。 如果仅仅只是链表长度超过8，但数组长度并没有&gt;&#x3D;64，那么仅仅对数组进行扩容。</p>
+<p>当从 HashMap 中<strong>读取</strong>元素时，也会使用 <code>hash()</code> 计算键的位置【HashMap 通过 key 的 <code>hashcode</code> 经过扰动函数处理过后得到 hash 值，然后通过 <code>(n - 1) &amp; hash</code> 判断当前元素存放的位置（这里的 n 指的是数组的长度）】，然后根据位置在数组查找元素。 </p>
 <p>HashMap 的初始容量是 <strong>16</strong>，随着元素的不断添加，HashMap 的容量可能不足，于是就需要进行扩容，阈值是<code>capacity * loadFactor</code>，capacity 为容量，loadFactor 为负载因子，默认为 <strong>0.75</strong>。 </p>
 <h2 id="3-HashMap的put流程"><a href="#3-HashMap的put流程" class="headerlink" title="3.HashMap的put流程"></a>3.HashMap的put流程</h2><ol>
-<li>根据key的哈希码计算它要插入的索引（调用了hash方法）</li>
+<li>根据key的哈希码计算它要插入的索引</li>
 <li>判断数组是否为空或者长度为0，如果是则进行扩容操作。 </li>
 <li>否则就判断该索引处是否为空，如果为空就直接插入</li>
 <li>如果不为空，判断key是否相同，如果相同直接覆盖value</li>
@@ -3024,7 +3040,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <p>负载因子决定元素个数达到多少时候扩容</p>
 <p>如果设的太大，等要扩容的时候基本没多少空位了，发生哈希冲突的概率非常大，会增加我们查找的<strong>时间成本</strong></p>
 <p>如果设的太小，有点浪费，我们就需要更多的空间去存储元素，增加了<strong>空间成本</strong></p>
-<h2 id="5-HashMap的寻址算法"><a href="#5-HashMap的寻址算法" class="headerlink" title="5.HashMap的寻址算法"></a>5.HashMap的寻址算法</h2><p>1.获取键的哈希值</p>
+<h2 id="5-HashMap的寻址算法"><a href="#5-HashMap的寻址算法" class="headerlink" title="5.HashMap的寻址算法"></a>5.HashMap的寻址算法</h2><p>1.获取键的哈希码</p>
 <p>当你向HashMap中插入一个键值对时，首先会计算键（key）的哈希值。哈希值是通过键的<code>hashCode()</code>方法得到的。<code>hashCode()</code>是Java中<code>Object</code>类提供的一个方法，返回一个32位的整数，表示对象的哈希码。如果键是null，则哈希值直接返回0。 </p>
 <p>2.扰动处理</p>
 <p>单纯使用hashCode()得到的哈希值可能会导致分布不均匀，尤其当HashMap的容量较小时。 为了解决这个问题，HashMap会对原始的hashCode()进行一次扰动处理。 具体实现是在hash()方法中完成的，代码如下： </p>
@@ -3136,10 +3152,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-05-21T18:31:55+08:00">
+          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-06-13T15:50:15+08:00">
   <a class='notlink'>
     <i class="fa-solid fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2025年5月21日</p>
+    <p>更新于：2025年6月13日</p>
   </a>
 </div>
 
@@ -3261,7 +3277,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 
     <div class='content'>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0-%E6%A6%82%E8%BF%B0"><span class="toc-text">0. 概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-List"><span class="toc-text">1.List</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-ArrayList%E5%92%8CLinkedList%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">1.ArrayList和LinkedList的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-ArrayList%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-text">2.ArrayList的扩容机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%B8%BA%E4%BB%80%E4%B9%88ArrayList%E4%B8%8D%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84"><span class="toc-text">3. 为什么ArrayList不是线程安全的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-CopyOnWriteArrayList%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="toc-text">4.CopyOnWriteArrayList为什么线程安全</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Set"><span class="toc-text">2.Set</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-List%E5%92%8CSet%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-text">1.List和Set的区别？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-HashSet%E6%80%8E%E4%B9%88%E5%88%A4%E6%96%AD%E6%9C%89%E6%B2%A1%E6%9C%89%E9%87%8D%E5%A4%8D%E7%9A%84%E5%80%BC%E7%9A%84"><span class="toc-text">2.HashSet怎么判断有没有重复的值的</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Map"><span class="toc-text">3.Map</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-HashMap%E6%80%8E%E4%B9%88%E5%A4%84%E7%90%86Hash%E5%86%B2%E7%AA%81"><span class="toc-text">1.HashMap怎么处理Hash冲突</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-HasMap%E7%9A%84%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-text">2.HasMap的底层数据结构及实现原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-HashMap%E7%9A%84put%E6%B5%81%E7%A8%8B"><span class="toc-text">3.HashMap的put流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-HashMap%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-text">4.HashMap的扩容机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-HashMap%E7%9A%84%E5%AF%BB%E5%9D%80%E7%AE%97%E6%B3%95"><span class="toc-text">5.HashMap的寻址算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-HashMap%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%9B%B4%E6%8E%A5%E4%BD%BF%E7%94%A8hashCode-%E5%A4%84%E7%90%86%E5%90%8E%E7%9A%84%E5%93%88%E5%B8%8C%E5%80%BC%E7%9B%B4%E6%8E%A5%E4%BD%9C%E4%B8%BAtable%E7%9A%84%E4%B8%8B%E6%A0%87"><span class="toc-text">6.HashMap为什么不直接使用hashCode()处理后的哈希值直接作为table的下标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-HashMap%E5%9C%A8%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8B%E5%8F%AF%E8%83%BD%E4%BC%9A%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">7.HashMap在多线程下可能会出现的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-ConcurrentHashMap%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-text">8.ConcurrentHashMap的底层原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-HashTable%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-text">9.HashTable的底层原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-ConcurrentHashMap-%E5%92%8C-Hashtable-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">10.ConcurrentHashMap 和 Hashtable 的区别</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0-%E6%A6%82%E8%BF%B0"><span class="toc-text">0. 概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-List"><span class="toc-text">1.List</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-ArrayList%E5%92%8CLinkedList%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">1.ArrayList和LinkedList的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-ArrayList%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-text">2.ArrayList的扩容机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%B8%BA%E4%BB%80%E4%B9%88ArrayList%E4%B8%8D%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84"><span class="toc-text">3. 为什么ArrayList不是线程安全的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-CopyOnWriteArrayList%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="toc-text">4.CopyOnWriteArrayList为什么线程安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Copy-On-Write%E6%80%9D%E6%83%B3"><span class="toc-text">5.Copy-On-Write思想</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Set"><span class="toc-text">2.Set</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-List%E5%92%8CSet%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-text">1.List和Set的区别？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-HashSet%E6%80%8E%E4%B9%88%E5%88%A4%E6%96%AD%E6%9C%89%E6%B2%A1%E6%9C%89%E9%87%8D%E5%A4%8D%E7%9A%84%E5%80%BC%E7%9A%84"><span class="toc-text">2.HashSet怎么判断有没有重复的值的</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Map"><span class="toc-text">3.Map</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-HashMap%E6%80%8E%E4%B9%88%E5%A4%84%E7%90%86Hash%E5%86%B2%E7%AA%81"><span class="toc-text">1.HashMap怎么处理Hash冲突</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-HasMap%E7%9A%84%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-text">2.HasMap的底层数据结构及实现原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-HashMap%E7%9A%84put%E6%B5%81%E7%A8%8B"><span class="toc-text">3.HashMap的put流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-HashMap%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-text">4.HashMap的扩容机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-HashMap%E7%9A%84%E5%AF%BB%E5%9D%80%E7%AE%97%E6%B3%95"><span class="toc-text">5.HashMap的寻址算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-HashMap%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%9B%B4%E6%8E%A5%E4%BD%BF%E7%94%A8hashCode-%E5%A4%84%E7%90%86%E5%90%8E%E7%9A%84%E5%93%88%E5%B8%8C%E5%80%BC%E7%9B%B4%E6%8E%A5%E4%BD%9C%E4%B8%BAtable%E7%9A%84%E4%B8%8B%E6%A0%87"><span class="toc-text">6.HashMap为什么不直接使用hashCode()处理后的哈希值直接作为table的下标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-HashMap%E5%9C%A8%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8B%E5%8F%AF%E8%83%BD%E4%BC%9A%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">7.HashMap在多线程下可能会出现的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-ConcurrentHashMap%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-text">8.ConcurrentHashMap的底层原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-HashTable%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-text">9.HashTable的底层原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-ConcurrentHashMap-%E5%92%8C-Hashtable-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">10.ConcurrentHashMap 和 Hashtable 的区别</span></a></li></ol></li></ol>
     </div>
   </section>
 
@@ -4453,7 +4469,7 @@ window.matchMedia('(prefers-color-scheme: light)').addListener(darkModelListener
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/11/24/八股/集合/","name":"集合"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"集合","description":"主要是Java常用集合介绍","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/11/24/%E5%85%AB%E8%82%A1/%E9%9B%86%E5%90%88/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/11/24/%E5%85%AB%E8%82%A1/%E9%9B%86%E5%90%88/","wordCount":13,"datePublished":"2024-11-24T09:11:53.000Z","dateModified":"2025-05-21T10:31:55.082Z","articleSection":"八股","keywords":"JavaSE","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/11/24/八股/集合/","name":"集合"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"集合","description":"主要是Java常用集合介绍","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/11/24/%E5%85%AB%E8%82%A1/%E9%9B%86%E5%90%88/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/11/24/%E5%85%AB%E8%82%A1/%E9%9B%86%E5%90%88/","wordCount":13,"datePublished":"2024-11-24T09:11:53.000Z","dateModified":"2025-06-13T07:50:15.468Z","articleSection":"八股","keywords":"JavaSE","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 
