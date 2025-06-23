@@ -46,7 +46,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
 <meta property="article:published_time" content="2024-10-28T12:14:32.000Z">
-<meta property="article:modified_time" content="2025-05-20T12:49:47.912Z">
+<meta property="article:modified_time" content="2025-06-19T13:51:31.590Z">
 <meta property="article:author" content="Light">
 <meta property="article:tag" content="JUC">
 <meta name="twitter:card" content="summary">
@@ -1847,7 +1847,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: false,
     cdn: {"js":{"app":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/app.js","parallax":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/parallax.js","rightMenu":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenu.js","rightMenus":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenus.js","sites":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/sites.js","friends":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/friends.js","contributors":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/contributors.js","search":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1750258317071),
+    lastupdate: new Date(1750666277483),
     sidebar: {
       for_page: ["blogger","category","donate","webinfo"],
       for_post: ["toc"],
@@ -2900,13 +2900,13 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <div class="new-meta-item wordcount">
     <a class='notlink'>
       <i class="fa-solid fa-keyboard fa-fw" aria-hidden="true"></i>
-      <p>字数：11.2k 字</p>
+      <p>字数：11.8k 字</p>
     </a>
   </div>
   <div class="new-meta-item readtime">
     <a class='notlink'>
       <i class="fa-solid fa-hourglass-half fa-fw" aria-hidden="true"></i>
-      <p>时长：40 分钟</p>
+      <p>时长：42 分钟</p>
     </a>
   </div>
 
@@ -3112,23 +3112,67 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <li><strong><code>CountDownLatch</code> 和 <code>CyclicBarrier</code></strong> ：这两个工具类用于在多个线程之间进行同步，尤其适用于等待多个线程完成任务后再继续执行。 </li>
 <li><strong><code>Semaphore</code>（信号量） ：</strong><code>Semaphore</code> 是一个计数信号量，用于控制对共享资源的访问。它通过维护一个信号量计数来决定是否允许线程访问资源。</li>
 </ol>
-<h2 id="9-并发编程三要素"><a href="#9-并发编程三要素" class="headerlink" title="9.并发编程三要素"></a>9.并发编程三要素</h2><ol>
-<li><p><strong>原子性：</strong>原子，即一个不可再被分割的颗粒。原子性指的是一个或多个操作要么全部执行成功要么全部执行失败。</p>
-</li>
-<li><p><strong>可见性：</strong>一个线程对共享变量的修改,另一个线程能够立刻看到。（synchronized,volatile）</p>
-</li>
-<li><p><strong>有序性：</strong>程序执行的顺序按照代码的先后顺序执行。（处理器可能会对指令进行重排序）</p>
-<p>出现线程安全问题的原因：</p>
+<h2 id="9-并发编程三要素"><a href="#9-并发编程三要素" class="headerlink" title="9.并发编程三要素"></a>9.并发编程三要素</h2><p>原子性+可见性+有序性&#x3D;正确性</p>
+<blockquote>
+<p>1.原子性</p>
+</blockquote>
+<p>某个操作要么全部执行成功，要么全部不执行，中间不被线程切分或打断。对外看，就像一个“整体”。 </p>
+<p><strong>问题场景</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">counter++;    <span class="comment">// 不是原子操作</span></span><br><span class="line"><span class="comment">// 实际上编译后可能是：</span></span><br><span class="line"><span class="comment">// 1. 从主内存读 counter 到 CPU 寄存器</span></span><br><span class="line"><span class="comment">// 2. 在寄存器中加 1</span></span><br><span class="line"><span class="comment">// 3. 将新值写回主内存</span></span><br></pre></td></tr></table></figure>
+
+<p>如果两个线程同时执行 <code>counter++</code>，就可能出现“读-写”交错，导致丢失某次更新。 </p>
+<p><strong>解决方案</strong></p>
 <ul>
-<li>线程切换带来的原子性问题</li>
-<li>缓存导致的可见性问题</li>
-<li>编译优化带来的有序性问题</li>
+<li><strong>锁</strong>：<code>synchronized</code> 或 <code>ReentrantLock</code>，将多步操作包裹在同一临界区。</li>
+<li><strong>原子变量</strong>：如 <code>AtomicInteger</code>、<code>AtomicLong</code>，底层利用 CAS（Compare-And-Swap）保证单次自增是原子操作。</li>
 </ul>
-<p>解决办法：</p>
-<ul>
-<li>JDK Atomic开头的原子类、synchronized、LOCK，可以解决原子性问题</li>
-<li>synchronized、volatile、LOCK，可以解决可见性问题</li>
-<li>Happens-Before 规则可以解决有序性问题</li>
+<blockquote>
+<p>2.可见性</p>
+</blockquote>
+<p>一个线程对共享变量的修改，何时能够被其它线程“看见”？ </p>
+<p><strong>问题场景</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">volatile</span> <span class="type">boolean</span> <span class="variable">flag</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">Thread A:</span><br><span class="line">    flag = <span class="literal">true</span>;   <span class="comment">// 写入主内存</span></span><br><span class="line"></span><br><span class="line">Thread B:</span><br><span class="line">    <span class="keyword">while</span> (!flag) &#123;</span><br><span class="line">        <span class="comment">// 可能一直在自己的工作内存里读到 flag=false</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果不使用任何同步手段，Thread B 可能永远看不到 A 的更新，因为现代 CPU 和 JVM 会对读写操作做缓存和寄存器优化。</p>
+<p><strong>解决方案</strong></p>
+<ol>
+<li><strong>volatile</strong><ul>
+<li>保证对该变量的写操作 <strong>立即刷新到主内存</strong>，读操作 <strong>直接从主内存读取</strong>。</li>
+<li>同时对 volatile 写有一个“<strong>写屏障（store barrier）</strong>”，对 volatile 读有一个“<strong>读屏障（load barrier）</strong>”，能一定程度保证“更早的写”对“后续的读”可见。</li>
+</ul>
+</li>
+<li><strong>锁机制</strong><ul>
+<li><code>synchronized</code> 和 <code>ReentrantLock</code> 都会在 <strong>锁释放</strong> 时将工作内存中所有变量刷回主内存，在 <strong>锁获取</strong> 时将主内存中最新值读入工作内存，从而保证可见性。</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>3.有序性</p>
+</blockquote>
+<p>在单线程语义下，代码是按顺序执行的；但在多线程和现代硬件下，编译器和 CPU 为了优化性能，可能<strong>乱序执行</strong>指令，只要最终满足单线程的“依赖关系”即可。 </p>
+<p><strong>问题场景</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">a</span> <span class="operator">=</span> <span class="number">0</span>, b = <span class="number">0</span>, x = <span class="number">0</span>, y = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 线程1</span></span><br><span class="line">a = <span class="number">1</span>;              <span class="comment">// 操作1</span></span><br><span class="line">x = b;              <span class="comment">// 操作2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 线程2</span></span><br><span class="line">b = <span class="number">1</span>;              <span class="comment">// 操作3</span></span><br><span class="line">y = a;              <span class="comment">// 操作4</span></span><br></pre></td></tr></table></figure>
+
+<p>如果完全乱序，可能出现 <code>x = 1, y = 0</code>、<code>x = 0, y = 1</code>，甚至 <code>x = 0, y = 0</code>（看似不可能，但因为重排序，操作间没有同步约束时就可能发生）。</p>
+<p><strong>解决方案</strong></p>
+<ol>
+<li><strong>volatile</strong><ul>
+<li>对 volatile 写-读之间会插入内存屏障，禁止特定方向的重排序，从而在一定程度上保证操作的相对顺序。</li>
+</ul>
+</li>
+<li><strong>锁机制</strong><ul>
+<li><code>synchronized</code>／<code>ReentrantLock</code> 在锁释放前和锁获取后都会产生内存屏障，禁止 CPU 或编译器把同步区块内外的指令任意重排序。</li>
+</ul>
+</li>
+<li><strong>happens-before 原则</strong><ul>
+<li>Java 内存模型定义了一套“先行发生”（happens-before）规则：<ol>
+<li>程序顺序内的每个动作先行发生于同一个线程内后面的动作。</li>
+<li>对同一个锁的 <code>unlock</code> 先行发生于后续对该锁的 <code>lock</code>。</li>
+<li>对 volatile 变量的写先行发生于后续对该变量的读。</li>
+<li>线程 <code>start()</code> 先行发生于被启动线程的每个动作；被启动线程的每个动作先行发生于对其 <code>join()</code> 返回。</li>
+</ol>
+</li>
+<li>只要在代码里通过这些操作建立 happens‑before 关系，就能在多线程间建立必要的顺序保证。</li>
 </ul>
 </li>
 </ol>
@@ -3503,10 +3547,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-05-20T20:49:47+08:00">
+          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-06-19T21:51:31+08:00">
   <a class='notlink'>
     <i class="fa-solid fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2025年5月20日</p>
+    <p>更新于：2025年6月19日</p>
   </a>
 </div>
 
@@ -4819,7 +4863,7 @@ window.matchMedia('(prefers-color-scheme: light)').addListener(darkModelListener
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/10/28/八股/JUC/","name":"JUC"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"JUC","description":"这里是JAVA并发相关的一些八股","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/JUC/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/JUC/","wordCount":16,"datePublished":"2024-10-28T12:14:32.000Z","dateModified":"2025-05-20T12:49:47.912Z","articleSection":"八股","keywords":"JUC","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/10/28/八股/JUC/","name":"JUC"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"JUC","description":"这里是JAVA并发相关的一些八股","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/JUC/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/JUC/","wordCount":16,"datePublished":"2024-10-28T12:14:32.000Z","dateModified":"2025-06-19T13:51:31.590Z","articleSection":"八股","keywords":"JUC","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 
