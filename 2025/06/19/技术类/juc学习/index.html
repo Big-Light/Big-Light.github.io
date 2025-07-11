@@ -46,7 +46,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
 <meta property="article:published_time" content="2025-06-19T12:52:29.000Z">
-<meta property="article:modified_time" content="2025-06-24T03:30:41.146Z">
+<meta property="article:modified_time" content="2025-06-27T14:31:06.184Z">
 <meta property="article:author" content="Light">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
@@ -1846,7 +1846,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: false,
     cdn: {"js":{"app":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/app.js","parallax":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/parallax.js","rightMenu":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenu.js","rightMenus":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenus.js","sites":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/sites.js","friends":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/friends.js","contributors":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/contributors.js","search":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1750746075580),
+    lastupdate: new Date(1752242068690),
     sidebar: {
       for_page: ["blogger","category","donate","webinfo"],
       for_post: ["toc"],
@@ -2899,13 +2899,13 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <div class="new-meta-item wordcount">
     <a class='notlink'>
       <i class="fa-solid fa-keyboard fa-fw" aria-hidden="true"></i>
-      <p>字数：3.3k 字</p>
+      <p>字数：5.2k 字</p>
     </a>
   </div>
   <div class="new-meta-item readtime">
     <a class='notlink'>
       <i class="fa-solid fa-hourglass-half fa-fw" aria-hidden="true"></i>
-      <p>时长：12 分钟</p>
+      <p>时长：19 分钟</p>
     </a>
   </div>
 
@@ -3097,15 +3097,15 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <p>与Object 的 wait &amp; notify 相比 </p>
 <ul>
 <li>wait，notify 和 notifyAll 必须配合 Object Monitor 一起使用，而 park，unpark 不必</li>
-<li>park &amp; unpark 是以线程为单位来【阻塞】和【唤醒】线程，而 notify 只能随机唤醒一个等待线程，notifyAll  是唤醒所有等待线程，就不那么【精确</li>
+<li>park &amp; unpark 是<strong>以线程为单位</strong>来【阻塞】和【唤醒】线程，而 notify 只能随机唤醒一个等待线程，notifyAll  是唤醒所有等待线程，就不那么【精确</li>
 <li>park &amp; unpark 可以先 unpark，而 wait &amp; notify 不能先 notify</li>
 </ul>
-<p>第三条就是意思就是可以先恢复线程运行，等线程暂停的时候，就相当于已经提前被恢复过了</p>
+<p>第三条就是意思就是<strong>可以先恢复线程运行，等线程暂停的时候，就相当于已经提前被恢复过了</strong></p>
 <h2 id="定位死锁"><a href="#定位死锁" class="headerlink" title="定位死锁"></a>定位死锁</h2><p>第一种方法：控制台命令<code>jps</code> + <code>jstack</code></p>
 <p>先用<code>jps</code>列出线程id，再用<code>jstack + 线程id</code>查看线程情况，如果有死锁就可以看到了</p>
 <p>第二种方法：jconsole工具可以直接看有没有死锁</p>
 <h2 id="活锁"><a href="#活锁" class="headerlink" title="活锁"></a>活锁</h2><p>和死锁不同，死锁是因为没有得到锁线程而进入<strong>阻塞</strong>状态，处于活锁的多个线程可能还仍然处于<strong>活跃</strong>状态，但由于相互之间的<strong>干扰</strong>，导致彼此之间一直达不到运行结束的条件。</p>
-<h2 id="饥饿"><a href="#饥饿" class="headerlink" title="饥饿"></a>饥饿</h2><h2 id="ReentrantLock"><a href="#ReentrantLock" class="headerlink" title="ReentrantLock"></a>ReentrantLock</h2><p>相对于 synchronized 它具备如下特点 </p>
+<h2 id="饥饿"><a href="#饥饿" class="headerlink" title="饥饿"></a>饥饿</h2><h2 id="ReentrantLock⭐️"><a href="#ReentrantLock⭐️" class="headerlink" title="ReentrantLock⭐️"></a>ReentrantLock⭐️</h2><p>相对于 synchronized 它具备如下特点 </p>
 <ul>
 <li>可中断 </li>
 <li>可以设置超时时间 </li>
@@ -3135,7 +3135,133 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <li>await 的线程被唤醒（或打断、或超时）取重新竞争 lock 锁 </li>
 <li>竞争 lock 锁成功后，从 await 后继续执行</li>
 </ul>
+<h2 id="交替打印⭐️"><a href="#交替打印⭐️" class="headerlink" title="交替打印⭐️"></a>交替打印⭐️</h2><p>这里现用的同步锁synchronized实现</p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV16J411h7Rd?spm_id_from=333.788.videopod.episodes&vd_source=5e766b6c0e80626e4a3c852a6a053d6b&p=130">B站交替打印abc，每个字符打印五次</a></p>
+<p>这里OOP的思想太强了，把所有的工作全部都封装到类内部，🐂🍺</p>
+<p>代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">printABCbySynchronized</span> &#123;</span><br><span class="line">    <span class="comment">//通过同步锁，用三个线程分别打印a，b，c，保持abc的顺序，各打印5次</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">WaitAndNotify</span> <span class="variable">obj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">WaitAndNotify</span>(<span class="number">5</span>, <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">            obj.print(<span class="string">&quot;a&quot;</span>, <span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">        &#125;).start();</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">            obj.print(<span class="string">&quot;b&quot;</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line">        &#125;).start();</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">            obj.print(<span class="string">&quot;c&quot;</span>, <span class="number">3</span>, <span class="number">1</span>);</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">WaitAndNotify</span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> loopNumber;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> flag;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">WaitAndNotify</span><span class="params">(<span class="type">int</span> loopNumber, <span class="type">int</span> flag)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.loopNumber = loopNumber;</span><br><span class="line">            <span class="built_in">this</span>.flag = flag;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">print</span><span class="params">(String str, <span class="type">int</span> curFlag, <span class="type">int</span> nextFlag)</span>&#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; loopNumber; i++) &#123;</span><br><span class="line">                <span class="keyword">synchronized</span> (<span class="built_in">this</span>)&#123;</span><br><span class="line">                    <span class="keyword">while</span> (curFlag != <span class="built_in">this</span>.flag)&#123;</span><br><span class="line">                        <span class="keyword">try</span> &#123;</span><br><span class="line">                            <span class="built_in">this</span>.wait();</span><br><span class="line">                        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">//注意这段逻辑的位置，如果获得了锁，且当前标记不和能运行的标记相同，则释放锁等待，直到其他线程的唤醒</span></span><br><span class="line">                    <span class="comment">//如果满足标记相等，就是说明可以打印，不要忘了更新线程可以运行的标记为下一个标记，然后全部唤醒</span></span><br><span class="line">                    System.out.println(str);</span><br><span class="line">                    <span class="comment">//忘了更新flag了，flag就是当前线程可以执行的标记</span></span><br><span class="line">                    flag = nextFlag;</span><br><span class="line">                    <span class="built_in">this</span>.notifyAll();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV16J411h7Rd?spm_id_from=333.788.videopod.episodes&vd_source=5e766b6c0e80626e4a3c852a6a053d6b&p=131">然后用的是重入锁ReentrentLock实现</a></p>
+<p>可重入锁的实现依赖于条件变量，可以为三个线程要</p>
+<p>最后是park&#x2F;unpark的实现，<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV16J411h7Rd?spm_id_from=333.788.videopod.episodes&vd_source=5e766b6c0e80626e4a3c852a6a053d6b&p=132">这种实现最简便</a></p>
+<p>这里可以自己实现一下，增强理解。看完了我只能说🐂🍺</p>
+<h1 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h1><h2 id="Java内存模型"><a href="#Java内存模型" class="headerlink" title="Java内存模型"></a>Java内存模型</h2><p>JMM（Java Memory Model），它定义了主存、工作内存抽象概念 </p>
+<p>JMM 体现在以下几个方面 </p>
+<ul>
+<li>原子性 - 保证指令不会受到线程上下文切换的影响 </li>
+<li>可见性 - 保证指令不会受 cpu 缓存的影响 </li>
+<li>有序性 - 保证指令不会受 cpu 指令并行优化的影响</li>
+</ul>
+<p><strong>✅ 一、JMM 中的内存结构概念</strong></p>
+<ol>
+<li><strong>主存（Main Memory）</strong></li>
+</ol>
+<ul>
+<li>所有线程共享的一块内存区域；</li>
+<li><strong>存储所有共享变量（instance&#x2F;static fields）</strong>；</li>
+<li>每个线程对变量的最终写入，都会刷新到主存；</li>
+<li>每个线程的变量读取，也最终来自主存。</li>
+</ul>
+<ol start="2">
+<li><strong>工作内存（Working Memory）</strong></li>
+</ol>
+<ul>
+<li>每个线程私有的区域；</li>
+<li>保存主存中共享变量的副本（拷贝）；</li>
+<li>线程对变量的操作都在自己的工作内存中进行，<strong>不会直接操作主存</strong>。</li>
+</ul>
+<p><strong>🧩 二、对应到实际硬件（物理层面）</strong></p>
+<table>
+<thead>
+<tr>
+<th>JMM 概念</th>
+<th>对应的实际硬件&#x2F;运行时</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>主存</strong></td>
+<td>主内存（RAM）</td>
+</tr>
+<tr>
+<td><strong>工作内存</strong></td>
+<td>CPU 寄存器 + CPU 缓存（如 L1&#x2F;L2）</td>
+</tr>
+<tr>
+<td><strong>同步操作</strong></td>
+<td>缓存一致性协议 &#x2F; 内存屏障等</td>
+</tr>
+</tbody></table>
+<p>所以，JMM 的主存 ≈ RAM，工作内存 ≈ 每个线程运行在 CPU 上时看到的本地副本（缓存 + 寄存器）。</p>
+<p><strong>✅ 三、Java 程序中“主存”对应什么？</strong></p>
+<p>在 Java 程序中，<strong>主存</strong>指的是：</p>
+<blockquote>
+<p><strong>所有线程共享的那部分堆内存中的共享变量（对象字段、类的静态字段）</strong></p>
+</blockquote>
+<p>也就是说：</p>
+<ul>
+<li>被多个线程访问的 <strong>对象实例字段（非 final）</strong></li>
+<li>类的 <strong>静态变量</strong></li>
+<li><strong>数组中的元素</strong></li>
+</ul>
+<p>这些都被存放在 <strong>堆内存</strong> 中，由所有线程共享，对应 JMM 中的“主存”。</p>
+<p><strong>✅ 四、Java 程序中“工作内存”对应什么？</strong></p>
+<p>Java 中的 <strong>工作内存</strong> 是指：</p>
+<blockquote>
+<p><strong>每个线程对主存变量的本地副本拷贝，存在于线程的栈、寄存器或 CPU 缓存中</strong></p>
+</blockquote>
+<p>虽然它在 JVM 里并没有直接暴露的代码或变量，但可以理解为：</p>
+<ul>
+<li>线程在访问共享变量时，不是直接访问主存，而是先复制一份到本地；</li>
+<li>对本地副本做计算或修改；</li>
+<li>最终同步（flush）回主存，或者重新从主存读取（load）最新值。</li>
+</ul>
+<p><strong>✅ 总结一句话：</strong> </p>
+<p>JMM 中的“主存”和“工作内存”是<strong>抽象模型</strong>，在物理上分别对应 <strong>主内存（RAM）</strong> 和 <strong>CPU 缓存&#x2F;寄存器</strong>，JMM 通过这个模型来解释多线程之间的共享变量访问、可见性和一致性问题。 在 Java 程序中，JMM 的“主存”就是<strong>堆中共享的变量（对象字段、静态字段）</strong>；“工作内存”是线程私有的<strong>变量副本（不可直接访问）</strong>，由 JVM 优化在栈、寄存器、缓存中，操作变量时都要在这两个内存之间同步。 </p>
+<h2 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h2><p>分析以下代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="type">boolean</span> <span class="variable">falg</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">while</span> (falg)&#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">        sleep(<span class="number">1000</span>);</span><br><span class="line">        falg = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意，这里要让主线程先睡眠一会</p>
+<p><strong>不加 sleep 时</strong>，子线程可能压根没进循环就读到了 <code>false</code>，就自然退出了，<strong>属于时机“刚刚好”</strong>。</p>
+<p><strong>加了 sleep</strong>，让子线程先进入了循环并缓存了 <code>true</code>，之后主线程的更改 <strong>对它不可见</strong>，才导致它“停不下来”。</p>
+<p>以下就是我debug不加睡眠时，可以发现子线程第一次读到的就是<code>false</code></p>
+<p><img src="https://pic1.imgdb.cn/item/685b5c5a58cb8da5c86d5246.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/685b5c5a58cb8da5c86d5246.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="停止了"></p>
+<h2 id="volatile原理"><a href="#volatile原理" class="headerlink" title="volatile原理"></a>volatile原理</h2><p><strong>🧠 一、volatile 是什么？</strong> </p>
+<p><code>volatile</code> 是 Java 提供的一种<strong>轻量级同步机制</strong>，具备以下两个核心语义：</p>
+<ol>
+<li><strong>可见性</strong>：一个线程对变量的修改，能立即被其他线程看到；</li>
+<li><strong>有序性（禁止指令重排序）</strong>：防止某些代码重排序导致程序语义错误。</li>
+</ol>
+<blockquote>
+<p>⚠️ 注意：<code>volatile</code> <strong>不保证原子性</strong>，例如 <code>i++</code> 仍然是线程不安全的。</p>
+</blockquote>
+<p><strong>🧩 二、JMM 视角下的 volatile</strong></p>
+<p>JMM 中对 <code>volatile</code> 的规定是：</p>
+<ul>
+<li>对一个 <code>volatile</code> 变量的写操作，会把 <strong>该变量的新值立即刷新到主内存</strong>；</li>
+<li>对一个 <code>volatile</code> 变量的读操作，会从 <strong>主内存中重新读取最新值</strong>；</li>
+<li>同时，<code>volatile</code> 会 <strong>插入内存屏障</strong> 来禁止指令重排序。</li>
+</ul>
+<p><strong>三、实现原理——可见性——通过内存屏障</strong></p>
+<p>当线程对 volatile 变量进行写操作时，JVM 会在这个变量写入之后插入一个<strong>写屏障</strong>指令，这个指令会强制将本地内存中的变量值刷新到主内存中。<strong>保证写之前的指令执行完，强制刷新到主存</strong> </p>
+<p>当线程对 volatile 变量进行读操作时，JVM 会插入一个<strong>读屏障</strong>指令，这个指令会强制让本地内存中的变量值失效，从而重新从主内存中读取最新的值。 <strong>保证后续读写不能重排，强制从主存读取最新值</strong> </p>
+<p><strong>四、实现原理——有序性——禁止指令重排序</strong></p>
+<p>写 volatile 变量时：</p>
+<ul>
+<li>之前的写操作<strong>不能被重排到 volatile 写之后</strong></li>
+</ul>
+<p>读 volatile 变量时：</p>
+<ul>
+<li>后面的读操作<strong>不能被重排到 volatile 读之前</strong></li>
+</ul>
+<blockquote>
+<p>举个典型例子：<strong>双重检查锁（DCL）中的单例模式必须用 volatile 修饰实例变量</strong>，否则对象初始化顺序可能被重排导致线程看到未初始化完成的对象。 </p>
+</blockquote>
+<p><strong>✅ 五、总结一句话：</strong></p>
+<blockquote>
+<p><code>volatile</code> 通过在字节码编译阶段插入 <strong>内存屏障（memory barrier）</strong>，并依赖 CPU 的 <strong>缓存一致性协议（如 MESI）</strong>，实现了对主内存的强制读写，从而保证了<strong>可见性</strong>；同时屏障也 <strong>限制了指令重排序</strong>，保证了<strong>一定的有序性</strong>。</p>
+</blockquote>
+<h2 id="happens-before"><a href="#happens-before" class="headerlink" title="happens-before"></a>happens-before</h2><h2 id="习题⭐️"><a href="#习题⭐️" class="headerlink" title="习题⭐️"></a>习题⭐️</h2><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV16J411h7Rd?spm_id_from=333.788.player.switch&vd_source=5e766b6c0e80626e4a3c852a6a053d6b&p=154">这里关于单例的几个习题视频非常好</a></p>
+<h1 id="无锁（乐观锁）"><a href="#无锁（乐观锁）" class="headerlink" title="无锁（乐观锁）"></a>无锁（乐观锁）</h1><h2 id="CAS"><a href="#CAS" class="headerlink" title="CAS"></a>CAS</h2><h2 id="原子引用"><a href="#原子引用" class="headerlink" title="原子引用"></a>原子引用</h2><h1 id="不可变"><a href="#不可变" class="headerlink" title="不可变"></a>不可变</h1><h2 id="享元模式"><a href="#享元模式" class="headerlink" title="享元模式"></a>享元模式</h2><h2 id="final关键字原理"><a href="#final关键字原理" class="headerlink" title="final关键字原理"></a>final关键字原理</h2><h1 id="工具类"><a href="#工具类" class="headerlink" title="工具类"></a>工具类</h1><h2 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h2>
   </div>
   
   
@@ -3159,10 +3285,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-06-24T11:30:41+08:00">
+          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-06-27T22:31:06+08:00">
   <a class='notlink'>
     <i class="fa-solid fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2025年6月24日</p>
+    <p>更新于：2025年6月27日</p>
   </a>
 </div>
 
@@ -3201,6 +3327,16 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
   
     <div class="prev-next">
+      
+        <a class='prev' href='/2025/06/28/sql%E5%88%B7%E9%A2%98/'>
+          <p class='title'><i class="fa-solid fa-chevron-left" aria-hidden="true"></i>sql刷题</p>
+          <p class='content'>练习leetcode上高频sql50题，主要是记录思路的分析过程
+
+
+四、排序和分组619. 只出现一次的最大数字🔹1. 理解题目目标我们要找出：
+
+在表中只出现一次的那些数字中，最大的那个。...</p>
+        </a>
       
       
         <a class='next' href='/2025/06/15/%E6%8A%80%E6%9C%AF%E7%B1%BB/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%89%AB%E7%9B%B2/'>
@@ -3268,7 +3404,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 
     <div class='content'>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B"><span class="toc-text">线程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%88%E4%B8%8E%E6%A0%88%E5%B8%A7"><span class="toc-text">栈与栈帧</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2%EF%BC%88Thread-Context-Switch%EF%BC%89"><span class="toc-text">线程上下文切换（Thread Context Switch）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sleep-%E4%B8%8E-yield"><span class="toc-text">sleep 与 yield</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#join"><span class="toc-text">join</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#interrupt"><span class="toc-text">interrupt</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%88%E6%8A%A4%E7%BA%BF%E7%A8%8B"><span class="toc-text">守护线程</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5"><span class="toc-text">同步</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#synchronized"><span class="toc-text">synchronized</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Monitor"><span class="toc-text">Monitor</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%94%81%E5%8D%87%E7%BA%A7%E2%80%94%E2%80%94%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%94%81"><span class="toc-text">锁升级——轻量级锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%94%81%E5%8D%87%E7%BA%A7%E2%80%94%E2%80%94%E5%81%8F%E5%90%91%E9%94%81"><span class="toc-text">锁升级——偏向锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%94%81%E5%8D%87%E7%BA%A7%E5%85%A8%E6%B5%81%E7%A8%8B"><span class="toc-text">锁升级全流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#wait-notifyall%E7%9A%84%E6%AD%A3%E7%A1%AE%E4%BD%BF%E7%94%A8%E5%A7%BF%E5%8A%BF"><span class="toc-text">wait&#x2F;notifyall的正确使用姿势</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%9D%E6%8A%A4%E6%80%A7%E6%9A%82%E5%81%9C"><span class="toc-text">保护性暂停</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#park-unpark"><span class="toc-text">park&#x2F;unpark</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%BD%8D%E6%AD%BB%E9%94%81"><span class="toc-text">定位死锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B4%BB%E9%94%81"><span class="toc-text">活锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A5%A5%E9%A5%BF"><span class="toc-text">饥饿</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ReentrantLock"><span class="toc-text">ReentrantLock</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B"><span class="toc-text">线程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%88%E4%B8%8E%E6%A0%88%E5%B8%A7"><span class="toc-text">栈与栈帧</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2%EF%BC%88Thread-Context-Switch%EF%BC%89"><span class="toc-text">线程上下文切换（Thread Context Switch）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sleep-%E4%B8%8E-yield"><span class="toc-text">sleep 与 yield</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#join"><span class="toc-text">join</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#interrupt"><span class="toc-text">interrupt</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%88%E6%8A%A4%E7%BA%BF%E7%A8%8B"><span class="toc-text">守护线程</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5"><span class="toc-text">同步</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#synchronized"><span class="toc-text">synchronized</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Monitor"><span class="toc-text">Monitor</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%94%81%E5%8D%87%E7%BA%A7%E2%80%94%E2%80%94%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%94%81"><span class="toc-text">锁升级——轻量级锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%94%81%E5%8D%87%E7%BA%A7%E2%80%94%E2%80%94%E5%81%8F%E5%90%91%E9%94%81"><span class="toc-text">锁升级——偏向锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%94%81%E5%8D%87%E7%BA%A7%E5%85%A8%E6%B5%81%E7%A8%8B"><span class="toc-text">锁升级全流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#wait-notifyall%E7%9A%84%E6%AD%A3%E7%A1%AE%E4%BD%BF%E7%94%A8%E5%A7%BF%E5%8A%BF"><span class="toc-text">wait&#x2F;notifyall的正确使用姿势</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%9D%E6%8A%A4%E6%80%A7%E6%9A%82%E5%81%9C"><span class="toc-text">保护性暂停</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#park-unpark"><span class="toc-text">park&#x2F;unpark</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%BD%8D%E6%AD%BB%E9%94%81"><span class="toc-text">定位死锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B4%BB%E9%94%81"><span class="toc-text">活锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A5%A5%E9%A5%BF"><span class="toc-text">饥饿</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ReentrantLock%E2%AD%90%EF%B8%8F"><span class="toc-text">ReentrantLock⭐️</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%A4%E6%9B%BF%E6%89%93%E5%8D%B0%E2%AD%90%EF%B8%8F"><span class="toc-text">交替打印⭐️</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AD%98"><span class="toc-text">内存</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B"><span class="toc-text">Java内存模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AF%E8%A7%81%E6%80%A7"><span class="toc-text">可见性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#volatile%E5%8E%9F%E7%90%86"><span class="toc-text">volatile原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#happens-before"><span class="toc-text">happens-before</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%A0%E9%A2%98%E2%AD%90%EF%B8%8F"><span class="toc-text">习题⭐️</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%97%A0%E9%94%81%EF%BC%88%E4%B9%90%E8%A7%82%E9%94%81%EF%BC%89"><span class="toc-text">无锁（乐观锁）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CAS"><span class="toc-text">CAS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E5%AD%90%E5%BC%95%E7%94%A8"><span class="toc-text">原子引用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%8D%E5%8F%AF%E5%8F%98"><span class="toc-text">不可变</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F"><span class="toc-text">享元模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#final%E5%85%B3%E9%94%AE%E5%AD%97%E5%8E%9F%E7%90%86"><span class="toc-text">final关键字原理</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E7%B1%BB"><span class="toc-text">工具类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="toc-text">线程池</span></a></li></ol></li></ol>
     </div>
   </section>
 
@@ -4460,7 +4596,7 @@ window.matchMedia('(prefers-color-scheme: light)').addListener(darkModelListener
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/技术/","name":"技术"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2025/06/19/技术类/juc学习/","name":"juc学习"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"juc学习","description":"1系统学习一下JUC部分","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2025/06/19/%E6%8A%80%E6%9C%AF%E7%B1%BB/juc%E5%AD%A6%E4%B9%A0/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2025/06/19/%E6%8A%80%E6%9C%AF%E7%B1%BB/juc%E5%AD%A6%E4%B9%A0/","wordCount":12,"datePublished":"2025-06-19T12:52:29.000Z","dateModified":"2025-06-24T03:30:41.146Z","articleSection":"技术","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/技术/","name":"技术"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2025/06/19/技术类/juc学习/","name":"juc学习"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"juc学习","description":"1系统学习一下JUC部分","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2025/06/19/%E6%8A%80%E6%9C%AF%E7%B1%BB/juc%E5%AD%A6%E4%B9%A0/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2025/06/19/%E6%8A%80%E6%9C%AF%E7%B1%BB/juc%E5%AD%A6%E4%B9%A0/","wordCount":12,"datePublished":"2025-06-19T12:52:29.000Z","dateModified":"2025-06-27T14:31:06.184Z","articleSection":"技术","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 

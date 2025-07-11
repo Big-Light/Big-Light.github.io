@@ -46,7 +46,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
 <meta property="article:published_time" content="2025-06-14T08:42:06.000Z">
-<meta property="article:modified_time" content="2025-06-14T08:43:09.035Z">
+<meta property="article:modified_time" content="2025-06-26T06:57:01.593Z">
 <meta property="article:author" content="Light">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
@@ -1846,7 +1846,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: false,
     cdn: {"js":{"app":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/app.js","parallax":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/parallax.js","rightMenu":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenu.js","rightMenus":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenus.js","sites":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/sites.js","friends":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/friends.js","contributors":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/contributors.js","search":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1750746075580),
+    lastupdate: new Date(1752242068690),
     sidebar: {
       for_page: ["blogger","category","donate","webinfo"],
       for_post: ["toc"],
@@ -2899,13 +2899,13 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <div class="new-meta-item wordcount">
     <a class='notlink'>
       <i class="fa-solid fa-keyboard fa-fw" aria-hidden="true"></i>
-      <p>字数：11.8k 字</p>
+      <p>字数：12.6k 字</p>
     </a>
   </div>
   <div class="new-meta-item readtime">
     <a class='notlink'>
       <i class="fa-solid fa-hourglass-half fa-fw" aria-hidden="true"></i>
-      <p>时长：43 分钟</p>
+      <p>时长：46 分钟</p>
     </a>
   </div>
 
@@ -3102,8 +3102,35 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * native 方法，用于返回当前运行时对象的 Class 对象，使用了 final 关键字修饰，故不允许子类重写。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">native</span> Class&lt;?&gt; getClass()</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * native 方法，用于返回对象的哈希码，主要使用在哈希表中，比如 JDK 中的HashMap。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">native</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">()</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 用于比较 2 个对象的内存地址是否相等，String 类对该方法进行了重写以用于比较字符串的值是否相等。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object obj)</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * native 方法，用于创建并返回当前对象的一份拷贝。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">protected</span> <span class="keyword">native</span> Object <span class="title function_">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 返回类的名字实例的哈希码的 16 进制的字符串。建议 Object 所有的子类都重写这个方法。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * native 方法，并且不能重写。唤醒一个在此对象监视器上等待的线程(监视器相当于就是锁的概念)。如果有多个线程在等待只会任意唤醒一个。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title function_">notify</span><span class="params">()</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * native 方法，并且不能重写。跟 notify 一样，唯一的区别就是会唤醒在此对象监视器上等待的所有线程，而不是一个线程。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title function_">notifyAll</span><span class="params">()</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * native方法，并且不能重写。暂停线程的执行。注意：sleep 方法没有释放锁，而 wait 方法释放了锁 ，timeout 是等待时间。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title function_">wait</span><span class="params">(<span class="type">long</span> timeout)</span> <span class="keyword">throws</span> InterruptedException</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 多了 nanos 参数，这个参数表示额外时间（以纳秒为单位，范围是 0-999999）。 所以超时的时间还需要加上 nanos 纳秒。。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title function_">wait</span><span class="params">(<span class="type">long</span> timeout, <span class="type">int</span> nanos)</span> <span class="keyword">throws</span> InterruptedException</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 跟之前的2个wait方法一样，只不过该方法一直等待，没有超时时间这个概念</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title function_">wait</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 实例被垃圾回收器回收的时候触发的操作</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">finalize</span><span class="params">()</span> <span class="keyword">throws</span> Throwable &#123; &#125;</span><br></pre></td></tr></table></figure>
 
-
-
+<h2 id="11-创建对象有哪些方式？"><a href="#11-创建对象有哪些方式？" class="headerlink" title="11.创建对象有哪些方式？"></a>11.创建对象有哪些方式？</h2><table>
+<thead>
+<tr>
+<th>方式</th>
+<th>是否调用构造方法</th>
+<th>应用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>new</code></td>
+<td>✅ 是</td>
+<td>最常见、推荐方式</td>
+</tr>
+<tr>
+<td>反射</td>
+<td>✅ 是</td>
+<td>框架&#x2F;工具类动态创建实例</td>
+</tr>
+<tr>
+<td><code>clone()</code></td>
+<td>❌ 否</td>
+<td>拷贝已有对象</td>
+</tr>
+<tr>
+<td>反序列化</td>
+<td>❌ 否</td>
+<td>网络传输、缓存恢复</td>
+</tr>
+</tbody></table>
 <hr>
 <h1 id="3-面向对象"><a href="#3-面向对象" class="headerlink" title="3.面向对象"></a>3.面向对象</h1><h2 id="1-面向对象有哪些特性"><a href="#1-面向对象有哪些特性" class="headerlink" title="1.面向对象有哪些特性"></a>1.面向对象有哪些特性</h2><ul>
 <li><p><strong>封装</strong></p>
@@ -3524,6 +3551,142 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <td>需引入cglib库</td>
 </tr>
 </tbody></table>
+<h1 id="15-泛型"><a href="#15-泛型" class="headerlink" title="15.泛型"></a>15.泛型</h1><h2 id="✅-一、基础语法类（必须掌握）"><a href="#✅-一、基础语法类（必须掌握）" class="headerlink" title="✅ 一、基础语法类（必须掌握）"></a>✅ 一、基础语法类（必须掌握）</h2><ol>
+<li>什么是泛型？Java 为什么引入泛型？</li>
+</ol>
+<ul>
+<li><strong>泛型是参数化类型</strong>，可让类&#x2F;方法操作任意类型，<strong>避免强制类型转换</strong>，提高类型安全。</li>
+<li>泛型最常用于集合类：<code>List&lt;String&gt;</code>、<code>Map&lt;K, V&gt;</code></li>
+</ul>
+<hr>
+<ol start="2">
+<li>泛型有哪些常见的使用方式？</li>
+</ol>
+<ul>
+<li>泛型类：<code>class Box&lt;T&gt; &#123;&#125;</code></li>
+<li>泛型方法：<code>&lt;T&gt; void print(T value)</code></li>
+<li>泛型接口：<code>interface Comparable&lt;T&gt;</code></li>
+<li>泛型通配符：<code>? extends T</code> &#x2F; <code>? super T</code></li>
+</ul>
+<hr>
+<ol start="3">
+<li>泛型能否用于 static 方法或变量？</li>
+</ol>
+<ul>
+<li>泛型参数属于实例层，<strong>不能用于 static 成员</strong>；</li>
+<li>若想泛型化静态方法，必须声明为泛型方法：<code>public static &lt;T&gt; void print(T t)</code></li>
+</ul>
+<hr>
+<h2 id="✅-二、深入语义类（容易考出错）"><a href="#✅-二、深入语义类（容易考出错）" class="headerlink" title="✅ 二、深入语义类（容易考出错）"></a>✅ 二、深入语义类（容易考出错）</h2><ol start="4">
+<li><code>? extends T</code> 和 <code>? super T</code> 的区别？</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>写法</th>
+<th>含义</th>
+<th>可读</th>
+<th>可写</th>
+<th>应用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>? extends T</code></td>
+<td>某个 <strong>T 的子类</strong></td>
+<td>✅</td>
+<td>❌</td>
+<td>只读，如 List&lt;? extends Number&gt;</td>
+</tr>
+<tr>
+<td><code>? super T</code></td>
+<td>某个 <strong>T 的父类</strong></td>
+<td>❌</td>
+<td>✅</td>
+<td>只写，如 List&lt;? super Integer&gt;</td>
+</tr>
+</tbody></table>
+<p>口诀：<strong>“Producer Extends, Consumer Super”（PECS）</strong></p>
+<hr>
+<ol start="5">
+<li>泛型擦除是什么？对运行时有哪些影响？</li>
+</ol>
+<ul>
+<li>Java 的泛型是 <strong>伪泛型</strong>，编译后类型会擦除为原始类型（如 <code>T</code> 变为 <code>Object</code>）</li>
+<li>导致：<ul>
+<li>无法在运行时判断泛型类型：<code>if (obj instanceof List&lt;String&gt;)</code> 会报错</li>
+<li>无法创建泛型数组：<code>new T[10]</code> 报错</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ol start="6">
+<li>泛型能否和基本类型一起使用？</li>
+</ol>
+<ul>
+<li>不能。泛型只能用引用类型，如 <code>List&lt;int&gt;</code> ❌；</li>
+<li>可用包装类型 <code>Integer</code> 替代</li>
+</ul>
+<hr>
+<h2 id="✅-三、实战场景类（框架和开发相关）"><a href="#✅-三、实战场景类（框架和开发相关）" class="headerlink" title="✅ 三、实战场景类（框架和开发相关）"></a>✅ 三、实战场景类（框架和开发相关）</h2><ol start="7">
+<li>泛型在集合类中的实际作用？</li>
+</ol>
+<ul>
+<li>在 <code>List&lt;T&gt;</code>、<code>Map&lt;K,V&gt;</code> 中提供编译期类型检查，避免类型转换。</li>
+<li>在源码中常见泛型擦除后的实现，结合通配符提升复用性</li>
+</ul>
+<hr>
+<ol start="8">
+<li>泛型如何配合反射使用？</li>
+</ol>
+<ul>
+<li>通过 <code>Field.getGenericType()</code> 获取泛型声明；</li>
+<li>可使用 <code>ParameterizedType</code> 判断泛型实际参数：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">java</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">复制编辑</span><br><span class="line">Field field = clazz.getDeclaredField(&quot;list&quot;);</span><br><span class="line">ParameterizedType type = (ParameterizedType) field.getGenericType();</span><br><span class="line">Type actualType = type.getActualTypeArguments()[0]; // e.g., String</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="✅-四、常见面试陷阱题"><a href="#✅-四、常见面试陷阱题" class="headerlink" title="✅ 四、常见面试陷阱题"></a>✅ 四、常见面试陷阱题</h2><ol start="9">
+<li>为什么不能创建泛型数组？</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">java</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">复制编辑</span><br><span class="line">List&lt;String&gt;[] arr = new ArrayList&lt;String&gt;[10]; // 编译错误</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>因为泛型在运行时被擦除，数组又是协变的，导致类型不安全</li>
+</ul>
+<hr>
+<ol start="10">
+<li>List<Object> 能接收 List<String> 吗？</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">java</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">复制编辑</span><br><span class="line">List&lt;String&gt; strList = new ArrayList&lt;&gt;();</span><br><span class="line">List&lt;Object&gt; objList = strList; // ❌ 编译错误</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>泛型是<strong>不协变</strong>的，<code>List&lt;String&gt;</code> 不是 <code>List&lt;Object&gt;</code> 的子类型。</li>
+</ul>
+<hr>
+<h2 id="🧠-总结：泛型高频面试点总表"><a href="#🧠-总结：泛型高频面试点总表" class="headerlink" title="🧠 总结：泛型高频面试点总表"></a>🧠 总结：泛型高频面试点总表</h2><table>
+<thead>
+<tr>
+<th>问题类型</th>
+<th>高频考点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>语法基础</td>
+<td>泛型类、泛型方法、通配符</td>
+</tr>
+<tr>
+<td>原理机制</td>
+<td>泛型擦除、不能用基本类型、数组限制</td>
+</tr>
+<tr>
+<td>场景应用</td>
+<td>集合、反射、框架（Spring&#x2F;MyBatis）</td>
+</tr>
+<tr>
+<td>类型边界</td>
+<td><code>extends</code> 和 <code>super</code>、类型安全</td>
+</tr>
+</tbody></table>
 
   </div>
   
@@ -3548,10 +3711,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-06-14T16:43:09+08:00">
+          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-06-26T14:57:01+08:00">
   <a class='notlink'>
     <i class="fa-solid fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2025年6月14日</p>
+    <p>更新于：2025年6月26日</p>
   </a>
 </div>
 
@@ -3668,7 +3831,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 
     <div class='content'>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%A6%82%E8%BF%B0"><span class="toc-text">1.概述</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Java-%E8%AF%AD%E8%A8%80%E6%9C%89%E5%93%AA%E4%BA%9B%E7%89%B9%E7%82%B9%EF%BC%9F"><span class="toc-text">1.Java 语言有哪些特点？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-JVM%E3%80%81JDK-%E5%92%8C-JRE%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">2.JVM、JDK 和 JRE的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%BB%80%E4%B9%88%E6%98%AF%E5%AD%97%E8%8A%82%E7%A0%81"><span class="toc-text">3.什么是字节码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4Java%E8%AF%AD%E8%A8%80%E2%80%9C%E7%BC%96%E8%AF%91%E4%B8%8E%E8%A7%A3%E9%87%8A%E5%85%B1%E5%AD%98%E2%80%9D%EF%BC%9F"><span class="toc-text">4.为什么说Java语言“编译与解释共存”？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Java%E5%92%8CC-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">5.Java和C++的区别</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95"><span class="toc-text">2.基础语法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Java-%E6%9C%89%E5%93%AA%E4%BA%9B%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-text">1.Java 有哪些数据类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%BB%80%E4%B9%88%E6%98%AF%E8%87%AA%E5%8A%A8%E6%8B%86%E7%AE%B1-%E5%B0%81%E7%AE%B1"><span class="toc-text">2.什么是自动拆箱&#x2F;封箱</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%8C%85%E8%A3%85%E7%B1%BB%E5%9E%8B%E7%9A%84%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6"><span class="toc-text">3.包装类型的缓存机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E4%B8%8E%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E7%9A%84%E5%8C%BA%E5%88%AB%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-text">4.成员变量与局部变量的区别有哪些？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F%E5%92%8C%E5%AE%9E%E4%BE%8B%E5%8F%98%E9%87%8F%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">5.静态变量和实例变量的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%92%8C-equals-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">5.&#x3D;&#x3D;和 equals 的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%87%8D%E5%86%99-equals-%E6%97%B6%E5%BF%85%E9%A1%BB%E9%87%8D%E5%86%99-hashCode-%E2%BD%85%E6%B3%95"><span class="toc-text">6.为什么重写 equals 时必须重写 hashCode ⽅法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E8%AE%BF%E9%97%AE%E4%BF%AE%E9%A5%B0%E7%AC%A6-public%E3%80%81private%E3%80%81protected%E3%80%81%E4%BB%A5%E5%8F%8A%E4%B8%8D%E5%86%99%EF%BC%88%E9%BB%98%E8%AE%A4%EF%BC%89%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">7.访问修饰符 public、private、protected、以及不写（默认）的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-final%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-text">8.final关键字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-final%E3%80%81finally%E3%80%81finalize"><span class="toc-text">9.final、finally、finalize</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-Object%E7%B1%BB%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-text">10.Object类的方法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1"><span class="toc-text">3.面向对象</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E6%9C%89%E5%93%AA%E4%BA%9B%E7%89%B9%E6%80%A7"><span class="toc-text">1.面向对象有哪些特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E9%87%8D%E8%BD%BD%EF%BC%88overload%EF%BC%89%E5%92%8C%E9%87%8D%E5%86%99%EF%BC%88override%EF%BC%89%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-text">2.重载（overload）和重写（override）的区别？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%8A%BD%E8%B1%A1%E7%B1%BB-abstract-class-%E5%92%8C%E6%8E%A5%E5%8F%A3-interface-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-text">3.抽象类(abstract class)和接口(interface)有什么区别？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%B7%B1%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B5%85%E6%8B%B7%E8%B4%9D"><span class="toc-text">4.深拷贝和浅拷贝?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4%E3%80%81String"><span class="toc-text">4、String</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-String%E3%80%81StringBuilder%E3%80%81StringBuffer"><span class="toc-text">1.String、StringBuilder、StringBuffer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-String-str1-new-String-%E2%80%9Cabc%E2%80%9D-%E5%92%8C-String-str2-%E2%80%9Cabc%E2%80%9D-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">2.String str1 &#x3D; new String(“abc”) 和 String str2 &#x3D; “abc” 的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81-String-%E4%B8%8D%E5%8F%AF%E5%8F%98-%E4%B8%BA%E4%BB%80%E4%B9%88String%E6%98%AF%E4%B8%8D%E5%8F%AF%E5%8F%98%E7%9A%84"><span class="toc-text">3.如何保证 String 不可变(为什么String是不可变的)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-String%E7%9A%84intern-%E6%96%B9%E6%B3%95"><span class="toc-text">4.String的intern()方法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-text">6.异常处理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%BC%82%E5%B8%B8%E4%BD%93%E7%B3%BB"><span class="toc-text">1.异常体系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%BC%82%E5%B8%B8%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F"><span class="toc-text">2.异常的处理方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Java%E4%B8%AD%E7%9A%84finally%E4%B8%80%E5%AE%9A%E4%BC%9A%E8%A2%AB%E6%89%A7%E8%A1%8C%E5%90%97%EF%BC%9F"><span class="toc-text">3.Java中的finally一定会被执行吗？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-I-O"><span class="toc-text">7.I&#x2F;O</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-I-O%E6%B5%81"><span class="toc-text">1.I&#x2F;O流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-I-O%E6%B5%81%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%88%86%E4%B8%BA%E5%AD%97%E7%AC%A6%E6%B5%81%E5%92%8C%E5%AD%97%E8%8A%82%E6%B5%81"><span class="toc-text">2.I&#x2F;O流为什么要分为字符流和字节流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-BIO%E3%80%81NIO%E3%80%81AIO%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">3.BIO、NIO、AIO的区别</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-text">8.序列化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%8C%E4%BB%80%E4%B9%88%E6%98%AF%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-text">1.什么是序列化，什么是反序列化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%B8%B8%E8%A7%81%E7%9A%84%E5%BA%8F%E5%88%97%E5%8C%96%E5%8D%8F%E8%AE%AE"><span class="toc-text">2.常见的序列化协议</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-%E5%8F%8D%E5%B0%84"><span class="toc-text">9.反射</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E5%8F%8D%E5%B0%84"><span class="toc-text">1.什么是反射</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E8%8E%B7%E5%8F%96class%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="toc-text">2.获取class对象的四种方式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-%E6%B3%A8%E8%A7%A3"><span class="toc-text">10.注解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-text">1.注解的原理</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11-SPI"><span class="toc-text">11.SPI</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#12-%E8%AF%AD%E6%B3%95%E7%B3%96"><span class="toc-text">12.语法糖</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#13-JDK1-8%E6%96%B0%E7%89%B9%E6%80%A7"><span class="toc-text">13.JDK1.8新特性</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">1.lambda表达式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#14-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F"><span class="toc-text">14.代理模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-JDK%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86"><span class="toc-text">1.JDK动态代理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-CGLIB%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86"><span class="toc-text">2.CGLIB动态代理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-JDK%E4%BB%A3%E7%90%86-vs-CGLIB-%E5%85%B3%E9%94%AE%E5%AF%B9%E6%AF%94"><span class="toc-text">3.JDK代理 vs CGLIB 关键对比</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%A6%82%E8%BF%B0"><span class="toc-text">1.概述</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Java-%E8%AF%AD%E8%A8%80%E6%9C%89%E5%93%AA%E4%BA%9B%E7%89%B9%E7%82%B9%EF%BC%9F"><span class="toc-text">1.Java 语言有哪些特点？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-JVM%E3%80%81JDK-%E5%92%8C-JRE%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">2.JVM、JDK 和 JRE的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%BB%80%E4%B9%88%E6%98%AF%E5%AD%97%E8%8A%82%E7%A0%81"><span class="toc-text">3.什么是字节码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4Java%E8%AF%AD%E8%A8%80%E2%80%9C%E7%BC%96%E8%AF%91%E4%B8%8E%E8%A7%A3%E9%87%8A%E5%85%B1%E5%AD%98%E2%80%9D%EF%BC%9F"><span class="toc-text">4.为什么说Java语言“编译与解释共存”？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Java%E5%92%8CC-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">5.Java和C++的区别</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95"><span class="toc-text">2.基础语法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Java-%E6%9C%89%E5%93%AA%E4%BA%9B%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-text">1.Java 有哪些数据类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%BB%80%E4%B9%88%E6%98%AF%E8%87%AA%E5%8A%A8%E6%8B%86%E7%AE%B1-%E5%B0%81%E7%AE%B1"><span class="toc-text">2.什么是自动拆箱&#x2F;封箱</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%8C%85%E8%A3%85%E7%B1%BB%E5%9E%8B%E7%9A%84%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6"><span class="toc-text">3.包装类型的缓存机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E4%B8%8E%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E7%9A%84%E5%8C%BA%E5%88%AB%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-text">4.成员变量与局部变量的区别有哪些？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F%E5%92%8C%E5%AE%9E%E4%BE%8B%E5%8F%98%E9%87%8F%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">5.静态变量和实例变量的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%92%8C-equals-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">5.&#x3D;&#x3D;和 equals 的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%87%8D%E5%86%99-equals-%E6%97%B6%E5%BF%85%E9%A1%BB%E9%87%8D%E5%86%99-hashCode-%E2%BD%85%E6%B3%95"><span class="toc-text">6.为什么重写 equals 时必须重写 hashCode ⽅法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E8%AE%BF%E9%97%AE%E4%BF%AE%E9%A5%B0%E7%AC%A6-public%E3%80%81private%E3%80%81protected%E3%80%81%E4%BB%A5%E5%8F%8A%E4%B8%8D%E5%86%99%EF%BC%88%E9%BB%98%E8%AE%A4%EF%BC%89%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">7.访问修饰符 public、private、protected、以及不写（默认）的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-final%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-text">8.final关键字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-final%E3%80%81finally%E3%80%81finalize"><span class="toc-text">9.final、finally、finalize</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-Object%E7%B1%BB%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-text">10.Object类的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1%E6%9C%89%E5%93%AA%E4%BA%9B%E6%96%B9%E5%BC%8F%EF%BC%9F"><span class="toc-text">11.创建对象有哪些方式？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1"><span class="toc-text">3.面向对象</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E6%9C%89%E5%93%AA%E4%BA%9B%E7%89%B9%E6%80%A7"><span class="toc-text">1.面向对象有哪些特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E9%87%8D%E8%BD%BD%EF%BC%88overload%EF%BC%89%E5%92%8C%E9%87%8D%E5%86%99%EF%BC%88override%EF%BC%89%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-text">2.重载（overload）和重写（override）的区别？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%8A%BD%E8%B1%A1%E7%B1%BB-abstract-class-%E5%92%8C%E6%8E%A5%E5%8F%A3-interface-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-text">3.抽象类(abstract class)和接口(interface)有什么区别？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%B7%B1%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B5%85%E6%8B%B7%E8%B4%9D"><span class="toc-text">4.深拷贝和浅拷贝?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4%E3%80%81String"><span class="toc-text">4、String</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-String%E3%80%81StringBuilder%E3%80%81StringBuffer"><span class="toc-text">1.String、StringBuilder、StringBuffer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-String-str1-new-String-%E2%80%9Cabc%E2%80%9D-%E5%92%8C-String-str2-%E2%80%9Cabc%E2%80%9D-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">2.String str1 &#x3D; new String(“abc”) 和 String str2 &#x3D; “abc” 的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81-String-%E4%B8%8D%E5%8F%AF%E5%8F%98-%E4%B8%BA%E4%BB%80%E4%B9%88String%E6%98%AF%E4%B8%8D%E5%8F%AF%E5%8F%98%E7%9A%84"><span class="toc-text">3.如何保证 String 不可变(为什么String是不可变的)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-String%E7%9A%84intern-%E6%96%B9%E6%B3%95"><span class="toc-text">4.String的intern()方法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-text">6.异常处理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%BC%82%E5%B8%B8%E4%BD%93%E7%B3%BB"><span class="toc-text">1.异常体系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%BC%82%E5%B8%B8%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F"><span class="toc-text">2.异常的处理方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Java%E4%B8%AD%E7%9A%84finally%E4%B8%80%E5%AE%9A%E4%BC%9A%E8%A2%AB%E6%89%A7%E8%A1%8C%E5%90%97%EF%BC%9F"><span class="toc-text">3.Java中的finally一定会被执行吗？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-I-O"><span class="toc-text">7.I&#x2F;O</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-I-O%E6%B5%81"><span class="toc-text">1.I&#x2F;O流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-I-O%E6%B5%81%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%88%86%E4%B8%BA%E5%AD%97%E7%AC%A6%E6%B5%81%E5%92%8C%E5%AD%97%E8%8A%82%E6%B5%81"><span class="toc-text">2.I&#x2F;O流为什么要分为字符流和字节流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-BIO%E3%80%81NIO%E3%80%81AIO%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">3.BIO、NIO、AIO的区别</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-text">8.序列化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%8C%E4%BB%80%E4%B9%88%E6%98%AF%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-text">1.什么是序列化，什么是反序列化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%B8%B8%E8%A7%81%E7%9A%84%E5%BA%8F%E5%88%97%E5%8C%96%E5%8D%8F%E8%AE%AE"><span class="toc-text">2.常见的序列化协议</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-%E5%8F%8D%E5%B0%84"><span class="toc-text">9.反射</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E5%8F%8D%E5%B0%84"><span class="toc-text">1.什么是反射</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E8%8E%B7%E5%8F%96class%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="toc-text">2.获取class对象的四种方式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-%E6%B3%A8%E8%A7%A3"><span class="toc-text">10.注解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-text">1.注解的原理</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11-SPI"><span class="toc-text">11.SPI</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#12-%E8%AF%AD%E6%B3%95%E7%B3%96"><span class="toc-text">12.语法糖</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#13-JDK1-8%E6%96%B0%E7%89%B9%E6%80%A7"><span class="toc-text">13.JDK1.8新特性</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">1.lambda表达式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#14-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F"><span class="toc-text">14.代理模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-JDK%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86"><span class="toc-text">1.JDK动态代理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-CGLIB%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86"><span class="toc-text">2.CGLIB动态代理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-JDK%E4%BB%A3%E7%90%86-vs-CGLIB-%E5%85%B3%E9%94%AE%E5%AF%B9%E6%AF%94"><span class="toc-text">3.JDK代理 vs CGLIB 关键对比</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#15-%E6%B3%9B%E5%9E%8B"><span class="toc-text">15.泛型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%9C%85-%E4%B8%80%E3%80%81%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95%E7%B1%BB%EF%BC%88%E5%BF%85%E9%A1%BB%E6%8E%8C%E6%8F%A1%EF%BC%89"><span class="toc-text">✅ 一、基础语法类（必须掌握）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%9C%85-%E4%BA%8C%E3%80%81%E6%B7%B1%E5%85%A5%E8%AF%AD%E4%B9%89%E7%B1%BB%EF%BC%88%E5%AE%B9%E6%98%93%E8%80%83%E5%87%BA%E9%94%99%EF%BC%89"><span class="toc-text">✅ 二、深入语义类（容易考出错）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%9C%85-%E4%B8%89%E3%80%81%E5%AE%9E%E6%88%98%E5%9C%BA%E6%99%AF%E7%B1%BB%EF%BC%88%E6%A1%86%E6%9E%B6%E5%92%8C%E5%BC%80%E5%8F%91%E7%9B%B8%E5%85%B3%EF%BC%89"><span class="toc-text">✅ 三、实战场景类（框架和开发相关）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%9C%85-%E5%9B%9B%E3%80%81%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%99%B7%E9%98%B1%E9%A2%98"><span class="toc-text">✅ 四、常见面试陷阱题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%A7%A0-%E6%80%BB%E7%BB%93%EF%BC%9A%E6%B3%9B%E5%9E%8B%E9%AB%98%E9%A2%91%E9%9D%A2%E8%AF%95%E7%82%B9%E6%80%BB%E8%A1%A8"><span class="toc-text">🧠 总结：泛型高频面试点总表</span></a></li></ol></li></ol>
     </div>
   </section>
 
@@ -4860,7 +5023,7 @@ window.matchMedia('(prefers-color-scheme: light)').addListener(darkModelListener
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2025/06/14/八股/Java八股/","name":"Java八股"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"Java八股","description":"Java基础知识","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2025/06/14/%E5%85%AB%E8%82%A1/Java%E5%85%AB%E8%82%A1/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2025/06/14/%E5%85%AB%E8%82%A1/Java%E5%85%AB%E8%82%A1/","wordCount":8,"datePublished":"2025-06-14T08:42:06.000Z","dateModified":"2025-06-14T08:43:09.035Z","articleSection":"八股","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2025/06/14/八股/Java八股/","name":"Java八股"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"Java八股","description":"Java基础知识","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2025/06/14/%E5%85%AB%E8%82%A1/Java%E5%85%AB%E8%82%A1/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2025/06/14/%E5%85%AB%E8%82%A1/Java%E5%85%AB%E8%82%A1/","wordCount":8,"datePublished":"2025-06-14T08:42:06.000Z","dateModified":"2025-06-26T06:57:01.593Z","articleSection":"八股","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 
