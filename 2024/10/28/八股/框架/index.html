@@ -46,7 +46,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
 <meta property="article:published_time" content="2024-10-28T12:14:40.000Z">
-<meta property="article:modified_time" content="2025-06-24T01:32:46.636Z">
+<meta property="article:modified_time" content="2025-07-30T13:00:55.794Z">
 <meta property="article:author" content="Light">
 <meta property="article:tag" content="Spring, SSM">
 <meta name="twitter:card" content="summary">
@@ -1847,7 +1847,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: false,
     cdn: {"js":{"app":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/app.js","parallax":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/parallax.js","rightMenu":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenu.js","rightMenus":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenus.js","sites":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/sites.js","friends":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/friends.js","contributors":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/contributors.js","search":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1752419231416),
+    lastupdate: new Date(1754403137602),
     sidebar: {
       for_page: ["blogger","category","donate","webinfo"],
       for_post: ["toc"],
@@ -2900,7 +2900,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <div class="new-meta-item wordcount">
     <a class='notlink'>
       <i class="fa-solid fa-keyboard fa-fw" aria-hidden="true"></i>
-      <p>字数：9.7k 字</p>
+      <p>字数：9.9k 字</p>
     </a>
   </div>
   <div class="new-meta-item readtime">
@@ -3370,7 +3370,16 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <li><strong>spring-boot-starter-data-redis</strong>： 用于集成Redis缓存和数据存储服务。 这个Starter包含了与Redis交互所需的客户端（默认是Jedis客户端， 也可以配置为Lettuce客户端），以及Spring Data Redis的支持， 使得在Spring Boot应用中使用Redis变得非常便捷。 同样地，需要在配置文件中设置Redis服务器的连接详情。 </li>
 <li><strong>spring-boot-starter-test</strong>：包含了单元测试和集成测试所需的库 ，如JUnit, Spring Test, AssertJ等，便于进行测试驱动开发(TDD)。</li>
 </ul>
-<h2 id="5-自己实现一个SpringBoot-starter"><a href="#5-自己实现一个SpringBoot-starter" class="headerlink" title="5.自己实现一个SpringBoot starter"></a>5.自己实现一个SpringBoot starter</h2><h2 id="6-过滤器和拦截器的区别⭐️"><a href="#6-过滤器和拦截器的区别⭐️" class="headerlink" title="6.过滤器和拦截器的区别⭐️"></a>6.过滤器和拦截器的区别⭐️</h2><p><strong>Filter 更偏底层、通用，拦截所有请求；Interceptor 更贴近 Spring MVC，仅拦截业务请求，适合做权限、登录控制等。</strong> </p>
+<h2 id="5-自己实现一个SpringBoot-starter"><a href="#5-自己实现一个SpringBoot-starter" class="headerlink" title="5.自己实现一个SpringBoot starter"></a>5.自己实现一个SpringBoot starter</h2><ol>
+<li>新建一个maven项目，在 pom.xml 文件中添加必要的依赖和配置</li>
+<li>在 <code>src/main/java</code> 下创建一个自动配置类</li>
+<li>创建一个配置属性类</li>
+<li>创建一个服务类</li>
+<li>注册自动配置：在<code>src/main/resources/META-INF/spring/</code>目录下创建<code>org.springframework.boot.autoconfigure.AutoConfiguration.imports</code>文件</li>
+<li>使用Maven或Gradle构建项目并发布到仓库</li>
+<li>在其他的 Spring Boot 项目中，通过 Maven 来添加这个自定义的 Starter 依赖</li>
+</ol>
+<h2 id="6-过滤器和拦截器的区别⭐️"><a href="#6-过滤器和拦截器的区别⭐️" class="headerlink" title="6.过滤器和拦截器的区别⭐️"></a>6.过滤器和拦截器的区别⭐️</h2><p><strong>Filter 更偏底层、通用，拦截所有请求；Interceptor 更贴近 Spring MVC，仅拦截业务请求，适合做权限、登录控制等。</strong> </p>
 <ol>
 <li>所属体系不同：Filter的执行阶段在Servlet容器级别，而拦截器是在Springmvc级别</li>
 <li>拦截范围不同：过滤器作用于整个Web容器，可以拦截所有请求（包括静态资源、非 Spring 请求） ，而拦截器只拦截 Spring 控制器的请求，不拦截静态资源</li>
@@ -3459,10 +3468,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-06-24T09:32:46+08:00">
+          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-07-30T21:00:55+08:00">
   <a class='notlink'>
     <i class="fa-solid fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2025年6月24日</p>
+    <p>更新于：2025年7月30日</p>
   </a>
 </div>
 
@@ -4776,7 +4785,7 @@ window.matchMedia('(prefers-color-scheme: light)').addListener(darkModelListener
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/10/28/八股/框架/","name":"框架"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"框架","description":"这里是有关框架的八股","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/%E6%A1%86%E6%9E%B6/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/%E6%A1%86%E6%9E%B6/","wordCount":10,"datePublished":"2024-10-28T12:14:40.000Z","dateModified":"2025-06-24T01:32:46.636Z","articleSection":"八股","keywords":"Spring, SSM","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/10/28/八股/框架/","name":"框架"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"框架","description":"这里是有关框架的八股","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/%E6%A1%86%E6%9E%B6/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/%E6%A1%86%E6%9E%B6/","wordCount":10,"datePublished":"2024-10-28T12:14:40.000Z","dateModified":"2025-07-30T13:00:55.794Z","articleSection":"八股","keywords":"Spring, SSM","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 

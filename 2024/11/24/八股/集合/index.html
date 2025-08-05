@@ -46,7 +46,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
 <meta property="article:published_time" content="2024-11-24T09:11:53.000Z">
-<meta property="article:modified_time" content="2025-06-13T14:07:31.319Z">
+<meta property="article:modified_time" content="2025-07-24T13:24:14.531Z">
 <meta property="article:author" content="Light">
 <meta property="article:tag" content="JavaSE">
 <meta name="twitter:card" content="summary">
@@ -1847,7 +1847,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: false,
     cdn: {"js":{"app":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/app.js","parallax":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/parallax.js","rightMenu":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenu.js","rightMenus":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenus.js","sites":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/sites.js","friends":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/friends.js","contributors":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/contributors.js","search":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1752419231416),
+    lastupdate: new Date(1754403137602),
     sidebar: {
       for_page: ["blogger","category","donate","webinfo"],
       for_post: ["toc"],
@@ -2900,13 +2900,13 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <div class="new-meta-item wordcount">
     <a class='notlink'>
       <i class="fa-solid fa-keyboard fa-fw" aria-hidden="true"></i>
-      <p>字数：5.3k 字</p>
+      <p>字数：5.7k 字</p>
     </a>
   </div>
   <div class="new-meta-item readtime">
     <a class='notlink'>
       <i class="fa-solid fa-hourglass-half fa-fw" aria-hidden="true"></i>
-      <p>时长：19 分钟</p>
+      <p>时长：20 分钟</p>
     </a>
   </div>
 
@@ -3066,18 +3066,66 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <li><strong>不用重新计算hash</strong>，元素的位置要么是在原位置 ，要么是在原位置再移动2次幂的位置。  只需要看看原来的hash值新增的那个bit是1还是0就好了，是0的话索引没变， 是1的话索引变成“原索引+旧容量（oldCapacity）”，<strong>省去了重新计算hash值的时间</strong></li>
 <li>由于新增的1bit是0还是1可以认为是随机的，可以<strong>均匀的把之前的冲突的节点分散</strong>到新的bucket了</li>
 </ol>
-<h2 id="7-HashMap在多线程下可能会出现的问题"><a href="#7-HashMap在多线程下可能会出现的问题" class="headerlink" title="7.HashMap在多线程下可能会出现的问题"></a>7.HashMap在多线程下可能会出现的问题</h2><ul>
+<h2 id="7-HashMap在多线程下可能会出现的问题"><a href="#7-HashMap在多线程下可能会出现的问题" class="headerlink" title="7.HashMap在多线程下可能会出现的问题"></a>7.HashMap在多线程下可能会出现的问题</h2><p><strong>1. 数据丢失或覆盖</strong></p>
+<ul>
+<li>当多个线程同时执行 <code>put()</code> 操作时，可能会导致键值对丢失或覆盖。</li>
+<li><strong>根本原因</strong>：<code>HashMap</code> 的插入操作（如计算哈希、定位桶、插入链表&#x2F;红黑树）非原子性。</li>
+</ul>
+<p><strong>2. 死循环（JDK 1.7 及之前版本）</strong></p>
+<ul>
+<li><p>在 JDK 1.7 中，<code>HashMap</code> 使用 <strong>头插法</strong> 处理哈希冲突。多线程并发扩容时，可能导致链表成环。</p>
+</li>
+<li><p><strong>触发条件</strong>：两个线程同时触发扩容（<code>resize()</code>），并修改链表指针。</p>
+</li>
+<li><p>在 JDK 1.8 中，改为 <strong>尾插法</strong>，减少了死循环概率，但仍非线程安全。</p>
+</li>
 <li><p>问题：在多线程环境下扩容操作可能存在死循环问题，这是由于当一个桶位中有多个元素需要进行扩容时，多个线程同时对链表进行操作，<strong>头插法</strong>可能会导致链表中的节点指向错误的位置，从而<strong>形成一个环形链表</strong>，进而使得查询元素的操作陷入死循环无法结束。</p>
 </li>
 <li><p>解决：为了解决这个问题，JDK1.8 版本的 HashMap 采用了<strong>尾插法</strong>而不是头插法来避免链表倒置，使得插入的节点永远都是放在链表的末尾，<strong>避免了链表中的环形结构</strong>。但是还是不建议在多线程下使用 HashMap，因为多线程下使用 HashMap <strong>还是会存在数据覆盖</strong>的问题，多线程同时执行 put 操作，如果计算出来的索引位置是相同的， 那会造成前一个 key 被后一个 key 覆盖，从而导致元素的丢失。<strong>并发环境下，推荐使用concurrentHashMap</strong></p>
 </li>
 </ul>
+<p><strong>1.7死循环形成示意表</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">步骤</th>
+<th align="left">线程A操作</th>
+<th align="left">线程B操作</th>
+<th align="left">结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">初始状态</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left"><code>table[1]: Node(1)</code></td>
+</tr>
+<tr>
+<td align="left">触发扩容</td>
+<td align="left">开始迁移 <code>Node(1)</code></td>
+<td align="left">抢占CPU完成全部迁移</td>
+<td align="left">线程A的链表头已过时</td>
+</tr>
+<tr>
+<td align="left">头插法执行</td>
+<td align="left">将 <code>Node(1)</code> 插入新表</td>
+<td align="left">-</td>
+<td align="left"><code>Node(1).next</code> 指向自身</td>
+</tr>
+<tr>
+<td align="left">最终状态</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">环形链表形成</td>
+</tr>
+</tbody></table>
+<p>也就是，A和B同时执行扩容，对旧数据迁移，但A在执行完数据的迁移后，B抢占CPU并重新执行了一遍，导致同一个节点又插入到了自己后面，形成了环形链表</p>
 <h2 id="8-ConcurrentHashMap的底层原理"><a href="#8-ConcurrentHashMap的底层原理" class="headerlink" title="8.ConcurrentHashMap的底层原理"></a>8.ConcurrentHashMap的底层原理</h2><blockquote>
 <p><strong>jdk1.7</strong></p>
 </blockquote>
 <p>底层数据结构：数组＋链表。一个ConcurrentHashMap有一个Segment的数组，每个Segment又有一个HashEntry数组，然后每个HashEntry又是一个链表结构的，HashEntry 则用于存储键值对数据。<strong>Segment（分段锁） 是一种可重入的锁</strong> ReentrantLock</p>
 <p><strong>将数据分段，对每个Segment分配一把锁</strong>。当一个线程占用锁访问其中一个段数据的时候，其他段的数据也能被其他线程访问。 </p>
-<p>同一Segment可以并发读，不能并发写，可以有一个写其它的读；不同Segment可以并发读写，前提是获得锁</p>
+<p>同一Segment可以<strong>并发读</strong>（读操作不需要加锁），不能并发写；不同Segment可以并发读写，前提是获得锁</p>
 <p><img src="https://pic1.imgdb.cn/item/67b84a26d0e0a243d4015fe3.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67b84a26d0e0a243d4015fe3.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="1.7的concurrentHashMap"></p>
 <p>这里是Javaguide那里的一个图示，我觉得更好理解一点</p>
 <p>每一个 <code>Segment</code> 是一个类似于 <code>HashMap</code> 的结构，所以每一个 <code>HashMap</code> 的内部可以进行扩容。 但是 <code>Segment</code> 的个数一旦<strong>初始化就不能改变</strong>，默认 <code>Segment</code> 的个数是 16 个，你也可以认为 <code>ConcurrentHashMap</code> 默认支持最多 16 个线程并发。 </p>
@@ -3087,7 +3135,17 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <li><p>通过 <code>hash(key)</code> 定位到 segment</p>
 </li>
 <li><p>再遍历链表定位到具体的元素上。</p>
-<p>需要注意的是 value 是 volatile 的，所以 get 是不需要加锁的。</p>
+<p><strong>需要注意的是 value 是 volatile 的，所以 get 是不需要加锁的。</strong></p>
+<p>Q：读操作会阻塞吗？</p>
+<p><strong>不会相互阻塞</strong>，因为：</p>
+<ol>
+<li><strong>无锁读设计</strong>：<ul>
+<li>普通get()操作完全不获取锁</li>
+<li>依赖<strong>volatile</strong>变量保证可见性</li>
+<li>通过两次校验（check-then-act）确保一致性</li>
+</ul>
+</li>
+</ol>
 </li>
 </ol>
 <p>put：</p>
@@ -3158,10 +3216,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-06-13T22:07:31+08:00">
+          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-07-24T21:24:14+08:00">
   <a class='notlink'>
     <i class="fa-solid fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2025年6月13日</p>
+    <p>更新于：2025年7月24日</p>
   </a>
 </div>
 
@@ -4475,7 +4533,7 @@ window.matchMedia('(prefers-color-scheme: light)').addListener(darkModelListener
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/11/24/八股/集合/","name":"集合"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"集合","description":"主要是Java常用集合介绍","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/11/24/%E5%85%AB%E8%82%A1/%E9%9B%86%E5%90%88/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/11/24/%E5%85%AB%E8%82%A1/%E9%9B%86%E5%90%88/","wordCount":13,"datePublished":"2024-11-24T09:11:53.000Z","dateModified":"2025-06-13T14:07:31.319Z","articleSection":"八股","keywords":"JavaSE","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/11/24/八股/集合/","name":"集合"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"集合","description":"主要是Java常用集合介绍","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/11/24/%E5%85%AB%E8%82%A1/%E9%9B%86%E5%90%88/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/11/24/%E5%85%AB%E8%82%A1/%E9%9B%86%E5%90%88/","wordCount":13,"datePublished":"2024-11-24T09:11:53.000Z","dateModified":"2025-07-24T13:24:14.531Z","articleSection":"八股","keywords":"JavaSE","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 
