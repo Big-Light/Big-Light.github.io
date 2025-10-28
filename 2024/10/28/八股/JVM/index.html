@@ -46,7 +46,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
 <meta property="article:published_time" content="2024-10-28T12:29:13.000Z">
-<meta property="article:modified_time" content="2025-07-18T14:05:52.874Z">
+<meta property="article:modified_time" content="2025-09-04T06:20:09.381Z">
 <meta property="article:author" content="Light">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
@@ -1847,7 +1847,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: false,
     cdn: {"js":{"app":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/app.js","parallax":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/parallax.js","rightMenu":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenu.js","rightMenus":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenus.js","sites":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/sites.js","friends":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/friends.js","contributors":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/contributors.js","search":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1754404737834),
+    lastupdate: new Date(1761641237731),
     sidebar: {
       for_page: ["blogger","category","donate","webinfo"],
       for_post: ["toc"],
@@ -2900,13 +2900,13 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <div class="new-meta-item wordcount">
     <a class='notlink'>
       <i class="fa-solid fa-keyboard fa-fw" aria-hidden="true"></i>
-      <p>字数：14.8k 字</p>
+      <p>字数：17k 字</p>
     </a>
   </div>
   <div class="new-meta-item readtime">
     <a class='notlink'>
       <i class="fa-solid fa-hourglass-half fa-fw" aria-hidden="true"></i>
-      <p>时长：51 分钟</p>
+      <p>时长：59 分钟</p>
     </a>
   </div>
 
@@ -3054,15 +3054,119 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 </ul>
 <h2 id="6-方法区"><a href="#6-方法区" class="headerlink" title="6.方法区"></a>6.方法区</h2><p>方法区并不真实存在，属于 Java 虚拟机规范中的一个逻辑概念。每个JVM 只有一个方法区，它是一个共享的资源。</p>
 <p>当虚拟机要使用一个类时，它需要读取并解析 Class 文件获取相关信息，再将信息存入到方法区。</p>
-<p>方法区是存放基础信息的位置，线程共享，主要包含三部分内容：</p>
+<p>方法区是存放基础信息的位置，线程共享，主要包含四部分内容：</p>
 <ul>
-<li>类的元信息，保存了所有类的基本信息</li>
-<li>运行时常量池，保存了字节码文件中的常量池内容</li>
-<li>字符串常量池，保存了字符串常量</li>
+<li><strong>类的元信息</strong>，保存了所有类的基本信息</li>
+<li><strong>运行时常量池</strong>，保存了字节码文件中的常量池内容</li>
+<li><strong>字符串常量池</strong>，保存了字符串常量</li>
+<li><strong>静态变量</strong></li>
 </ul>
 <p><strong>类的元信息</strong></p>
 <p>方法区是用来存储每个类的基本信息（元信息），一般称之为InstanceKlass对象。在类的加载阶段完成。其中就包含了类的字段、方法等字节码文件中的内容，同时还保存了运行过程中需要使用的虚方法表（实现多态的基础）等信息。 </p>
 <p><img src="https://pic1.imgdb.cn/item/67fe792d88c538a9b5d1f368.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/67fe792d88c538a9b5d1f368.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="元信息"></p>
+<ol>
+<li>类型的全限定名（Fully Qualified Name）</li>
+</ol>
+<ul>
+<li>即类的完整名称，如 <code>java.lang.String</code>。</li>
+</ul>
+<ol start="2">
+<li>类型的直接超类的全限定名</li>
+</ol>
+<ul>
+<li>即父类是谁（对于接口或<code>Object</code>类，此项为null）。</li>
+</ul>
+<ol start="3">
+<li>类型是类还是接口（即<code>class</code>还是<code>interface</code>）</li>
+</ol>
+<ul>
+<li>标识该类型的种类。</li>
+</ul>
+<ol start="4">
+<li>类型的修饰符（<code>public</code>, <code>private</code>, <code>protected</code>, <code>static</code>, <code>final</code>, <code>abstract</code>等）</li>
+</ol>
+<ul>
+<li>类的访问标志和属性。</li>
+</ul>
+<ol start="5">
+<li>直接超接口的全限定名列表</li>
+</ol>
+<ul>
+<li>该类实现了哪些接口。</li>
+</ul>
+<ol start="6">
+<li>字段信息（Field Information）</li>
+</ol>
+<ul>
+<li>对于类中声明的<strong>每一个字段</strong>，都会存储以下信息：<ul>
+<li>字段名</li>
+<li>字段类型（是基本类型还是引用类型）</li>
+<li>字段的修饰符（<code>public</code>, <code>private</code>, <code>volatile</code>, <code>transient</code>等）</li>
+</ul>
+</li>
+</ul>
+<ol start="7">
+<li>方法信息（Method Information）</li>
+</ol>
+<ul>
+<li>对于类中声明的<strong>每一个方法</strong>（包括构造函数），都会存储以下信息：<ul>
+<li>方法名</li>
+<li>方法的返回类型（或<code>void</code>）</li>
+<li>方法参数的数量、类型（按顺序）</li>
+<li>方法的修饰符（<code>public</code>, <code>private</code>, <code>synchronized</code>, <code>native</code>等）</li>
+<li>方法的<strong>字节码（Bytecode）</strong></li>
+<li>操作数栈和该方法栈帧中的局部变量表的大小</li>
+<li>异常表（Exceptions Table，用于处理<code>try-catch</code>块）</li>
+</ul>
+</li>
+</ul>
+<ol start="8">
+<li>运行时常量池（Runtime Constant Pool）</li>
+</ol>
+<ul>
+<li>这是类文件中“常量池”的运行时表示，它是<strong>类元数据的一部分</strong>，但非常重要，所以经常被单独强调。</li>
+<li>它包含的内容非常丰富：<ul>
+<li><strong>字面量（Literals）</strong>：如字符串字面量（在类加载后，会解析并转移到堆中的字符串常量池）、<code>final</code>常量、以及其他基本类型的值。</li>
+<li><strong>符号引用（Symbolic References）</strong>：<ul>
+<li>类和接口的全限定名</li>
+<li>字段的名称和描述符</li>
+<li>方法的名称和描述符</li>
+</ul>
+</li>
+<li>JVM在执行指令时（如<code>getfield</code>, <code>invokevirtual</code>），会使用运行时常量池来解析实际的内存地址（如将符号引用解析为直接引用）。</li>
+</ul>
+</li>
+</ul>
+<ol start="9">
+<li>类加载器的引用（ClassLoader Reference）</li>
+</ol>
+<ul>
+<li>指向加载该类的<code>ClassLoader</code>实例的引用。</li>
+</ul>
+<ol start="10">
+<li>类的<code>Class</code>对象的引用</li>
+</ol>
+<ul>
+<li>指向该类的<code>java.lang.Class</code>实例的引用。这个<code>Class</code>对象本身是存储在堆（Heap）中的，但元数据里保存着指向它的指针。</li>
+</ul>
+<ol start="11">
+<li>方法计数器（vtable - Virtual Method Table）</li>
+</ol>
+<ul>
+<li>为了高效实现虚方法分派（多态的核心），JVM会为每个类创建一个虚方法表（vtable），其中包含了所有虚方法（可被重写的方法）的入口地址。</li>
+</ul>
+<ol start="12">
+<li>接口方法计数器（itable - Interface Method Table）</li>
+</ol>
+<ul>
+<li>类似于vtable，用于高效实现接口方法的调用。</li>
+</ul>
+<ol start="13">
+<li>其他JVM内部数据结构</li>
+</ol>
+<ul>
+<li>为了实现特定功能（如反射、注解、泛型等），JVM可能还会维护一些额外的内部数据结构。</li>
+</ul>
 <p><strong>运行时常量池</strong></p>
 <p>方法区除了存储类的元信息之外，还存放了运行时常量池。常量池中存放的是字节码中的常量池内容。</p>
 <p>字节码文件中通过编号查表的方式找到常量，这种常量池称为静态常量池。当常量池加载到内存中之后，可以通过内存地址快速的定位到常量池中的内容，这种常量池称为运行时常量池。</p>
@@ -3090,6 +3194,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 </ul>
 <p>操作系统划分的一块用于NIO（new io）的数据缓冲区，可以提高读写性能，不属于JVM的内存结构，不受JVM内存回收管理</p>
 <h2 id="8-JDK1-6、1-7、1-8内存区域的变化"><a href="#8-JDK1-6、1-7、1-8内存区域的变化" class="headerlink" title="8.JDK1.6、1.7、1.8内存区域的变化"></a>8.JDK1.6、1.7、1.8内存区域的变化</h2><p>两方面：<br>1.方法区的实现<br>2.字符串常量池的位置</p>
+<p><img src="https://pic1.imgdb.cn/item/68b551ca58cb8da5c86aead5.png" class="lazyload" data-srcset="https://pic1.imgdb.cn/item/68b551ca58cb8da5c86aead5.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="></p>
 <ul>
 <li><p>JDK1.6 使用永久代实现方法区：</p>
 <p>此时的常量池包括运行时常量池和字符串常量池，这两个还没有分开</p>
@@ -3171,7 +3276,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <li>对分配内存空间的动作进行同步处理（采用 CAS + 失败重试来保障更新操作的原子性）；</li>
 <li>为每一个线程预先在 Eden 区分配一块儿内存，JVM 在给线程中的对象分配内存时，首先在 TLAB 分配， 当对象大于 TLAB 中的剩余内存或 TLAB 的内存已用尽时，再采用上述的 CAS 进行内存分配</li>
 </ol>
-<h2 id="5-JVM如何访问对象（对象的访问定位）"><a href="#5-JVM如何访问对象（对象的访问定位）" class="headerlink" title="5.JVM如何访问对象（对象的访问定位）"></a>5.JVM如何访问对象（对象的访问定位）</h2><p>Java 程序通过栈上的 reference 数据来操作堆上的具体对象。 对象的访问方式由虚拟机实现而定，目前主流的访问方式有：使用<strong>句柄、直接指针。</strong> </p>
+<h2 id="5-JVM如何访问对象（对象的访问定位）"><a href="#5-JVM如何访问对象（对象的访问定位）" class="headerlink" title="5.JVM如何访问对象（对象的访问定位）"></a>5.JVM如何访问对象（对象的访问定位）</h2><p>Java 程序通过栈上的 reference 数据来操作堆上的具体对象。 对象的访问方式由虚拟机实现而定，目前主流的访问方式有：使用<strong>句柄、直接指针。</strong> HotSpot 主要使用<strong>直接指针</strong>方式 </p>
 <blockquote>
 <p><strong>句柄</strong></p>
 </blockquote>
@@ -3186,6 +3291,32 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <li>句柄的好处是 reference 中存储的是稳定的句柄地址，在对象被移动时只会改变句柄中的实例数据指针，而 reference 本身不需要修改。 </li>
 <li>直接指针的好处是速度快，它节省了一次指针定位的时间开销。</li>
 </ul>
+<h3 id="对象定位的具体过程"><a href="#对象定位的具体过程" class="headerlink" title="对象定位的具体过程"></a>对象定位的具体过程</h3><p>栈帧引用——&gt;对象——&gt;方法区Class对象——&gt;访问字段&#x2F;方法</p>
+<ol>
+<li><strong>通过引用找到对象</strong>：<ul>
+<li>栈帧中的局部变量表存储引用</li>
+<li>引用直接指向堆中对象的内存地址</li>
+</ul>
+</li>
+<li><strong>获取对象类型</strong>：<ul>
+<li>通过对象头中的类型指针找到方法区中的Class对象</li>
+</ul>
+</li>
+<li><strong>访问字段&#x2F;方法</strong>：<ul>
+<li>从Class对象中获取字段偏移量</li>
+<li>根据偏移量直接访问实例数据区</li>
+<li>方法调用通过虚方法表(vtable)动态绑定</li>
+</ul>
+</li>
+</ol>
+<p>与其他内存区域的关系：</p>
+<ol>
+<li><strong>栈</strong>：存储对象引用</li>
+<li><strong>堆</strong>：存储对象实例</li>
+<li><strong>方法区</strong>：存储类元数据</li>
+<li><strong>PC寄存器</strong>：指向当前执行指令</li>
+<li><strong>本地方法栈</strong>：Native方法调用</li>
+</ol>
 <h2 id="6-类加载的过程（类的生命周期）"><a href="#6-类加载的过程（类的生命周期）" class="headerlink" title="6.类加载的过程（类的生命周期）"></a>6.类加载的过程（类的生命周期）</h2><p><img src="https://oss.javaguide.cn/github/javaguide/java/jvm/symbol-reference-and-direct-reference.png" class="lazyload" data-srcset="https://oss.javaguide.cn/github/javaguide/java/jvm/symbol-reference-and-direct-reference.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="符号引用vs直接引用"></p>
 <p>类从被加载到虚拟机内存开始，到卸载出内存为止，它的整个<strong>生命周期</strong>包括以下 7 个阶段： </p>
 <p><img src="https://cdn.xiaolincoding.com//picgo/1719491354969-a7c861d7-531e-45d3-a4aa-4696710ec297.webp" class="lazyload" data-srcset="https://cdn.xiaolincoding.com//picgo/1719491354969-a7c861d7-531e-45d3-a4aa-4696710ec297.webp" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="classLoad"></p>
@@ -3301,6 +3432,108 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <tr>
 <td>反射调用（如 <code>Class.forName()</code>）</td>
 <td>✅ 是</td>
+</tr>
+</tbody></table>
+<h2 id="11-运行时常量池vs字符串常量池"><a href="#11-运行时常量池vs字符串常量池" class="headerlink" title="11.运行时常量池vs字符串常量池"></a>11.运行时常量池vs字符串常量池</h2><p>它们最核心的区别可以概括为：<strong>运行时常量池是每个类的“私有字典”，而字符串常量池是全局的“共享字符串库”。</strong> </p>
+<ol>
+<li><strong>运行时常量池 (Runtime Constant Pool)</strong></li>
+</ol>
+<ul>
+<li><strong>是什么</strong>：它是 <strong>每个类（或接口）私有的</strong>。JVM在加载一个类时，会解析其class文件中的“常量池表”（Constant Pool Table），并将其转换为运行时常量池，存储在该类的<strong>元数据</strong>中。</li>
+<li><strong>存储内容（丰富）</strong>：<ul>
+<li><strong>字面量（Literals）</strong>：包括文本字符串（<strong>注意这里存的还不是对象</strong>）、<code>final</code>常量、以及各种基本类型（如int, long）的值。</li>
+<li><strong>符号引用（Symbolic References）</strong>：包括类和接口的全限定名、字段的名称和描述符、方法的名称和描述符。这些符号引用后续会被解析（Resolve）为直接引用（如内存地址）。</li>
+</ul>
+</li>
+<li><strong>作用</strong>：它是支持<strong>动态链接（Dynamic Linking）</strong> 的关键。程序中的方法调用、字段访问在编译后都是符号引用，JVM在执行时需要到运行时常量池中找到这些符号，并将其解析为具体的内存地址。</li>
+<li><strong>类比</strong>：就像是一本<strong>书末尾的“术语表”或“注释”</strong>，是专门为读懂这本书（这个类）服务的。</li>
+</ul>
+<ol start="2">
+<li><strong>字符串常量池 (String Table)</strong></li>
+</ol>
+<ul>
+<li><strong>是什么</strong>：它是 <strong>JVM全局唯一的</strong> 一个哈希表（HashTable），<strong>目的是缓存字符串对象，确保相同内容的字符串字面量在内存中只有一份</strong>。</li>
+<li><strong>存储内容（单一）</strong>：它存储的<strong>不是字符串本身，而是对字符串对象（String Object）的引用</strong>。这些字符串对象本身是存放在<strong>Java堆</strong>里的。</li>
+<li><strong>工作原理</strong>：<ol>
+<li>当JVM遇到一个字符串字面量（如 <code>String s = &quot;hello&quot;;</code>）时，它会先去字符串常量池中查找是否存在内容为<code>&quot;hello&quot;</code>的字符串的引用。</li>
+<li>如果找到了，则直接返回这个引用。</li>
+<li>如果没找到，<strong>就在堆中创建一个新的String对象</strong>，然后将这个新对象的引用注册到字符串常量池中，最后返回这个引用。</li>
+<li><code>String.intern()</code>方法是一个本地方法，它的作用就是主动将堆中的某个String对象的引用注册到字符串常量池中，并返回池中的引用。</li>
+</ol>
+</li>
+<li><strong>作用</strong>：<strong>节省内存，提高性能</strong>。因为字符串操作非常频繁，通过这种“池化”技术，可以避免创建大量内容相同的字符串对象。</li>
+</ul>
+<p><strong>它们之间的联系（重要！）</strong></p>
+<p>虽然它们是两个不同的结构，但在类加载过程中会<strong>发生交互</strong>，这也是 confusion 的主要来源。</p>
+<ol>
+<li><p><strong>类加载时的交互</strong>：</p>
+<ul>
+<li>当一个类被加载时，其class文件中的字符串字面量（存储在class文件的常量池中）会被JVM解析。</li>
+<li>JVM会<strong>使用这些字符串字面量作为参数，去查询或创建全局的字符串常量池</strong>。</li>
+<li>然后，<strong>运行时常量池中原本记录字符串字面量的条目，会被替换为指向字符串常量池中对应引用的直接指针</strong>。</li>
+</ul>
+</li>
+<li><p><strong>示例说明</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">foo</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;hello&quot;</span>; <span class="comment">// 这是一个字符串字面量</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>编译期</strong>：字符串 <code>&quot;hello&quot;</code> 作为字面量存储在 <code>Test.class</code> 文件的常量池中。</li>
+<li><strong>类加载期</strong>：JVM加载<code>Test</code>类，创建运行时常量池。当解析到字面量 <code>&quot;hello&quot;</code> 时，JVM会去全局字符串常量池中查找。<ul>
+<li>如果找到了，就将运行时常量池中的对应项指向已存在的字符串对象引用。</li>
+<li>如果没找到，就在<strong>堆</strong>中创建一个新的<code>String(&quot;hello&quot;)</code>对象，并将其引用存入字符串常量池，同时让运行时常量池指向它。</li>
+</ul>
+</li>
+<li><strong>运行期</strong>：执行<code>foo()</code>方法时，局部变量<code>s</code>直接被赋予运行时常量池中已经解析好的那个引用（也就是字符串常量池中的引用）。</li>
+</ul>
+</li>
+</ol>
+<p>简而言之：</p>
+<ul>
+<li><strong>运行时常量池</strong>是类的元数据，内容多样，服务于动态链接。</li>
+<li><strong>字符串常量池</strong>是一个全局的缓存机制，专门用于高效管理字符串对象，内容单一。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>运行时常量池 (Runtime Constant Pool)</th>
+<th>字符串常量池 (String Table &#x2F; String Constant Pool)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>归属</strong></td>
+<td><strong>每个类独有</strong>，是<strong>类元数据</strong>的一部分</td>
+<td><strong>全局共享</strong>，所有类共享同一个</td>
+</tr>
+<tr>
+<td><strong>存储内容</strong></td>
+<td><strong>极其丰富</strong>：字面量、符号引用等</td>
+<td><strong>极其单一</strong>：<strong>字符串对象的直接引用</strong></td>
+</tr>
+<tr>
+<td><strong>所处区域</strong></td>
+<td><strong>元空间（Metaspace）</strong> (Java 8+)</td>
+<td><strong>堆（Heap）</strong> (Java 7+)</td>
+</tr>
+<tr>
+<td><strong>创建时机</strong></td>
+<td><strong>类加载时</strong>，从class文件的常量池转换而来</td>
+<td><strong>首次遇到字符串字面量或调用intern()时</strong></td>
+</tr>
+<tr>
+<td><strong>核心目的</strong></td>
+<td>提供类运行时所需的符号信息，支持<strong>动态链接</strong></td>
+<td><strong>避免重复创建字符串对象</strong>，节省内存，提高性能</td>
+</tr>
+<tr>
+<td><strong>行为</strong></td>
+<td><strong>静态</strong>（类加载后基本不变）</td>
+<td><strong>动态</strong>（运行时可以不断添加<code>intern()</code>的字符串）</td>
+</tr>
+<tr>
+<td><strong>错误影响</strong></td>
+<td>如果元空间不足，抛出 <code>OutOfMemoryError: Metaspace</code></td>
+<td>如果堆内存不足，抛出 <code>OutOfMemoryError: Java heap space</code></td>
 </tr>
 </tbody></table>
 <hr>
@@ -3452,12 +3685,14 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 </li>
 <li><p>Mixed GC 是 G1 垃圾收集器特有的一种 GC 类型，它在一次 GC 中同时清理年轻代和部分老年代。</p>
 </li>
-<li><p>Full GC 是最彻底的垃圾收集，涉及整个 Java 堆和方法区（或元空间）。它是最耗时的 GC，通常在 JVM 压力很大时发生。</p>
+<li><p>Full GC 是最彻底的垃圾收集，涉及<strong>整个堆内存</strong> （新生代 + 老年代 + <strong>方法区&#x2F;元空间</strong>） 。它是最耗时的 GC，通常在 JVM 压力很大时发生。</p>
 <p>触发条件：</p>
-<p>系统调用 <code>System.gc()</code>（多数 HotSpot 默认会触发 Full GC）；</p>
-<p>CMS 并发清理后发现碎片导致老年代空间严重不足；</p>
-<p>元空间（Metaspace）或方法区需要回收；</p>
-<p>触发非并行收集器的显式 Full GC 请求。</p>
+<ul>
+<li>系统调用 <code>System.gc()</code>（多数 HotSpot 默认会触发 Full GC）；</li>
+<li> <strong>老年代空间不足（最常见）</strong> 比如Young GC后存活对象太多，或者有大对象，导致老年代被填满。 </li>
+<li><strong>方法区（元空间）空间不足</strong> 比如动态加载了太多类。 </li>
+<li>当永久代（Java8之前的版本）或元空间（Java8及以后的版本）空间不足时。</li>
+</ul>
 </li>
 </ul>
 <h2 id="7-GC调优"><a href="#7-GC调优" class="headerlink" title="7.GC调优"></a>7.GC调优</h2><p><strong>垃圾回收调优的主要目标是什么?</strong></p>
@@ -3542,10 +3777,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-07-18T22:05:52+08:00">
+          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-09-04T14:20:09+08:00">
   <a class='notlink'>
     <i class="fa-solid fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2025年7月18日</p>
+    <p>更新于：2025年9月4日</p>
   </a>
 </div>
 
@@ -3616,7 +3851,7 @@ Redis默认端口6379
 1.基础1.Redis为什么快？
 内存操作：完全基于内存，绝大部分请求是纯粹的内存操作，非常快速
 
-单线程模型：避免了多线程之间的...</p>
+I&#x2F;O多路复用模型：...</p>
         </a>
       
     </div>
@@ -3674,7 +3909,7 @@ Redis默认端口6379
 
 
     <div class='content'>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%BC%95%E8%A8%80"><span class="toc-text">1.引言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-JVM%E7%9A%84%E7%89%B9%E6%80%A7"><span class="toc-text">1.JVM的特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-JVM%E7%9A%84%E7%BB%84%E6%88%90"><span class="toc-text">2.JVM的组成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%AD%97%E8%8A%82%E7%A0%81%E6%96%87%E4%BB%B6%E7%9A%84%E7%BB%93%E6%9E%84"><span class="toc-text">3.字节码文件的结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%BB%8E%E5%BA%95%E5%B1%82%E7%9C%8B-i-%E5%92%8C-i"><span class="toc-text">4.从底层看 i++和++i</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-text">2.内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-JVM%E7%9A%84%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F"><span class="toc-text">1.JVM的内存区域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8"><span class="toc-text">2.程序计数器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88"><span class="toc-text">3.虚拟机栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88"><span class="toc-text">4.本地方法栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%A0%86"><span class="toc-text">5.堆</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E6%96%B9%E6%B3%95%E5%8C%BA"><span class="toc-text">6.方法区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-JDK1-6%E3%80%811-7%E3%80%811-8%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E7%9A%84%E5%8F%98%E5%8C%96"><span class="toc-text">8.JDK1.6、1.7、1.8内存区域的变化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E5%9B%9B%E7%A7%8D%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B"><span class="toc-text">9.四种引用类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%92%8C%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2"><span class="toc-text">10.内存溢出和内存泄露</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="toc-text">2.类加载器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80"><span class="toc-text">1.对象的内存布局</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-text">2.对象创建的过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%B8%BA%E5%AF%B9%E8%B1%A1%E5%88%86%E9%85%8D%E5%86%85%E5%AD%98%EF%BC%88%E5%A0%86%E5%86%85%E5%AD%98%E5%A6%82%E4%BD%95%E5%88%86%E9%85%8D%EF%BC%89"><span class="toc-text">3.为对象分配内存（堆内存如何分配）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%A4%84%E7%90%86%E5%B9%B6%E5%8F%91%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98"><span class="toc-text">4.处理并发安全问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-JVM%E5%A6%82%E4%BD%95%E8%AE%BF%E9%97%AE%E5%AF%B9%E8%B1%A1%EF%BC%88%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%AE%BF%E9%97%AE%E5%AE%9A%E4%BD%8D%EF%BC%89"><span class="toc-text">5.JVM如何访问对象（对象的访问定位）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E7%9A%84%E8%BF%87%E7%A8%8B%EF%BC%88%E7%B1%BB%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%EF%BC%89"><span class="toc-text">6.类加载的过程（类的生命周期）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E4%BB%80%E4%B9%88%E6%98%AF%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%EF%BC%8C%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="toc-text">7.什么是类加载器，类加载器有哪些</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E4%BB%80%E4%B9%88%E6%98%AF%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6%EF%BC%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E9%87%87%E7%94%A8%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6"><span class="toc-text">8.什么是双亲委派机制？为什么采用双亲委派机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%92%8C%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA%E7%9A%84%E8%BF%87%E7%A8%8B%E4%B8%AD%EF%BC%8C%E5%8F%98%E9%87%8F%E7%9A%84%E8%B5%8B%E5%80%BC%E5%8F%98%E5%8C%96"><span class="toc-text">9.类加载和对象创建的过程中，变量的赋值变化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E7%B1%BB%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E6%9D%A1%E4%BB%B6%EF%BC%88%E8%A1%A5%EF%BC%89"><span class="toc-text">10.类初始化的条件（补）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86"><span class="toc-text">3.垃圾收集</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%88%A4%E6%96%AD%E5%9E%83%E5%9C%BE%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-text">1.判断垃圾的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%93%AA%E4%BA%9B%E5%AF%B9%E8%B1%A1%E5%8F%AF%E4%BB%A5%E4%BD%9C%E4%B8%BAGC-Root"><span class="toc-text">2.哪些对象可以作为GC Root</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-finalize-%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-text">3.finalize()方法的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95"><span class="toc-text">4.垃圾收集算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%88%86%E4%B8%BA%E6%96%B0%E7%94%9F%E4%BB%A3%E5%92%8C%E8%80%81%E5%B9%B4%E4%BB%A3%EF%BC%9F"><span class="toc-text">5.为什么要分为新生代和老年代？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-CMS%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8"><span class="toc-text">6.CMS垃圾收集器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-G1%E6%94%B6%E9%9B%86%E5%99%A8"><span class="toc-text">7.G1收集器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-Minor-GC-Young-GC%E3%80%81Major-GC-Old-GC%E3%80%81Mixed-GC%E3%80%81Full-GC-%E9%83%BD%E6%98%AF%E4%BB%80%E4%B9%88%E6%84%8F%E6%80%9D%EF%BC%9F"><span class="toc-text">6.Minor GC&#x2F;Young GC、Major GC&#x2F;Old GC、Mixed GC、Full GC 都是什么意思？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-GC%E8%B0%83%E4%BC%98"><span class="toc-text">7.GC调优</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%BC%95%E8%A8%80"><span class="toc-text">1.引言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-JVM%E7%9A%84%E7%89%B9%E6%80%A7"><span class="toc-text">1.JVM的特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-JVM%E7%9A%84%E7%BB%84%E6%88%90"><span class="toc-text">2.JVM的组成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%AD%97%E8%8A%82%E7%A0%81%E6%96%87%E4%BB%B6%E7%9A%84%E7%BB%93%E6%9E%84"><span class="toc-text">3.字节码文件的结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%BB%8E%E5%BA%95%E5%B1%82%E7%9C%8B-i-%E5%92%8C-i"><span class="toc-text">4.从底层看 i++和++i</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-text">2.内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-JVM%E7%9A%84%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F"><span class="toc-text">1.JVM的内存区域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8"><span class="toc-text">2.程序计数器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88"><span class="toc-text">3.虚拟机栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88"><span class="toc-text">4.本地方法栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%A0%86"><span class="toc-text">5.堆</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E6%96%B9%E6%B3%95%E5%8C%BA"><span class="toc-text">6.方法区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-JDK1-6%E3%80%811-7%E3%80%811-8%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E7%9A%84%E5%8F%98%E5%8C%96"><span class="toc-text">8.JDK1.6、1.7、1.8内存区域的变化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E5%9B%9B%E7%A7%8D%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B"><span class="toc-text">9.四种引用类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%92%8C%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2"><span class="toc-text">10.内存溢出和内存泄露</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="toc-text">2.类加载器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80"><span class="toc-text">1.对象的内存布局</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-text">2.对象创建的过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%B8%BA%E5%AF%B9%E8%B1%A1%E5%88%86%E9%85%8D%E5%86%85%E5%AD%98%EF%BC%88%E5%A0%86%E5%86%85%E5%AD%98%E5%A6%82%E4%BD%95%E5%88%86%E9%85%8D%EF%BC%89"><span class="toc-text">3.为对象分配内存（堆内存如何分配）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%A4%84%E7%90%86%E5%B9%B6%E5%8F%91%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98"><span class="toc-text">4.处理并发安全问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-JVM%E5%A6%82%E4%BD%95%E8%AE%BF%E9%97%AE%E5%AF%B9%E8%B1%A1%EF%BC%88%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%AE%BF%E9%97%AE%E5%AE%9A%E4%BD%8D%EF%BC%89"><span class="toc-text">5.JVM如何访问对象（对象的访问定位）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E5%AE%9A%E4%BD%8D%E7%9A%84%E5%85%B7%E4%BD%93%E8%BF%87%E7%A8%8B"><span class="toc-text">对象定位的具体过程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E7%9A%84%E8%BF%87%E7%A8%8B%EF%BC%88%E7%B1%BB%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%EF%BC%89"><span class="toc-text">6.类加载的过程（类的生命周期）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E4%BB%80%E4%B9%88%E6%98%AF%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%EF%BC%8C%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="toc-text">7.什么是类加载器，类加载器有哪些</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E4%BB%80%E4%B9%88%E6%98%AF%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6%EF%BC%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E9%87%87%E7%94%A8%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6"><span class="toc-text">8.什么是双亲委派机制？为什么采用双亲委派机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%92%8C%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA%E7%9A%84%E8%BF%87%E7%A8%8B%E4%B8%AD%EF%BC%8C%E5%8F%98%E9%87%8F%E7%9A%84%E8%B5%8B%E5%80%BC%E5%8F%98%E5%8C%96"><span class="toc-text">9.类加载和对象创建的过程中，变量的赋值变化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E7%B1%BB%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E6%9D%A1%E4%BB%B6%EF%BC%88%E8%A1%A5%EF%BC%89"><span class="toc-text">10.类初始化的条件（补）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B8%B8%E9%87%8F%E6%B1%A0vs%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E9%87%8F%E6%B1%A0"><span class="toc-text">11.运行时常量池vs字符串常量池</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86"><span class="toc-text">3.垃圾收集</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%88%A4%E6%96%AD%E5%9E%83%E5%9C%BE%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-text">1.判断垃圾的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%93%AA%E4%BA%9B%E5%AF%B9%E8%B1%A1%E5%8F%AF%E4%BB%A5%E4%BD%9C%E4%B8%BAGC-Root"><span class="toc-text">2.哪些对象可以作为GC Root</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-finalize-%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-text">3.finalize()方法的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95"><span class="toc-text">4.垃圾收集算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%88%86%E4%B8%BA%E6%96%B0%E7%94%9F%E4%BB%A3%E5%92%8C%E8%80%81%E5%B9%B4%E4%BB%A3%EF%BC%9F"><span class="toc-text">5.为什么要分为新生代和老年代？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-CMS%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8"><span class="toc-text">6.CMS垃圾收集器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-G1%E6%94%B6%E9%9B%86%E5%99%A8"><span class="toc-text">7.G1收集器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-Minor-GC-Young-GC%E3%80%81Major-GC-Old-GC%E3%80%81Mixed-GC%E3%80%81Full-GC-%E9%83%BD%E6%98%AF%E4%BB%80%E4%B9%88%E6%84%8F%E6%80%9D%EF%BC%9F"><span class="toc-text">6.Minor GC&#x2F;Young GC、Major GC&#x2F;Old GC、Mixed GC、Full GC 都是什么意思？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-GC%E8%B0%83%E4%BC%98"><span class="toc-text">7.GC调优</span></a></li></ol></li></ol>
     </div>
   </section>
 
@@ -4866,7 +5101,7 @@ window.matchMedia('(prefers-color-scheme: light)').addListener(darkModelListener
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/10/28/八股/JVM/","name":"JVM"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"JVM","description":"这里是有关JVM的八股","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/JVM/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/JVM/","wordCount":11,"datePublished":"2024-10-28T12:29:13.000Z","dateModified":"2025-07-18T14:05:52.874Z","articleSection":"八股","keywords":"JVM","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/10/28/八股/JVM/","name":"JVM"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"JVM","description":"这里是有关JVM的八股","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/JVM/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/10/28/%E5%85%AB%E8%82%A1/JVM/","wordCount":11,"datePublished":"2024-10-28T12:29:13.000Z","dateModified":"2025-09-04T06:20:09.381Z","articleSection":"八股","keywords":"JVM","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 

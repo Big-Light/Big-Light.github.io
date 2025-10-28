@@ -46,7 +46,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
 <meta property="article:published_time" content="2024-11-28T12:57:13.000Z">
-<meta property="article:modified_time" content="2025-05-29T15:35:43.556Z">
+<meta property="article:modified_time" content="2025-10-24T07:43:53.291Z">
 <meta property="article:author" content="Light">
 <meta property="article:tag" content="设计模式">
 <meta property="article:tag" content="Linux">
@@ -1849,7 +1849,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: false,
     cdn: {"js":{"app":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/app.js","parallax":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/parallax.js","rightMenu":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenu.js","rightMenus":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenus.js","sites":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/sites.js","friends":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/friends.js","contributors":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/contributors.js","search":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1754404737834),
+    lastupdate: new Date(1761641237731),
     sidebar: {
       for_page: ["blogger","category","donate","webinfo"],
       for_post: ["toc"],
@@ -2902,13 +2902,13 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <div class="new-meta-item wordcount">
     <a class='notlink'>
       <i class="fa-solid fa-keyboard fa-fw" aria-hidden="true"></i>
-      <p>字数：6.8k 字</p>
+      <p>字数：8k 字</p>
     </a>
   </div>
   <div class="new-meta-item readtime">
     <a class='notlink'>
       <i class="fa-solid fa-hourglass-half fa-fw" aria-hidden="true"></i>
-      <p>时长：24 分钟</p>
+      <p>时长：29 分钟</p>
     </a>
   </div>
 
@@ -3127,6 +3127,48 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 </ul>
 </li>
 </ol>
+<h3 id="2-为什么单例模式的双重检查锁需要用volatile修饰？"><a href="#2-为什么单例模式的双重检查锁需要用volatile修饰？" class="headerlink" title="2.为什么单例模式的双重检查锁需要用volatile修饰？"></a>2.为什么单例模式的双重检查锁需要用volatile修饰？</h3><p><code>instance = new Singleton();</code> 这一行。这行代码在 JVM 中并不是一个原子操作，它实际上包含了三个关键步骤：</p>
+<ol>
+<li><code>memory = allocate();</code> &#x2F;&#x2F; 步骤1：为 Singleton 对象<strong>分配内存空间</strong></li>
+<li><code>ctorInstance(memory);</code> &#x2F;&#x2F; 步骤2：在分配的内存上<strong>初始化 Singleton 对象</strong>（调用构造函数，设置字段值）</li>
+<li><code>instance = memory;</code> &#x2F;&#x2F; 步骤3：将 <code>instance</code> 引用<strong>指向</strong>刚才分配的内存地址</li>
+</ol>
+<p>由于步骤2（初始化对象）是一个可能比较耗时的操作，而步骤3（赋值引用）很快。为了优化性能，<strong>编译器或处理器完全可能进行指令重排序</strong>，将步骤3提到步骤2之前执行：</p>
+<p><strong>重排序后的执行顺序</strong>：</p>
+<ol>
+<li><code>memory = allocate();</code> &#x2F;&#x2F; 步骤1：分配内存</li>
+<li><code>instance = memory;</code> &#x2F;&#x2F; 步骤3：引用指向内存（此时 instance 不为 null！）</li>
+<li><code>ctorInstance(memory);</code> &#x2F;&#x2F; 步骤2：初始化对象</li>
+</ol>
+<p>在并发场景下：</p>
+<ul>
+<li>线程A进入了同步块，开始创建对象。</li>
+<li>由于指令重排序，线程A先执行了步骤1和3，使 <code>instance</code> 引用指向了一块<strong>尚未初始化的内存</strong>。此时，<code>instance</code> 已经不再是 <code>null</code>。</li>
+<li>就在此时，线程B执行 <code>getInstance()</code>。它进行第一次检查 <code>if (instance == null)</code>，发现 <code>instance</code> 不为 <code>null</code>（因为线程A已经执行了步骤3），于是<strong>欣喜若狂地直接返回了这个 instance</strong>。</li>
+<li>然而，线程B拿到的是一个<strong>半成品对象</strong>，因为线程A的步骤2（初始化）还没有执行！当线程B尝试使用这个单例对象时，就可能发生各种匪夷所思的错误，比如读取到 <code>null</code> 值或默认值。</li>
+</ul>
+<p><code>volatile</code> 关键字在这里起到了两个至关重要的作用：</p>
+<ol>
+<li><strong>禁止指令重排序</strong>：<ul>
+<li>它会在 <code>volatile</code> 写操作（即 <code>instance = new Singleton();</code>）之前和之后插入特定的<strong>内存屏障</strong>。</li>
+<li>这些屏障<strong>强制保证了</strong>步骤1、2、3的执行顺序不会被重排。具体来说，它确保了步骤2（初始化对象）一定会在步骤3（设置引用）之前完成。</li>
+<li>这就从根本上杜绝了线程拿到半成品对象的可能性。</li>
+</ul>
+</li>
+<li><strong>保证可见性</strong>：<ul>
+<li>当线程A完成对 <code>instance</code> 的赋值后，会立即将其刷新到主内存。</li>
+<li>当线程B第一次读取 <code>instance</code> 时，会从主内存重新加载，确保看到的是线程A设置的最新值。</li>
+</ul>
+</li>
+</ol>
+<p> <strong>面试官：为什么单例模式的双重检查锁需要用 volatile 修饰？</strong></p>
+<p><strong>你可以这样回答（面试范例）：</strong></p>
+<blockquote>
+<p>“主要是为了防止<strong>指令重排序</strong>导致线程获取到尚未初始化完成的对象。</p>
+<p>创建对象 <code>instance = new Singleton();</code> 这行代码并不是原子性的，它分为三步：1. 分配内存、2. 初始化对象、3. 将引用指向内存地址。</p>
+<p>如果没有 <code>volatile</code> 修饰，JVM 为了优化性能，可能会将步骤3和步骤2重排序。这样，就有可能在线程A执行创建时，刚执行完步骤1和3（此时 <code>instance</code> 已不为null），但尚未执行步骤2初始化对象。此时如果线程B进入方法，第一次检查发现 <code>instance</code> 非空，就会直接返回这个<strong>半成品对象</strong>，从而导致程序出错。</p>
+<p>使用 <code>volatile</code> 关键字后，它插入的<strong>内存屏障</strong>会禁止这种重排序，强制保证‘初始化对象’的操作在‘设置引用’之前完成，这样就确保了其他线程读到的肯定是一个完全初始化好的对象。”</p>
+</blockquote>
 <p>5、<strong>枚举单例</strong></p>
 <p>枚举单例是实现单例模式的最佳方式之一。它由 JVM 保证线程安全和单例，并且防止反序列化创建新的对象。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    INSTANCE;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">someMethod</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 实现方法</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -3177,60 +3219,52 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <li><strong>优点</strong>：遵循了开闭原则，可以通过扩展子类来增加新产品，不需要修改原有代码。</li>
 <li><strong>缺点</strong>：需要创建大量的具体工厂类，如果产品种类过多，工厂类会急剧增加。</li>
 </ul>
-<p>3、抽象工厂模式</p>
-<h2 id="3-Spring-框架中都用到了哪些设计模式？"><a href="#3-Spring-框架中都用到了哪些设计模式？" class="headerlink" title="3.Spring 框架中都用到了哪些设计模式？"></a>3.Spring 框架中都用到了哪些设计模式？</h2><blockquote>
-<p>【单例模式】</p>
-</blockquote>
-<ul>
-<li>Spring 中的 Bean 默认都是单例的</li>
+<h2 id="4-策略模式"><a href="#4-策略模式" class="headerlink" title="4.策略模式"></a>4.策略模式</h2><p>在策略模式（Strategy Pattern）中一个类的行为或其算法可以在运行时更改。这种类型的设计模式属于行为型模式。</p>
+<p>在策略模式定义了一系列算法或策略，并将每个算法封装在独立的类中，使得它们可以互相替换。通过使用策略模式，可以在运行时根据需要选择不同的算法，而不需要修改客户端代码。</p>
+<p>在策略模式中，我们创建<strong>表示各种策略的对象和一个行为随着策略对象改变而改变的 context 对象</strong>。策略对象改变 context 对象的执行算法。</p>
+<h3 id="意图"><a href="#意图" class="headerlink" title="意图"></a>意图</h3><p>将每个算法封装起来，使它们可以互换使用。</p>
+<h3 id="主要解决的问题"><a href="#主要解决的问题" class="headerlink" title="主要解决的问题"></a>主要解决的问题</h3><ul>
+<li><strong>解决在多种相似算法存在时，使用条件语句（如if…else）导致的复杂性和难以维护的问题。</strong></li>
 </ul>
-<blockquote>
-<p>【简单工厂】</p>
-</blockquote>
-<ul>
-<li>由一个工厂类根据传入的参数，动态决定应该创建哪一个产品类。</li>
-<li>Spring中的BeanFactory就是简单工厂模式的体现，根据传入一个唯一的标识来获得Bean对象，但是否是在传入参数后创建还是传入参数前创建这个要根据具体情况来定。</li>
+<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
+<li>当一个系统中有许多类，它们之间的区别仅在于它们的行为时。</li>
 </ul>
-<blockquote>
-<p>【工厂方法】</p>
-</blockquote>
-<ul>
-<li>实现了FactoryBean接口的bean是一类叫做factory的bean。其特点是，spring会在使用getBean()调用获得该bean时，会自动调用该bean的getObject()方法，所以返回的不是factory这个bean，而是这个bean.getOjbect()方法的返回值。</li>
+<h3 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式"></a>实现方式</h3><ul>
+<li><strong>定义策略接口</strong>：所有策略类都将实现这个统一的接口。</li>
+<li><strong>创建具体策略类</strong>：每个策略类封装一个具体的算法或行为。</li>
+<li><strong>上下文类</strong>：包含一个策略对象的引用，并通过该引用调用策略。</li>
 </ul>
-<p>【模板方法模式】 </p>
-<ul>
-<li>Spring 中 jdbcTemplate、hibernateTemplate 等以 Template 结尾的对数据库操作的类，它们就使用到了模板模式。</li>
-<li>父类定义了骨架（调用哪些方法及顺序），某些特定方法由子类实现。</li>
-<li>最大的好处：代码复用，减少重复代码。除了子类要实现的特定方法，其他方法及方法调用顺序都在父类中预先写好了。</li>
+<h3 id="关键代码"><a href="#关键代码" class="headerlink" title="关键代码"></a>关键代码</h3><ul>
+<li><strong>策略接口</strong>：规定了所有策略类必须实现的方法。</li>
+<li><strong>具体策略类</strong>：实现了策略接口，包含具体的算法实现。</li>
 </ul>
-<p>【包装器设计模式 】</p>
-<ul>
-<li>我们的项目需要连接多个数据库，而且不同的客户在每次访问中根据需要会去访问不同的数据库。这种模式让我们可以根据客户的需求能够动态切换不同的数据源。</li>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ol>
+<li><strong>算法切换自由</strong>：可以在运行时根据需要切换算法。</li>
+<li><strong>避免多重条件判断</strong>：消除了复杂的条件语句。</li>
+<li><strong>扩展性好</strong>：新增算法只需新增一个策略类，无需修改现有代码。</li>
+</ol>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ol>
+<li><strong>策略类数量增多</strong>：每增加一个算法，就需要增加一个策略类。</li>
+<li><strong>所有策略类都需要暴露</strong>：策略类需要对外公开，以便可以被选择和使用。</li>
+</ol>
+<h3 id="使用建议"><a href="#使用建议" class="headerlink" title="使用建议"></a>使用建议</h3><ul>
+<li>当系统中有多种算法或行为，且它们之间可以相互替换时，使用策略模式。</li>
+<li>当系统需要动态选择算法时，策略模式是一个合适的选择。</li>
 </ul>
-<p>【观察者模式】</p>
-<ul>
-<li>Spring 事件驱动模型就是观察者模式很经典的一个应用。</li>
-<li>spring的事件驱动模型使用的是 观察者模式 ，Spring中Observer模式常用的地方是listener的实现</li>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ul>
+<li>如果系统中策略类数量过多，考虑使用其他模式或设计技巧来解决类膨胀问题。</li>
 </ul>
-<p>【适配器模式】 </p>
+<h3 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h3><p><strong>策略模式包含以下几个核心角色：</strong></p>
 <ul>
-<li>Spring AOP 的增强或通知(Advice)使用到了适配器模式、spring MVC 中也是用到了适配器模式适配Controller。</li>
-<li>Spring定义了一个适配接口，使得每一种Controller有一种对应的适配器实现类，让适配器代替controller执行相应的方法。这样在扩展Controller时，只需要增加一个适配器类就完成了SpringMVC的扩展了</li>
+<li>环境（Context）：维护一个对策略对象的引用，负责将客户端请求委派给具体的策略对象执行。环境类可以通过依赖注入、简单工厂等方式来获取具体策略对象。</li>
+<li>抽象策略（Abstract Strategy）：定义了策略对象的公共接口或抽象类，规定了具体策略类必须实现的方法。</li>
+<li>具体策略（Concrete Strategy）：实现了抽象策略定义的接口或抽象类，包含了具体的算法实现。</li>
 </ul>
-<p>【装饰器模式】</p>
-<ul>
-<li>动态地给一个对象添加一些额外的职责。就增加功能来说，Decorator模式相比生成子类更为灵活。</li>
-<li>Spring中用到的包装器模式在类名上有两种表现：一种是类名中含有Wrapper，另一种是类名中含有Decorator。</li>
-</ul>
-<p>【动态代理】</p>
-<ul>
-<li>切面在应用运行的时刻被织入。一般情况下，在织入切面时，AOP容器会为目标对象创建动态的创建一个代理对象。SpringAOP就是以这种方式织入切面的。</li>
-<li>织入：把切面应用到目标对象并创建新的代理对象的过程。</li>
-</ul>
-<p>【策略模式】</p>
-<ul>
-<li>Spring框架的资源访问Resource接口。该接口提供了更强的资源访问能力，Spring 框架本身大量使用了Resource 接口来访问底层资源。</li>
-</ul>
+<p>策略模式通过将算法与使用算法的代码解耦，提供了一种动态选择不同算法的方法。客户端代码不需要知道具体的算法细节，而是通过调用环境类来使用所选择的策略。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span>创建一个接口。</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Strategy</span> &#123;</span><br><span class="line">   <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">doOperation</span><span class="params">(<span class="type">int</span> num1, <span class="type">int</span> num2)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="number">2.</span>创建实现接口的实体类。</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">OperationAdd</span> <span class="keyword">implements</span> <span class="title class_">Strategy</span>&#123;</span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">doOperation</span><span class="params">(<span class="type">int</span> num1, <span class="type">int</span> num2)</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> num1 + num2;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">OperationSubtract</span> <span class="keyword">implements</span> <span class="title class_">Strategy</span>&#123;</span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">doOperation</span><span class="params">(<span class="type">int</span> num1, <span class="type">int</span> num2)</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> num1 - num2;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">OperationMultiply</span> <span class="keyword">implements</span> <span class="title class_">Strategy</span>&#123;</span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">doOperation</span><span class="params">(<span class="type">int</span> num1, <span class="type">int</span> num2)</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> num1 * num2;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="number">3.</span>创建 Context 类。</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Context</span> &#123;</span><br><span class="line">   <span class="keyword">private</span> Strategy strategy;</span><br><span class="line"> </span><br><span class="line">   <span class="keyword">public</span> <span class="title function_">Context</span><span class="params">(Strategy strategy)</span>&#123;</span><br><span class="line">      <span class="built_in">this</span>.strategy = strategy;</span><br><span class="line">   &#125;</span><br><span class="line"> </span><br><span class="line">   <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">executeStrategy</span><span class="params">(<span class="type">int</span> num1, <span class="type">int</span> num2)</span>&#123;</span><br><span class="line">      <span class="keyword">return</span> strategy.doOperation(num1, num2);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="number">4.</span>使用 Context 来查看当它改变策略 Strategy 时的行为变化。</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StrategyPatternDemo</span> &#123;</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">      <span class="type">Context</span> <span class="variable">context</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Context</span>(<span class="keyword">new</span> <span class="title class_">OperationAdd</span>());    </span><br><span class="line">      System.out.println(<span class="string">&quot;10 + 5 = &quot;</span> + context.executeStrategy(<span class="number">10</span>, <span class="number">5</span>));</span><br><span class="line"> </span><br><span class="line">      context = <span class="keyword">new</span> <span class="title class_">Context</span>(<span class="keyword">new</span> <span class="title class_">OperationSubtract</span>());      </span><br><span class="line">      System.out.println(<span class="string">&quot;10 - 5 = &quot;</span> + context.executeStrategy(<span class="number">10</span>, <span class="number">5</span>));</span><br><span class="line"> </span><br><span class="line">      context = <span class="keyword">new</span> <span class="title class_">Context</span>(<span class="keyword">new</span> <span class="title class_">OperationMultiply</span>());    </span><br><span class="line">      System.out.println(<span class="string">&quot;10 * 5 = &quot;</span> + context.executeStrategy(<span class="number">10</span>, <span class="number">5</span>));</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="number">5.</span>执行程序，输出结果：</span><br><span class="line"><span class="number">10</span> + <span class="number">5</span> = <span class="number">15</span></span><br><span class="line"><span class="number">10</span> - <span class="number">5</span> = <span class="number">5</span></span><br><span class="line"><span class="number">10</span> * <span class="number">5</span> = <span class="number">50</span></span><br></pre></td></tr></table></figure>
+
+
+
 <h1 id="2-Linux"><a href="#2-Linux" class="headerlink" title="2.Linux"></a>2.Linux</h1><h2 id="1-Linux文件系统"><a href="#1-Linux文件系统" class="headerlink" title="1.Linux文件系统"></a>1.Linux文件系统</h2><p>在Linux中，“一切都是文件 ”</p>
 <h3 id="1-1-inode"><a href="#1-1-inode" class="headerlink" title="1.1.inode"></a>1.1.inode</h3><p>硬盘以扇区为最小存储单位，操作系统以块为单位进行读写，块由多个扇区组成，inode存储了文件元信息（例如权限、大小、修改时间以及数据块位置） ，inode 的访问速度非常快 </p>
 <ul>
@@ -3424,10 +3458,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-05-29T23:35:43+08:00">
+          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-10-24T15:43:53+08:00">
   <a class='notlink'>
     <i class="fa-solid fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2025年5月29日</p>
+    <p>更新于：2025年10月24日</p>
   </a>
 </div>
 
@@ -3548,7 +3582,7 @@ Java 集合，也叫作容器，主要是由两大接口派生而来：一个是
 
 
     <div class='content'>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="toc-text">1.设计模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%A6%82%E8%BF%B0"><span class="toc-text">1.概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="toc-text">2.单例模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%8F%8C%E9%87%8D%E6%A3%80%E6%9F%A5%EF%BC%9F"><span class="toc-text">1. 为什么要双重检查？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="toc-text">3.工厂模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Spring-%E6%A1%86%E6%9E%B6%E4%B8%AD%E9%83%BD%E7%94%A8%E5%88%B0%E4%BA%86%E5%93%AA%E4%BA%9B%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%9F"><span class="toc-text">3.Spring 框架中都用到了哪些设计模式？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Linux"><span class="toc-text">2.Linux</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Linux%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-text">1.Linux文件系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-inode"><span class="toc-text">1.1.inode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E7%A1%AC%E9%93%BE%E6%8E%A5%E5%92%8C%E8%BD%AF%E9%93%BE%E6%8E%A5"><span class="toc-text">1.2.硬链接和软链接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">2.Linux常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%96%87%E4%BB%B6%E7%9B%B8%E5%85%B3"><span class="toc-text">2.1.文件相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86%E7%9B%B8%E5%85%B3"><span class="toc-text">2.2.系统管理相关</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E9%AB%98%E9%A2%91%E9%97%AE%E9%A2%98"><span class="toc-text">3.高频问题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Git"><span class="toc-text">3.Git</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-git-merge%E5%92%8C-git-rebase%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">1.git merge和 git rebase的区别</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%9C%BA%E6%99%AF"><span class="toc-text">3.场景</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1"><span class="toc-text">1.秒杀系统设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%88%86%E5%B8%83%E5%BC%8FID"><span class="toc-text">2.分布式ID</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="toc-text">1.设计模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%A6%82%E8%BF%B0"><span class="toc-text">1.概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="toc-text">2.单例模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%8F%8C%E9%87%8D%E6%A3%80%E6%9F%A5%EF%BC%9F"><span class="toc-text">1. 为什么要双重检查？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%8F%8C%E9%87%8D%E6%A3%80%E6%9F%A5%E9%94%81%E9%9C%80%E8%A6%81%E7%94%A8volatile%E4%BF%AE%E9%A5%B0%EF%BC%9F"><span class="toc-text">2.为什么单例模式的双重检查锁需要用volatile修饰？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="toc-text">3.工厂模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F"><span class="toc-text">4.策略模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%84%8F%E5%9B%BE"><span class="toc-text">意图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E8%A7%A3%E5%86%B3%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">主要解决的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">使用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="toc-text">实现方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E4%BB%A3%E7%A0%81"><span class="toc-text">关键代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E7%82%B9"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9"><span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%BB%BA%E8%AE%AE"><span class="toc-text">使用建议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-text">注意事项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E6%9E%84"><span class="toc-text">结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-text">实现</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Linux"><span class="toc-text">2.Linux</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Linux%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-text">1.Linux文件系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-inode"><span class="toc-text">1.1.inode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E7%A1%AC%E9%93%BE%E6%8E%A5%E5%92%8C%E8%BD%AF%E9%93%BE%E6%8E%A5"><span class="toc-text">1.2.硬链接和软链接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">2.Linux常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%96%87%E4%BB%B6%E7%9B%B8%E5%85%B3"><span class="toc-text">2.1.文件相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86%E7%9B%B8%E5%85%B3"><span class="toc-text">2.2.系统管理相关</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E9%AB%98%E9%A2%91%E9%97%AE%E9%A2%98"><span class="toc-text">3.高频问题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Git"><span class="toc-text">3.Git</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-git-merge%E5%92%8C-git-rebase%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">1.git merge和 git rebase的区别</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%9C%BA%E6%99%AF"><span class="toc-text">3.场景</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1"><span class="toc-text">1.秒杀系统设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%88%86%E5%B8%83%E5%BC%8FID"><span class="toc-text">2.分布式ID</span></a></li></ol></li></ol>
     </div>
   </section>
 
@@ -4740,7 +4774,7 @@ window.matchMedia('(prefers-color-scheme: light)').addListener(darkModelListener
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/11/28/八股/其它/","name":"其它"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"其它","description":"这里是有关设计模式，Linux，Git的一些八股，后续会补充场景题","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/11/28/%E5%85%AB%E8%82%A1/%E5%85%B6%E5%AE%83/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/11/28/%E5%85%AB%E8%82%A1/%E5%85%B6%E5%AE%83/","wordCount":33,"datePublished":"2024-11-28T12:57:13.000Z","dateModified":"2025-05-29T15:35:43.556Z","articleSection":"八股","keywords":"设计模式,Linux,Git","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/11/28/八股/其它/","name":"其它"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"其它","description":"这里是有关设计模式，Linux，Git的一些八股，后续会补充场景题","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/11/28/%E5%85%AB%E8%82%A1/%E5%85%B6%E5%AE%83/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/11/28/%E5%85%AB%E8%82%A1/%E5%85%B6%E5%AE%83/","wordCount":33,"datePublished":"2024-11-28T12:57:13.000Z","dateModified":"2025-10-24T07:43:53.291Z","articleSection":"八股","keywords":"设计模式,Linux,Git","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 

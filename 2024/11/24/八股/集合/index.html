@@ -46,7 +46,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
 <meta property="article:published_time" content="2024-11-24T09:11:53.000Z">
-<meta property="article:modified_time" content="2025-07-24T13:24:14.531Z">
+<meta property="article:modified_time" content="2025-09-19T02:40:06.100Z">
 <meta property="article:author" content="Light">
 <meta property="article:tag" content="JavaSE">
 <meta name="twitter:card" content="summary">
@@ -1847,7 +1847,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: false,
     cdn: {"js":{"app":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/app.js","parallax":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/parallax.js","rightMenu":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenu.js","rightMenus":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/rightMenus.js","sites":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/sites.js","friends":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/friends.js","contributors":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/plugins/tags/contributors.js","search":"https://unpkg.com/hexo-theme-volantis@5.8.0/source/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1754404737834),
+    lastupdate: new Date(1761641237731),
     sidebar: {
       for_page: ["blogger","category","donate","webinfo"],
       for_post: ["toc"],
@@ -2900,13 +2900,13 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <div class="new-meta-item wordcount">
     <a class='notlink'>
       <i class="fa-solid fa-keyboard fa-fw" aria-hidden="true"></i>
-      <p>字数：5.7k 字</p>
+      <p>字数：6.6k 字</p>
     </a>
   </div>
   <div class="new-meta-item readtime">
     <a class='notlink'>
       <i class="fa-solid fa-hourglass-half fa-fw" aria-hidden="true"></i>
-      <p>时长：20 分钟</p>
+      <p>时长：23 分钟</p>
     </a>
   </div>
 
@@ -3025,6 +3025,52 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <li>插入成功后，判断此时数组键值对数量是否超过了阈值threshold(数组长度*0.75【负载因子】)，如果超过，进行扩容</li>
 </ol>
 <p><img src="https://pic.imgdb.cn/item/66e2bc78d9c307b7e9d6e0c4.png" class="lazyload" data-srcset="https://pic.imgdb.cn/item/66e2bc78d9c307b7e9d6e0c4.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="HashMap的put流程"></p>
+<h4 id="1-计算键的哈希值-hash-key"><a href="#1-计算键的哈希值-hash-key" class="headerlink" title="1. 计算键的哈希值 (hash(key))"></a>1. 计算键的哈希值 (<code>hash(key)</code>)</h4><p>首先，HashMap 并不是直接使用 <code>key.hashCode()</code> 的返回值作为哈希值，而是会用一个内部的 <code>hash()</code> 方法进行二次处理。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="title function_">hash</span><span class="params">(Object key)</span> &#123;</span><br><span class="line">    <span class="type">int</span> h;</span><br><span class="line">    <span class="keyword">return</span> (key == <span class="literal">null</span>) ? <span class="number">0</span> : (h = key.hashCode()) ^ (h &gt;&gt;&gt; <span class="number">16</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>处理 null key</strong>：如果 key 为 null，其哈希值固定为 0，这就是 HashMap 允许一个 null key 的原因。</li>
+<li><strong>扰动函数</strong>：<code>(h = key.hashCode()) ^ (h &gt;&gt;&gt; 16)</code> 这一步是关键。它将哈希值的高 16 位与低 16 位进行异或操作。目的是为了<strong>增加低位的随机性，减少哈希冲突</strong>。<ul>
+<li>因为最终计算数组下标时 <code>(n-1) &amp; hash</code> 只利用了哈希值的低位，如果高位不参与运算，即使高位变化很大，对下标也没影响，容易冲突。扰动函数让高位也参与了进来。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-初始化数组"><a href="#2-初始化数组" class="headerlink" title="2. 初始化数组"></a>2. 初始化数组</h4><p>如果 HashMap 内部的数组 <code>table</code> 还没有初始化（即它是 null 或者长度为 0），则会调用 <code>resize()</code> 方法进行初始化和第一次扩容。默认的初始容量是 16。</p>
+<h4 id="3-计算数组下标并检查首节点"><a href="#3-计算数组下标并检查首节点" class="headerlink" title="3. 计算数组下标并检查首节点"></a>3. 计算数组下标并检查首节点</h4><p>通过 <code>(n - 1) &amp; hash</code> 计算键值对应该存放在数组的哪个位置（<code>n</code> 是数组长度）。</p>
+<ul>
+<li>检查这个位置（桶）上的第一个元素（我们称为首节点）：<ul>
+<li><strong>如果为 null</strong>：太好了，没有哈希冲突！直接在这个位置创建一个新的 <code>Node</code> 节点即可。</li>
+<li><strong>如果不为 null</strong>：发生了哈希冲突，需要进入下一步处理。</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-处理哈希冲突"><a href="#4-处理哈希冲突" class="headerlink" title="4. 处理哈希冲突"></a>4. 处理哈希冲突</h4><p>HashMap 使用<strong>链表法</strong>来解决冲突，并在一定条件下将链表转换为<strong>红黑树</strong>。</p>
+<ul>
+<li><strong>情况A：Key 已存在（覆盖）</strong><ul>
+<li>在冲突处理过程中，会同时检查当前的 key 是否已经存在。判断条件是：<code>p.hash == hash &amp;&amp; ((k = p.key) == key || (key != null &amp;&amp; key.equals(k)))</code></li>
+<li>如果存在，则用新的 value <strong>覆盖</strong>旧的 value，并返回旧的 value。</li>
+</ul>
+</li>
+<li><strong>情况B：当前位置是红黑树节点 (TreeNode)</strong><ul>
+<li>如果首节点是一个 <code>TreeNode</code>（红黑树节点），则调用 <code>putTreeVal()</code> 方法，将新的键值对插入到红黑树中。插入过程中也会先判断 key 是否已存在。</li>
+</ul>
+</li>
+<li><strong>情况C：当前位置是链表节点 (Node)</strong><ul>
+<li>这是最常见的情况。它会从首节点开始，<strong>遍历这个链表</strong>。</li>
+<li><strong>遍历中检查</strong>：在遍历过程中，会检查每个节点的 key 是否与要插入的 key 相同（同上），如果找到则覆盖。</li>
+<li><strong>遍历到末尾</strong>：如果遍历到链表尾部（<code>next == null</code>）还没有找到相同的 key，则在尾部创建一个新的 <code>Node</code> 节点。</li>
+<li><strong>树化检查</strong>：插入新节点后，会检查当前链表的长度是否<strong>大于等于树化阈值（默认为 8）</strong>。<ul>
+<li>如果满足，则调用 <code>treeifyBin(tab, hash)</code> 方法尝试将链表转换为红黑树。</li>
+<li>在 <code>treeifyBin</code> 中还有一个前置检查：<strong>如果数组的长度小于 64（MIN_TREEIFY_CAPACITY），则会优先选择进行 resize() 扩容，而不是树化</strong>。因为数组变小了，哈希冲突可能只是因为容量不足，扩容可以重新分散节点。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-后续操作：扩容判断"><a href="#5-后续操作：扩容判断" class="headerlink" title="5. 后续操作：扩容判断"></a>5. 后续操作：扩容判断</h4><p>插入完成后，会执行 <code>++size</code>（元素总数+1），并检查是否超过了<strong>阈值（threshold &#x3D; capacity * loadFactor）</strong>。</p>
+<ul>
+<li>如果超过了阈值，就会调用 <code>resize()</code> 方法进行扩容。扩容会创建一个新的两倍大小的数组，并<strong>重新计算所有元素在新数组中的位置</strong>，这是一个比较耗时的操作。</li>
+</ul>
 <h2 id="4-HashMap的扩容机制"><a href="#4-HashMap的扩容机制" class="headerlink" title="4.HashMap的扩容机制"></a>4.HashMap的扩容机制</h2><ol>
 <li><p><strong>第1步</strong>是对哈希表长度的扩展（2倍）</p>
 </li>
@@ -3216,10 +3262,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-07-24T21:24:14+08:00">
+          <div class="new-meta-item date" itemprop="dateModified" datetime="2025-09-19T10:40:06+08:00">
   <a class='notlink'>
     <i class="fa-solid fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2025年7月24日</p>
+    <p>更新于：2025年9月19日</p>
   </a>
 </div>
 
@@ -3275,7 +3321,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
         </a>
       
       
-        <a class='next' href='/2024/11/24/%E5%85%AB%E8%82%A1/%E4%B8%AD%E9%97%B4%E4%BB%B6/'>
+        <a class='next' href='/2024/11/24/%E5%85%AB%E8%82%A1/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/'>
           <p class='title'>中间件<i class="fa-solid fa-chevron-right" aria-hidden="true"></i></p>
           <p class='content'>这里是有关消息队列的一些八股
 
@@ -3341,7 +3387,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 
     <div class='content'>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0-%E6%A6%82%E8%BF%B0"><span class="toc-text">0. 概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-List"><span class="toc-text">1.List</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-ArrayList%E5%92%8CLinkedList%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">1.ArrayList和LinkedList的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-ArrayList%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-text">2.ArrayList的扩容机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%B8%BA%E4%BB%80%E4%B9%88ArrayList%E4%B8%8D%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84"><span class="toc-text">3. 为什么ArrayList不是线程安全的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-CopyOnWriteArrayList%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="toc-text">4.CopyOnWriteArrayList为什么线程安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Copy-On-Write%E6%80%9D%E6%83%B3"><span class="toc-text">5.Copy-On-Write思想</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Set"><span class="toc-text">2.Set</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-List%E5%92%8CSet%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-text">1.List和Set的区别？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-HashSet%E6%80%8E%E4%B9%88%E5%88%A4%E6%96%AD%E6%9C%89%E6%B2%A1%E6%9C%89%E9%87%8D%E5%A4%8D%E7%9A%84%E5%80%BC%E7%9A%84"><span class="toc-text">2.HashSet怎么判断有没有重复的值的</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Map"><span class="toc-text">3.Map</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-HashMap%E6%80%8E%E4%B9%88%E5%A4%84%E7%90%86Hash%E5%86%B2%E7%AA%81"><span class="toc-text">1.HashMap怎么处理Hash冲突</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-HasMap%E7%9A%84%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-text">2.HasMap的底层数据结构及实现原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-HashMap%E7%9A%84put%E6%B5%81%E7%A8%8B"><span class="toc-text">3.HashMap的put流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-HashMap%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-text">4.HashMap的扩容机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-HashMap%E7%9A%84%E5%AF%BB%E5%9D%80%E7%AE%97%E6%B3%95"><span class="toc-text">5.HashMap的寻址算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-HashMap%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%9B%B4%E6%8E%A5%E4%BD%BF%E7%94%A8hashCode-%E5%A4%84%E7%90%86%E5%90%8E%E7%9A%84%E5%93%88%E5%B8%8C%E5%80%BC%E7%9B%B4%E6%8E%A5%E4%BD%9C%E4%B8%BAtable%E7%9A%84%E4%B8%8B%E6%A0%87"><span class="toc-text">6.HashMap为什么不直接使用hashCode()处理后的哈希值直接作为table的下标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-HashMap%E5%9C%A8%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8B%E5%8F%AF%E8%83%BD%E4%BC%9A%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">7.HashMap在多线程下可能会出现的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-ConcurrentHashMap%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-text">8.ConcurrentHashMap的底层原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-HashTable%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-text">9.HashTable的底层原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-ConcurrentHashMap-%E5%92%8C-Hashtable-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">10.ConcurrentHashMap 和 Hashtable 的区别</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0-%E6%A6%82%E8%BF%B0"><span class="toc-text">0. 概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-List"><span class="toc-text">1.List</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-ArrayList%E5%92%8CLinkedList%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">1.ArrayList和LinkedList的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-ArrayList%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-text">2.ArrayList的扩容机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%B8%BA%E4%BB%80%E4%B9%88ArrayList%E4%B8%8D%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84"><span class="toc-text">3. 为什么ArrayList不是线程安全的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-CopyOnWriteArrayList%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="toc-text">4.CopyOnWriteArrayList为什么线程安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Copy-On-Write%E6%80%9D%E6%83%B3"><span class="toc-text">5.Copy-On-Write思想</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Set"><span class="toc-text">2.Set</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-List%E5%92%8CSet%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-text">1.List和Set的区别？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-HashSet%E6%80%8E%E4%B9%88%E5%88%A4%E6%96%AD%E6%9C%89%E6%B2%A1%E6%9C%89%E9%87%8D%E5%A4%8D%E7%9A%84%E5%80%BC%E7%9A%84"><span class="toc-text">2.HashSet怎么判断有没有重复的值的</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Map"><span class="toc-text">3.Map</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-HashMap%E6%80%8E%E4%B9%88%E5%A4%84%E7%90%86Hash%E5%86%B2%E7%AA%81"><span class="toc-text">1.HashMap怎么处理Hash冲突</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-HasMap%E7%9A%84%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-text">2.HasMap的底层数据结构及实现原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-HashMap%E7%9A%84put%E6%B5%81%E7%A8%8B"><span class="toc-text">3.HashMap的put流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E8%AE%A1%E7%AE%97%E9%94%AE%E7%9A%84%E5%93%88%E5%B8%8C%E5%80%BC-hash-key"><span class="toc-text">1. 计算键的哈希值 (hash(key))</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%88%9D%E5%A7%8B%E5%8C%96%E6%95%B0%E7%BB%84"><span class="toc-text">2. 初始化数组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E8%AE%A1%E7%AE%97%E6%95%B0%E7%BB%84%E4%B8%8B%E6%A0%87%E5%B9%B6%E6%A3%80%E6%9F%A5%E9%A6%96%E8%8A%82%E7%82%B9"><span class="toc-text">3. 计算数组下标并检查首节点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E5%A4%84%E7%90%86%E5%93%88%E5%B8%8C%E5%86%B2%E7%AA%81"><span class="toc-text">4. 处理哈希冲突</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E5%90%8E%E7%BB%AD%E6%93%8D%E4%BD%9C%EF%BC%9A%E6%89%A9%E5%AE%B9%E5%88%A4%E6%96%AD"><span class="toc-text">5. 后续操作：扩容判断</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-HashMap%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-text">4.HashMap的扩容机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-HashMap%E7%9A%84%E5%AF%BB%E5%9D%80%E7%AE%97%E6%B3%95"><span class="toc-text">5.HashMap的寻址算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-HashMap%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%9B%B4%E6%8E%A5%E4%BD%BF%E7%94%A8hashCode-%E5%A4%84%E7%90%86%E5%90%8E%E7%9A%84%E5%93%88%E5%B8%8C%E5%80%BC%E7%9B%B4%E6%8E%A5%E4%BD%9C%E4%B8%BAtable%E7%9A%84%E4%B8%8B%E6%A0%87"><span class="toc-text">6.HashMap为什么不直接使用hashCode()处理后的哈希值直接作为table的下标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-HashMap%E5%9C%A8%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8B%E5%8F%AF%E8%83%BD%E4%BC%9A%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">7.HashMap在多线程下可能会出现的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-ConcurrentHashMap%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-text">8.ConcurrentHashMap的底层原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-HashTable%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="toc-text">9.HashTable的底层原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-ConcurrentHashMap-%E5%92%8C-Hashtable-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">10.ConcurrentHashMap 和 Hashtable 的区别</span></a></li></ol></li></ol>
     </div>
   </section>
 
@@ -4533,7 +4579,7 @@ window.matchMedia('(prefers-color-scheme: light)').addListener(darkModelListener
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/11/24/八股/集合/","name":"集合"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"集合","description":"主要是Java常用集合介绍","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/11/24/%E5%85%AB%E8%82%A1/%E9%9B%86%E5%90%88/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/11/24/%E5%85%AB%E8%82%A1/%E9%9B%86%E5%90%88/","wordCount":13,"datePublished":"2024-11-24T09:11:53.000Z","dateModified":"2025-07-24T13:24:14.531Z","articleSection":"八股","keywords":"JavaSE","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"啊咧咧啊咧咧啊咧啊咧咧~"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"light"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/八股/","name":"八股"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/11/24/八股/集合/","name":"集合"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"light","url":"http://example.com/","keywords":null,"description":"啊咧咧啊咧咧啊咧啊咧咧~","author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"啊咧咧啊咧咧啊咧啊咧咧~"},"publisher":{"@type":"Organization","name":"light","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"集合","description":"主要是Java常用集合介绍","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/11/24/%E5%85%AB%E8%82%A1/%E9%9B%86%E5%90%88/"},"author":{"@type":"Person","name":"Light","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"light","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/11/24/%E5%85%AB%E8%82%A1/%E9%9B%86%E5%90%88/","wordCount":13,"datePublished":"2024-11-24T09:11:53.000Z","dateModified":"2025-09-19T02:40:06.100Z","articleSection":"八股","keywords":"JavaSE","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 
